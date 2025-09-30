@@ -314,10 +314,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1540090167}
+  rotationSpeed: 5
   distance: 5
-  rotationSpeed: 150
-  yMinLimit: -180
-  yMaxLimit: 180
+  minDistance: 2
+  maxDistance: 15
+  zoomSpeed: 5
 --- !u!1 &1208760974
 GameObject:
   m_ObjectHideFlags: 0
@@ -349,7 +350,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentLevelData: {fileID: 11400000, guid: d9dc5816dd4da084b8acf3c3a5a510e2, type: 2}
   singleBlockPrefab: {fileID: 8118699957492744284, guid: 7e4aea03383933a4494280f2a26b9efa, type: 3}
-  doubleBlockPrefab: {fileID: 8034702976540293854, guid: 48f4c867b2e10de478f93697a6b9a554, type: 3}
   gridUnitSize: 0.5
   levelContainer: {fileID: 1540090167}
 --- !u!4 &1208760976

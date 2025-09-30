@@ -1,23 +1,26 @@
 ﻿using UnityEngine;
 
-// Numele clasei este PascalCase, un standard în C#.
 public class OrbitController : MonoBehaviour
 {
-    // Variabilele publice sunt camelCase și au un Tooltip pentru a explica ce fac în Inspector.
+    // --- Variabile Principale ---
     [Tooltip("Obiectul în jurul căruia se va roti camera.")]
     public Transform target;
 
-    [Tooltip("Cât de departe stă camera de țintă.")]
-    public float distance = 5.0f;
-
+    // --- Setări de Rotație ---
     [Tooltip("Viteza de rotație a camerei.")]
     public float rotationSpeed = 1.0f;
 
-    // Unghiurile minime și maxime pe verticală pentru a nu trece camera prin pământ.
-    [SerializeField] private float yMinLimit = -20f;
-    [SerializeField] private float yMaxLimit = 80f;
+    // --- Setări de Zoom (Scroll) ---
+    [Tooltip("Distanța curentă față de țintă.")]
+    public float distance = 5.0f;
+    [Tooltip("Distanța minimă la care ne putem apropia.")]
+    public float minDistance = 2f;
+    [Tooltip("Distanța maximă la care ne putem depărta.")]
+    public float maxDistance = 15f;
+    [Tooltip("Viteza cu care funcționează zoom-ul.")]
+    public float zoomSpeed = 5.0f;
 
-    // Variabile private pentru a stoca rotația curentă. Prefixul '_' este o convenție comună.
+    // Variabile private pentru a stoca rotația curentă.
     private float _x = 0.0f;
     private float _y = 0.0f;
 
@@ -29,48 +32,48 @@ public class OrbitController : MonoBehaviour
         _y = angles.x;
     }
 
-    // Folosim LateUpdate pentru a ne asigura că orice mișcare a țintei a fost deja executată.
     void LateUpdate()
     {
         if (target)
         {
-            // Verificăm dacă există input de la mouse sau de la touch.
-            if (Input.GetMouseButton(0)) // Click stânga
+            // --- Preluarea Input-ului pentru Rotație ---
+            if (Input.GetMouseButton(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved))
             {
-                _x += Input.GetAxis("Mouse X") * rotationSpeed * distance * 0.02f;
-                _y -= Input.GetAxis("Mouse Y") * rotationSpeed * 0.02f;
-            }
-            else if (Input.touchCount > 0) // Atingere pe ecran
-            {
-                Touch touch = Input.GetTouch(0);
-                if (touch.phase == TouchPhase.Moved)
+                float inputX = 0f;
+                float inputY = 0f;
+
+                if (Input.GetMouseButton(0))
                 {
-                    _x += touch.deltaPosition.x * rotationSpeed * 0.01f;
-                    _y -= touch.deltaPosition.y * rotationSpeed * 0.01f;
+                    inputX = Input.GetAxis("Mouse X");
+                    inputY = Input.GetAxis("Mouse Y");
                 }
+                else
+                {
+                    Touch touch = Input.GetTouch(0);
+                    inputX = touch.deltaPosition.x * 0.1f;
+                    inputY = touch.deltaPosition.y * 0.1f;
+                }
+
+                _x += inputX * rotationSpeed;
+                _y -= inputY * rotationSpeed;
             }
 
-            // Limităm rotația pe axa Y.
-            _y = ClampAngle(_y, yMinLimit, yMaxLimit);
+            // --- Preluarea Input-ului pentru Zoom ---
+            float scroll = Input.GetAxis("Mouse ScrollWheel");
+            distance -= scroll * zoomSpeed;
+            distance = Mathf.Clamp(distance, minDistance, maxDistance);
 
+            // --- Aplicarea Directă a Poziției și Rotației ---
             // Calculăm noua rotație a camerei.
             Quaternion rotation = Quaternion.Euler(_y, _x, 0);
 
-            // Calculăm poziția camerei.
+            // Calculăm noua poziție a camerei.
             Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
             Vector3 position = rotation * negDistance + target.position;
 
-            // Aplicăm noile valori de rotație și poziție.
+            // Aplicăm instantaneu noile valori.
             transform.rotation = rotation;
             transform.position = position;
         }
-    }
-
-    // O funcție ajutătoare pentru a limita unghiurile.
-    public static float ClampAngle(float angle, float min, float max)
-    {
-        if (angle < -360F) angle += 360F;
-        if (angle > 360F) angle -= 360F;
-        return Mathf.Clamp(angle, min, max);
     }
 }
