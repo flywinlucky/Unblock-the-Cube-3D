@@ -26,7 +26,7 @@ public class Block : MonoBehaviour
         if (IsPathClear())
         {
             _isMoving = true;
-            _collider.enabled = false; // Dezactivăm collider-ul pentru a nu bloca alte blocuri în mișcare
+            _collider.enabled = false;
             _levelManager.OnBlockRemoved(this);
             StartCoroutine(MoveAndDestroy());
         }
@@ -34,24 +34,12 @@ public class Block : MonoBehaviour
 
     private bool IsPathClear()
     {
-        // Folosim un BoxCast, care este ca un Raycast, dar pentru o cutie.
-        // Acesta va funcționa corect indiferent de mărimea și rotația blocului.
         Vector3 directionVector = GetDirectionVector();
-        float maxDistance = 0.6f; // Puțin mai mult de jumătate de unitate
+        float maxDistance = 10f;
 
-        // Ignorăm propriul collider folosind QueryTriggerInteraction.Ignore
-        return !Physics.BoxCast(
-            transform.position,
-            _collider.size / 2.1f, // Mărimea cutiei de cast, puțin mai mică pentru a evita coliziuni false
-            directionVector,
-            transform.rotation,
-            maxDistance,
-            Physics.DefaultRaycastLayers,
-            QueryTriggerInteraction.Ignore
-        );
+        return !Physics.Raycast(transform.position, directionVector, maxDistance);
     }
 
-    // Restul scriptului (MoveAndDestroy, GetDirectionVector) rămâne la fel
     private IEnumerator MoveAndDestroy()
     {
         Vector3 startPosition = transform.position;
@@ -66,6 +54,8 @@ public class Block : MonoBehaviour
         }
         Destroy(gameObject);
     }
+
+    // --- MODIFICAT: Folosim vectori locali (relativi la rotația obiectului) ---
     private Vector3 GetDirectionVector()
     {
         switch (_moveDirection)
@@ -78,5 +68,20 @@ public class Block : MonoBehaviour
             case MoveDirection.Right: return transform.right;
         }
         return Vector3.zero;
+    }
+
+    private void OnDrawGizmos()
+    {
+        // Gizmo-ul va folosi acum aceeași funcție modificată,
+        // deci se va roti și el odată cu obiectul.
+        if (_collider == null) { _collider = GetComponent<BoxCollider>(); }
+
+        bool isClear = IsPathClear();
+        Gizmos.color = isClear ? Color.green : Color.red;
+
+        Vector3 direction = GetDirectionVector();
+        float distance = 10f;
+
+        Gizmos.DrawRay(transform.position, direction * distance);
     }
 }
