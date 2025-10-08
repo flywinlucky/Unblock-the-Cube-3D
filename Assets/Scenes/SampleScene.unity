@@ -315,10 +315,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 1540090167}
   rotationSpeed: 5
-  distance: 5
-  minDistance: 2
-  maxDistance: 15
   zoomSpeed: 5
+  minDistance: 3.3
+  maxDistance: 5
 --- !u!1 &1208760974
 GameObject:
   m_ObjectHideFlags: 0

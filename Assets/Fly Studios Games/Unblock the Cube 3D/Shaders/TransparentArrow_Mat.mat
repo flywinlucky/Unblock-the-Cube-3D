@@ -27,8 +27,8 @@ Material:
     m_Ints: []
     m_Floats:
     - _ManualRotationOffset: 0
-    - _RotationOffsetX: 0
-    - _RotationOffsetY: 0
+    - _RotationOffsetX: -90
+    - _RotationOffsetY: 80
     m_Colors:
-    - _MoveDirection: {r: 0, g: 1, b: 0, a: 0}
+    - _MoveDirection: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

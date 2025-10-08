@@ -37,7 +37,7 @@ public class Block : MonoBehaviour
         }
     }
 
-    private void OnMouseDown()
+    private void OnMouseUp()
     {
         if (_isMoving) return;
 

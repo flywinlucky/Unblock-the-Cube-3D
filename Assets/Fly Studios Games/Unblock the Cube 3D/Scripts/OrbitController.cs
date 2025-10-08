@@ -1,42 +1,41 @@
 ﻿using UnityEngine;
 
+// Am redenumit clasa pentru a reflecta noua funcționalitate.
 public class OrbitController : MonoBehaviour
 {
     // --- Variabile Principale ---
-    [Tooltip("Obiectul în jurul căruia se va roti camera.")]
+    [Tooltip("Obiectul care va fi rotit.")]
     public Transform target;
 
     // --- Setări de Rotație ---
-    [Tooltip("Viteza de rotație a camerei.")]
-    public float rotationSpeed = 1.0f;
+    [Tooltip("Viteza cu care se rotește obiectul.")]
+    public float rotationSpeed = 5.0f;
 
     // --- Setări de Zoom (Scroll) ---
-    [Tooltip("Distanța curentă față de țintă.")]
-    public float distance = 5.0f;
-    [Tooltip("Distanța minimă la care ne putem apropia.")]
-    public float minDistance = 2f;
-    [Tooltip("Distanța maximă la care ne putem depărta.")]
-    public float maxDistance = 15f;
-    [Tooltip("Viteza cu care funcționează zoom-ul.")]
+    [Tooltip("Viteza cu care funcționează zoom-ul camerei.")]
     public float zoomSpeed = 5.0f;
+    [Tooltip("Distanța minimă la care se poate apropia camera.")]
+    public float minDistance = 2f;
+    [Tooltip("Distanța maximă la care se poate depărta camera.")]
+    public float maxDistance = 15f;
 
-    // Variabile private pentru a stoca rotația curentă.
-    private float _x = 0.0f;
-    private float _y = 0.0f;
+    // Variabilă privată pentru a stoca distanța curentă
+    private float _distance;
 
     void Start()
     {
-        // Inițializăm unghiurile pe baza rotației curente a camerei.
-        Vector3 angles = transform.eulerAngles;
-        _x = angles.y;
-        _y = angles.x;
+        // La început, calculăm și stocăm distanța inițială dintre cameră și țintă.
+        if (target != null)
+        {
+            _distance = Vector3.Distance(transform.position, target.position);
+        }
     }
 
     void LateUpdate()
     {
         if (target)
         {
-            // --- Preluarea Input-ului pentru Rotație ---
+            // --- Preluarea Input-ului pentru Rotația Obiectului ---
             if (Input.GetMouseButton(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved))
             {
                 float inputX = 0f;
@@ -54,26 +53,27 @@ public class OrbitController : MonoBehaviour
                     inputY = touch.deltaPosition.y * 0.1f;
                 }
 
-                _x += inputX * rotationSpeed;
-                _y -= inputY * rotationSpeed;
+                // Aplicăm rotația direct pe OBIECT (target), nu pe cameră.
+                // Rotația pe orizontală se face în jurul axei Y a lumii (sus/jos).
+                target.Rotate(Vector3.up, -inputX * rotationSpeed, Space.World);
+                // Rotația pe verticală se face în jurul axei X a CAMEREI (dreapta/stânga ei).
+                target.Rotate(transform.right, inputY * rotationSpeed, Space.World);
             }
 
-            // --- Preluarea Input-ului pentru Zoom ---
+            // --- Preluarea Input-ului pentru Zoom-ul Camerei ---
             float scroll = Input.GetAxis("Mouse ScrollWheel");
-            distance -= scroll * zoomSpeed;
-            distance = Mathf.Clamp(distance, minDistance, maxDistance);
+            if (scroll != 0.0f)
+            {
+                // Modificăm distanța stocată
+                _distance -= scroll * zoomSpeed;
+                // Limităm distanța între valorile minime și maxime
+                _distance = Mathf.Clamp(_distance, minDistance, maxDistance);
 
-            // --- Aplicarea Directă a Poziției și Rotației ---
-            // Calculăm noua rotație a camerei.
-            Quaternion rotation = Quaternion.Euler(_y, _x, 0);
-
-            // Calculăm noua poziție a camerei.
-            Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
-            Vector3 position = rotation * negDistance + target.position;
-
-            // Aplicăm instantaneu noile valori.
-            transform.rotation = rotation;
-            transform.position = position;
+                // Recalculăm poziția camerei pentru a reflecta noul zoom.
+                // Direcția este de la țintă spre cameră.
+                Vector3 direction = (transform.position - target.position).normalized;
+                transform.position = target.position + direction * _distance;
+            }
         }
     }
 }
