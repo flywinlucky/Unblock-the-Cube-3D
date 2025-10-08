@@ -10,6 +10,8 @@ public class BlockData
 {
     public Vector3Int position;
     public MoveDirection direction;
+    // NOU: Câmp pentru a stoca rotația vizuală aleatorie
+    public Quaternion randomVisualRotation;
 }
 
 [CreateAssetMenu(fileName = "SimpleCubeLevel", menuName = "Unblock Cube/Simple Cube Level")]
@@ -42,7 +44,7 @@ public class LevelData : ScriptableObject
             default: gridSize = 5; break;
         }
 
-        // --- FAZA 1: UMPLEREA VOLUMULUI (rămâne la fel) ---
+        // --- FAZA 1: UMPLEREA VOLUMULUI ---
         List<BlockData> generatedBlocks = new List<BlockData>();
         for (int x = 0; x < gridSize; x++)
         {
@@ -55,56 +57,59 @@ public class LevelData : ScriptableObject
             }
         }
 
-        // --- FAZA 2: ALGORITM NOU BAZAT PE RAYCAST SIMULAT ---
+        // --- FAZA 2: ASIGNAREA DIRECȚIILOR (Algoritm Îmbunătățit) ---
+        // Acest algoritm creează lanțuri de dependențe pentru un puzzle mai complex.
 
-        // Creăm un HashSet cu toate pozițiile ocupate pentru verificări rapide
-        HashSet<Vector3Int> occupiedPositions = new HashSet<Vector3Int>(generatedBlocks.Select(b => b.position));
+        // Stocăm toate pozițiile pentru verificări rapide
+        HashSet<Vector3Int> allPositions = new HashSet<Vector3Int>(generatedBlocks.Select(b => b.position));
+        // O listă a blocurilor care încă nu au o direcție asignată
+        List<BlockData> unassignedBlocks = new List<BlockData>(generatedBlocks);
 
-        // O listă cu toți vectorii de direcție posibili
-        Vector3Int[] allDirectionVectors = {
-            Vector3Int.forward, Vector3Int.back, Vector3Int.up,
-            Vector3Int.down, Vector3Int.left, Vector3Int.right
-        };
+        // Amestecăm blocurile pentru a procesa într-o ordine aleatorie
+        unassignedBlocks = unassignedBlocks.OrderBy(b => Random.value).ToList();
 
+        // Cât timp mai avem blocuri de asignat
+        while (unassignedBlocks.Count > 0)
+        {
+            bool assignedOne = false;
+            // Parcurgem lista de la coadă la cap pentru a putea șterge elemente în siguranță
+            for (int i = unassignedBlocks.Count - 1; i >= 0; i--)
+            {
+                BlockData currentBlock = unassignedBlocks[i];
+
+                // Găsim o direcție liberă pentru blocul curent
+                MoveDirection? clearDirection = FindClearPath(currentBlock.position, allPositions, gridSize);
+
+                if (clearDirection.HasValue)
+                {
+                    // Am găsit o cale liberă. Asta înseamnă că blocul curent este la exterior.
+                    // Îl asignăm pe el și îl ștergem din "lumea" noastră virtuală.
+                    currentBlock.direction = clearDirection.Value;
+                    allPositions.Remove(currentBlock.position); // Simulăm eliminarea lui
+                    unassignedBlocks.RemoveAt(i); // Îl scoatem din lista de așteptare
+                    assignedOne = true;
+                }
+            }
+
+            // Mecanism de siguranță: dacă într-o iterație completă nu găsim niciun bloc de eliminat
+            // (ceea ce nu ar trebui să se întâmple), spargem bucla pentru a evita un loop infinit.
+            if (!assignedOne && unassignedBlocks.Count > 0)
+            {
+                // Asignăm o direcție aleatorie la un bloc rămas pentru a debloca situația
+                unassignedBlocks[0].direction = (MoveDirection)Random.Range(0, 6);
+                allPositions.Remove(unassignedBlocks[0].position);
+                unassignedBlocks.RemoveAt(0);
+            }
+        }
+
+        // --- FAZA 2.5: Generăm rotația vizuală aleatorie ---
         foreach (var block in generatedBlocks)
         {
-            List<MoveDirection> validDirections = new List<MoveDirection>();
-
-            // Pentru fiecare bloc, verificăm toate cele 6 direcții posibile
-            foreach (var directionVector in allDirectionVectors)
-            {
-                // Simulăm un "raycast" în direcția curentă
-                Vector3Int currentPos = block.position;
-                bool pathIsClear = true;
-                while (IsInBounds(currentPos + directionVector, gridSize))
-                {
-                    currentPos += directionVector;
-                    if (occupiedPositions.Contains(currentPos))
-                    {
-                        // Am lovit un alt bloc, calea nu este liberă
-                        pathIsClear = false;
-                        break;
-                    }
-                }
-
-                // Dacă am ajuns la capăt fără a lovi nimic, direcția e validă
-                if (pathIsClear)
-                {
-                    validDirections.Add(GetEnumFromVector(directionVector));
-                }
-            }
-
-            // Alegem o direcție aleatorie din cele valide găsite
-            if (validDirections.Count > 0)
-            {
-                block.direction = validDirections[Random.Range(0, validDirections.Count)];
-            }
-            else
-            {
-                // Fallback pentru blocurile din centru care nu au nicio cale liberă
-                // Le dăm o direcție aleatorie
-                block.direction = (MoveDirection)Random.Range(0, 6);
-            }
+            block.randomVisualRotation = Quaternion.Euler(
+                Random.Range(0, 4) * 90,
+                Random.Range(0, 4) * 90,
+                Random.Range(0, 4) * 90
+            );
         }
 
         // --- FAZA 3: CENTRAREA POZIȚIILOR ---
@@ -116,7 +121,39 @@ public class LevelData : ScriptableObject
         }
     }
 
-    // Funcții ajutătoare
+    // --- Funcție nouă: Găsește o singură cale liberă pentru un bloc ---
+    private MoveDirection? FindClearPath(Vector3Int blockPos, HashSet<Vector3Int> occupied, int gridSize)
+    {
+        Vector3Int[] allDirectionVectors = {
+            Vector3Int.forward, Vector3Int.back, Vector3Int.up,
+            Vector3Int.down, Vector3Int.left, Vector3Int.right
+        };
+
+        // Amestecăm direcțiile pentru a nu avea o preferință (ex: mereu 'dreapta')
+        var shuffledDirections = allDirectionVectors.OrderBy(d => Random.value);
+
+        foreach (var dir in shuffledDirections)
+        {
+            Vector3Int currentPos = blockPos;
+            bool pathIsClear = true;
+            while (IsInBounds(currentPos + dir, gridSize))
+            {
+                currentPos += dir;
+                if (occupied.Contains(currentPos))
+                {
+                    pathIsClear = false;
+                    break;
+                }
+            }
+            if (pathIsClear)
+            {
+                return GetEnumFromVector(dir); // Returnăm prima direcție liberă găsită
+            }
+        }
+
+        return null; // Nicio cale liberă găsită
+    }
+
     private bool IsInBounds(Vector3Int pos, int gridSize) =>
         pos.x >= 0 && pos.x < gridSize && pos.y >= 0 && pos.y < gridSize && pos.z >= 0 && pos.z < gridSize;
 
@@ -130,3 +167,4 @@ public class LevelData : ScriptableObject
         return MoveDirection.Right;
     }
 }
+
