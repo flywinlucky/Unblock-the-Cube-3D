@@ -6,6 +6,9 @@ public class Block : MonoBehaviour
     [Tooltip("Trage aici obiectul copil 'ArrowShell' din Prefab.")]
     public Renderer arrowShellRenderer;
 
+    [Tooltip("Punctul de referință pentru mișcare și Raycast.")]
+    public Transform raycastPoint;
+
     private MoveDirection _moveDirection;
     private LevelManager _levelManager;
     private bool _isMoving = false;
@@ -16,10 +19,12 @@ public class Block : MonoBehaviour
     private void Awake()
     {
         _collider = GetComponent<BoxCollider>();
+
         if (arrowShellRenderer == null)
-        {
-            Debug.LogError("ArrowShell Renderer nu este asignat în Inspector!", this.gameObject);
-        }
+            Debug.LogError("ArrowShell Renderer nu este asignat în Inspector!", this);
+
+        if (raycastPoint == null)
+            Debug.LogWarning("Raycast Point nu este asignat! Folosim transform ca fallback.", this);
     }
 
     public void Initialize(MoveDirection dir, LevelManager manager)
@@ -31,8 +36,8 @@ public class Block : MonoBehaviour
         {
             MaterialPropertyBlock propBlock = new MaterialPropertyBlock();
             arrowShellRenderer.GetPropertyBlock(propBlock);
-            // Acum trimitem mereu vectorul global la shader, ceea ce este corect.
-            propBlock.SetVector(MoveDirectionID, (Vector4)GetDirectionVector());
+            // Trimitem forward-ul raycastPoint pentru shader
+            propBlock.SetVector(MoveDirectionID, raycastPoint != null ? raycastPoint.forward : transform.forward);
             arrowShellRenderer.SetPropertyBlock(propBlock);
         }
     }
@@ -52,18 +57,19 @@ public class Block : MonoBehaviour
 
     private bool IsPathClear()
     {
-        // Raycast-ul folosește acum direcția globală, consistentă.
-        Vector3 directionVector = GetDirectionVector();
+        Vector3 origin = raycastPoint != null ? raycastPoint.position : transform.position;
+        Vector3 direction = raycastPoint != null ? raycastPoint.forward : transform.forward;
         float maxDistance = 10f;
 
-        return !Physics.Raycast(transform.position, directionVector, maxDistance);
+        return !Physics.Raycast(origin, direction, maxDistance);
     }
 
     private IEnumerator MoveAndDestroy()
     {
-        // Mișcarea se face pe direcția globală.
         Vector3 startPosition = transform.position;
-        Vector3 endPosition = startPosition + GetDirectionVector() * 5.0f;
+        Vector3 direction = raycastPoint != null ? raycastPoint.forward : transform.forward;
+        Vector3 endPosition = startPosition + direction * 5f;
+
         float duration = 0.5f;
         float elapsed = 0f;
 
@@ -77,33 +83,18 @@ public class Block : MonoBehaviour
         Destroy(gameObject);
     }
 
-    // --- SIMPLIFICAT: Funcția returnează acum DOAR vectori globali ---
-    // Aceasta devine singura "sursă de adevăr" pentru direcție.
-    private Vector3 GetDirectionVector()
-    {
-        switch (_moveDirection)
-        {
-            case MoveDirection.Forward: return Vector3.forward;
-            case MoveDirection.Back: return Vector3.back;
-            case MoveDirection.Up: return Vector3.up;
-            case MoveDirection.Down: return Vector3.down;
-            case MoveDirection.Left: return Vector3.left;
-            case MoveDirection.Right: return Vector3.right;
-        }
-        return Vector3.zero;
-    }
-
     private void OnDrawGizmos()
     {
         if (!Application.isPlaying) return;
 
-        bool isClear = IsPathClear();
-        Gizmos.color = isClear ? Color.green : Color.red;
-
-        // Gizmo-ul va afișa acum direcția globală, reală, de verificare.
-        Vector3 direction = GetDirectionVector();
+        Vector3 origin = raycastPoint != null ? raycastPoint.position : transform.position;
+        Vector3 direction = raycastPoint != null ? raycastPoint.forward : transform.forward;
         float distance = 10f;
 
-        Gizmos.DrawRay(transform.position, direction * distance);
+        bool isClear = !Physics.Raycast(origin, direction, distance);
+        Gizmos.color = isClear ? Color.green : Color.red;
+
+        Gizmos.DrawRay(origin, direction * distance);
+        Gizmos.DrawSphere(origin, 0.05f);
     }
 }
