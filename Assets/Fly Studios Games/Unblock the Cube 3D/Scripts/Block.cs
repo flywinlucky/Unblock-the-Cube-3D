@@ -6,9 +6,6 @@ public class Block : MonoBehaviour
     [Tooltip("Trage aici obiectul copil 'ArrowShell' din Prefab.")]
     public Renderer arrowShellRenderer;
 
-    [Tooltip("Punctul de referință pentru mișcare și Raycast.")]
-    public Transform raycastPoint;
-
     private MoveDirection _moveDirection;
     private LevelManager _levelManager;
     private bool _isMoving = false;
@@ -22,9 +19,6 @@ public class Block : MonoBehaviour
 
         if (arrowShellRenderer == null)
             Debug.LogError("ArrowShell Renderer nu este asignat în Inspector!", this);
-
-        if (raycastPoint == null)
-            Debug.LogWarning("Raycast Point nu este asignat! Folosim transform ca fallback.", this);
     }
 
     public void Initialize(MoveDirection dir, LevelManager manager)
@@ -36,12 +30,13 @@ public class Block : MonoBehaviour
         {
             MaterialPropertyBlock propBlock = new MaterialPropertyBlock();
             arrowShellRenderer.GetPropertyBlock(propBlock);
-            // Trimitem forward-ul raycastPoint pentru shader
-            propBlock.SetVector(MoveDirectionID, raycastPoint != null ? raycastPoint.forward : transform.forward);
+            // Trimitem direcția GLOBALĂ la shader pentru ca săgețile să fie orientate corect
+            propBlock.SetVector(MoveDirectionID, (Vector4)GetWorldDirection());
             arrowShellRenderer.SetPropertyBlock(propBlock);
         }
     }
 
+    // Folosim OnMouseUp pentru a permite rotirea camerei fără a mișca un bloc
     private void OnMouseUp()
     {
         if (_isMoving) return;
@@ -57,18 +52,15 @@ public class Block : MonoBehaviour
 
     private bool IsPathClear()
     {
-        Vector3 origin = raycastPoint != null ? raycastPoint.position : transform.position;
-        Vector3 direction = raycastPoint != null ? raycastPoint.forward : transform.forward;
-        float maxDistance = 10f;
-
-        return !Physics.Raycast(origin, direction, maxDistance);
+        // Raycast-ul pornește din centrul obiectului, în direcția sa "înainte" locală
+        return !Physics.Raycast(transform.position, transform.forward, 10f);
     }
 
     private IEnumerator MoveAndDestroy()
     {
         Vector3 startPosition = transform.position;
-        Vector3 direction = raycastPoint != null ? raycastPoint.forward : transform.forward;
-        Vector3 endPosition = startPosition + direction * 5f;
+        // Mișcarea se face în direcția "înainte" locală a obiectului
+        Vector3 endPosition = startPosition + transform.forward * 5f;
 
         float duration = 0.5f;
         float elapsed = 0f;
@@ -83,18 +75,30 @@ public class Block : MonoBehaviour
         Destroy(gameObject);
     }
 
+    // Funcție separată pentru a obține direcția globală, necesară pentru shader
+    private Vector3 GetWorldDirection()
+    {
+        switch (_moveDirection)
+        {
+            case MoveDirection.Forward: return Vector3.forward;
+            case MoveDirection.Back: return Vector3.back;
+            case MoveDirection.Up: return Vector3.up;
+            case MoveDirection.Down: return Vector3.down;
+            case MoveDirection.Left: return Vector3.left;
+            case MoveDirection.Right: return Vector3.right;
+        }
+        return Vector3.zero;
+    }
+
     private void OnDrawGizmos()
     {
         if (!Application.isPlaying) return;
 
-        Vector3 origin = raycastPoint != null ? raycastPoint.position : transform.position;
-        Vector3 direction = raycastPoint != null ? raycastPoint.forward : transform.forward;
-        float distance = 10f;
-
-        bool isClear = !Physics.Raycast(origin, direction, distance);
+        // Gizmo-ul afișează acum raza locală, care se rotește cu obiectul
+        bool isClear = !Physics.Raycast(transform.position, transform.forward, 10f);
         Gizmos.color = isClear ? Color.green : Color.red;
 
-        Gizmos.DrawRay(origin, direction * distance);
-        Gizmos.DrawSphere(origin, 0.05f);
+        Gizmos.DrawRay(transform.position, transform.forward * 10f);
     }
 }
+
