@@ -6,7 +6,6 @@ public class LevelManager : MonoBehaviour
     public LevelData currentLevelData;
 
     [Header("Prefabs")]
-    // Am eliminat referința la doubleBlockPrefab
     public GameObject singleBlockPrefab;
 
     [Header("Grid Settings")]
@@ -39,7 +38,8 @@ public class LevelManager : MonoBehaviour
             GameObject newBlockObj = Instantiate(singleBlockPrefab, worldPosition, finalRotation, levelContainer);
 
             Block blockScript = newBlockObj.GetComponent<Block>();
-            blockScript.Initialize(data.direction, this);
+            // CORECTAT: Am adăugat parametrul 'gridUnitSize' care lipsea
+            blockScript.Initialize(data.direction, this, gridUnitSize);
             _activeBlocks.Add(blockScript);
         }
     }
@@ -69,3 +69,4 @@ public class LevelManager : MonoBehaviour
     public void OnBlockRemoved(Block block) { _activeBlocks.Remove(block); CheckWinCondition(); }
     private void CheckWinCondition() { if (_activeBlocks.Count == 0) { Debug.Log("Felicitări! Ai câștigat nivelul!"); } }
 }
+
