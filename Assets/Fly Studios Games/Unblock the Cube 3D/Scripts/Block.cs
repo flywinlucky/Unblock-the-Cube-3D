@@ -10,9 +10,10 @@ public class Block : MonoBehaviour
     private LevelManager _levelManager;
     private bool _isMoving = false;
     private BoxCollider _collider;
-    private float _gridUnitSize; // Stocăm mărimea gridului
+    private float _gridUnitSize;
 
     private static readonly int MoveDirectionID = Shader.PropertyToID("_MoveDirection");
+    private bool _isShaking = false;
 
     private void Awake()
     {
@@ -22,12 +23,11 @@ public class Block : MonoBehaviour
             Debug.LogError("ArrowShell Renderer nu este asignat în Inspector!", this);
     }
 
-    // MODIFICAT: Acum primim și 'gridUnitSize'
     public void Initialize(MoveDirection dir, LevelManager manager, float gridUnitSize)
     {
         _moveDirection = dir;
         _levelManager = manager;
-        _gridUnitSize = gridUnitSize; // Stocăm valoarea
+        _gridUnitSize = gridUnitSize;
 
         if (arrowShellRenderer != null)
         {
@@ -38,77 +38,137 @@ public class Block : MonoBehaviour
         }
     }
 
-    // Folosim OnMouseUp pentru a permite rotirea camerei fără a mișca un bloc
     private void OnMouseUp()
     {
         if (_isMoving) return;
 
-        // --- NOUA LOGICĂ DE CALCULARE A MIȘCĂRII ---
         Vector3 direction = transform.forward;
         RaycastHit hit;
         Vector3 targetPosition;
         bool shouldBeDestroyed = false;
 
-        // Verificăm dacă lovim un alt bloc
         if (Physics.Raycast(transform.position, direction, out hit, 100f))
         {
-            // Am lovit un bloc. Ținta este poziția de dinaintea lui.
             targetPosition = hit.transform.position - direction * _gridUnitSize;
+
+            // Dacă nu există spațiu pentru mișcare — doar efect de shake
+            if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
+            {
+                StartCoroutine(ShakeScale());
+                return;
+            }
         }
         else
         {
-            // Nu am lovit nimic. Blocul poate zbura de pe ecran și va fi distrus.
-            targetPosition = transform.position + direction * 10f; // Se mișcă mult în afara ecranului
+            targetPosition = transform.position + direction * 10f;
             shouldBeDestroyed = true;
         }
 
-        // Ne mișcăm doar dacă noua poziție este diferită de cea actuală (cu o mică toleranță).
         if (Vector3.Distance(transform.position, targetPosition) > 0.1f)
         {
             _isMoving = true;
 
-            // Dacă blocul va fi distrus, anunțăm managerul imediat.
             if (shouldBeDestroyed)
             {
                 _collider.enabled = false;
                 _levelManager.OnBlockRemoved(this);
             }
 
-            // Pornim corutina de mișcare cu noii parametri.
-            StartCoroutine(Move(targetPosition, shouldBeDestroyed));
+            StartCoroutine(MoveWithDamping(targetPosition, shouldBeDestroyed));
+        }
+        else
+        {
+            StartCoroutine(ShakeScale());
         }
     }
 
-    // --- NOUA CORUTINĂ DE MIȘCARE ---
-    private IEnumerator Move(Vector3 targetPosition, bool shouldBeDestroyed)
+    // 🔵 Mișcare cu efect de amortizare (smooth damping bounce)
+    private IEnumerator MoveWithDamping(Vector3 targetPosition, bool shouldBeDestroyed)
     {
         Vector3 startPosition = transform.position;
-        // Durata animației depinde de distanță, pentru o viteză constantă
         float duration = Vector3.Distance(startPosition, targetPosition) * 0.1f;
         float elapsed = 0f;
 
         while (elapsed < duration)
         {
-            transform.position = Vector3.Lerp(startPosition, targetPosition, elapsed / duration);
+            transform.position = Vector3.Lerp(startPosition, targetPosition, Mathf.SmoothStep(0, 1, elapsed / duration));
             elapsed += Time.deltaTime;
             yield return null;
         }
 
-        // Ne asigurăm că ajunge exact la poziția finală
         transform.position = targetPosition;
 
+        // 🔹 Când se oprește – mic efect vizual de "impact bounce"
+        yield return StartCoroutine(ImpactBounce());
+
         if (shouldBeDestroyed)
-        {
             Destroy(gameObject);
-        }
         else
-        {
-            // Mișcarea s-a terminat, blocul poate fi apăsat din nou.
             _isMoving = false;
-        }
     }
 
-    // Funcție separată pentru a obține direcția globală, necesară pentru shader
+    // 🔹 Efect de "shake scale" (când nu se poate mișca)
+    private IEnumerator ShakeScale()
+    {
+        if (_isShaking) yield break;
+        _isShaking = true;
+
+        Vector3 originalScale = transform.localScale;
+        Vector3 targetScale = originalScale * 1.15f;
+        float duration = 0.1f;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            transform.localScale = Vector3.Lerp(originalScale, targetScale, elapsed / duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        elapsed = 0f;
+        while (elapsed < duration)
+        {
+            transform.localScale = Vector3.Lerp(targetScale, originalScale, elapsed / duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.localScale = originalScale;
+        _isShaking = false;
+    }
+
+    // 🔵 Efect de "impact bounce" la finalul mișcării (amortizare)
+    private IEnumerator ImpactBounce()
+    {
+        if (_isShaking) yield break; // să nu se suprapună cu alt efect
+        _isShaking = true;
+
+        Vector3 originalPos = transform.position;
+        Vector3 bouncePos = originalPos - transform.forward * 0.05f; // mic recul vizual
+        float duration = 0.08f;
+        float elapsed = 0f;
+
+        // Mică retragere
+        while (elapsed < duration)
+        {
+            transform.position = Vector3.Lerp(originalPos, bouncePos, Mathf.SmoothStep(0, 1, elapsed / duration));
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        elapsed = 0f;
+        // Revenire la poziția originală
+        while (elapsed < duration)
+        {
+            transform.position = Vector3.Lerp(bouncePos, originalPos, Mathf.SmoothStep(0, 1, elapsed / duration));
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = originalPos;
+        _isShaking = false;
+    }
+
     private Vector3 GetWorldDirection()
     {
         switch (_moveDirection)
@@ -123,7 +183,6 @@ public class Block : MonoBehaviour
         return Vector3.zero;
     }
 
-    // --- GIZMOS ACTUALIZAT PENTRU A REFLECTA NOUA LOGICĂ ---
     private void OnDrawGizmos()
     {
         if (!Application.isPlaying) return;
@@ -133,16 +192,13 @@ public class Block : MonoBehaviour
 
         if (Physics.Raycast(transform.position, direction, out hit, 100f))
         {
-            // Calea este blocată. Desenăm o linie roșie până la punctul de impact.
             Gizmos.color = Color.red;
             Gizmos.DrawLine(transform.position, hit.point);
         }
         else
         {
-            // Calea este liberă. Desenăm o linie verde lungă.
             Gizmos.color = Color.green;
             Gizmos.DrawRay(transform.position, direction * 10f);
         }
     }
 }
-
