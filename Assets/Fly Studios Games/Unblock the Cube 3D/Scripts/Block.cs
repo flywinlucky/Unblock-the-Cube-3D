@@ -1,10 +1,15 @@
-﻿using UnityEngine;
+﻿// Block.cs
+using UnityEngine;
 using System.Collections;
 
 public class Block : MonoBehaviour
 {
     [Tooltip("Trage aici obiectul copil 'ArrowShell' din Prefab.")]
     public Renderer arrowShellRenderer;
+
+    [Header("Animation Settings")]
+    [Tooltip("Durata animației de dispariție (scale out) în secunde.")]
+    public float dissolveDuration = 0.2f;
 
     private MoveDirection _moveDirection;
     private LevelManager _levelManager;
@@ -18,7 +23,6 @@ public class Block : MonoBehaviour
     private void Awake()
     {
         _collider = GetComponent<BoxCollider>();
-
         if (arrowShellRenderer == null)
             Debug.LogError("ArrowShell Renderer nu este asignat în Inspector!", this);
     }
@@ -38,7 +42,7 @@ public class Block : MonoBehaviour
         }
     }
 
-    private void OnMouseUp()
+    private void OnMouseUpAsButton()
     {
         if (_isMoving) return;
 
@@ -50,8 +54,6 @@ public class Block : MonoBehaviour
         if (Physics.Raycast(transform.position, direction, out hit, 100f))
         {
             targetPosition = hit.transform.position - direction * _gridUnitSize;
-
-            // Dacă nu există spațiu pentru mișcare — doar efect de shake
             if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
             {
                 StartCoroutine(ShakeScale());
@@ -67,13 +69,11 @@ public class Block : MonoBehaviour
         if (Vector3.Distance(transform.position, targetPosition) > 0.1f)
         {
             _isMoving = true;
-
             if (shouldBeDestroyed)
             {
                 _collider.enabled = false;
                 _levelManager.OnBlockRemoved(this);
             }
-
             StartCoroutine(MoveWithDamping(targetPosition, shouldBeDestroyed));
         }
         else
@@ -82,7 +82,7 @@ public class Block : MonoBehaviour
         }
     }
 
-    // 🔵 Mișcare cu efect de amortizare (smooth damping bounce)
+    // ▼▼▼ MODIFICARE CHEIE AICI ▼▼▼
     private IEnumerator MoveWithDamping(Vector3 targetPosition, bool shouldBeDestroyed)
     {
         Vector3 startPosition = transform.position;
@@ -98,33 +98,58 @@ public class Block : MonoBehaviour
 
         transform.position = targetPosition;
 
-        // 🔹 Când se oprește – mic efect vizual de "impact bounce"
-        yield return StartCoroutine(ImpactBounce());
-
+        // Dacă blocul trebuie distrus, pornim animația de dizolvare.
         if (shouldBeDestroyed)
-            Destroy(gameObject);
+        {
+            // Așteptăm finalizarea noii animații, care se va ocupa și de distrugerea obiectului.
+            yield return StartCoroutine(ScaleOutAndDestroy());
+        }
+        // Altfel, dacă doar lovește un alt bloc, facem animația de impact.
         else
+        {
+            yield return StartCoroutine(ImpactBounce());
             _isMoving = false;
+        }
     }
 
-    // 🔹 Efect de "shake scale" (când nu se poate mișca)
+    // ▼▼▼ FUNCȚIE NOUĂ ▼▼▼
+    /// <summary>
+    /// Animație lină de micșorare a scării până la zero, urmată de distrugerea obiectului.
+    /// </summary>
+    private IEnumerator ScaleOutAndDestroy()
+    {
+        Vector3 originalScale = transform.localScale;
+        Vector3 targetScale = Vector3.zero;
+        float elapsed = 0f;
+
+        while (elapsed < dissolveDuration)
+        {
+            // Interpolăm scara de la cea originală la zero
+            transform.localScale = Vector3.Lerp(originalScale, targetScale, elapsed / dissolveDuration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        // La final, distrugem obiectul
+        Destroy(gameObject);
+    }
+
+    // --- Restul scriptului rămâne neschimbat ---
+
     private IEnumerator ShakeScale()
     {
         if (_isShaking) yield break;
         _isShaking = true;
-
         Vector3 originalScale = transform.localScale;
         Vector3 targetScale = originalScale * 1.15f;
         float duration = 0.1f;
         float elapsed = 0f;
-
         while (elapsed < duration)
         {
             transform.localScale = Vector3.Lerp(originalScale, targetScale, elapsed / duration);
             elapsed += Time.deltaTime;
             yield return null;
         }
-
         elapsed = 0f;
         while (elapsed < duration)
         {
@@ -132,39 +157,31 @@ public class Block : MonoBehaviour
             elapsed += Time.deltaTime;
             yield return null;
         }
-
         transform.localScale = originalScale;
         _isShaking = false;
     }
 
-    // 🔵 Efect de "impact bounce" la finalul mișcării (amortizare)
     private IEnumerator ImpactBounce()
     {
-        if (_isShaking) yield break; // să nu se suprapună cu alt efect
+        if (_isShaking) yield break;
         _isShaking = true;
-
         Vector3 originalPos = transform.position;
-        Vector3 bouncePos = originalPos - transform.forward * 0.05f; // mic recul vizual
+        Vector3 bouncePos = originalPos - transform.forward * 0.05f;
         float duration = 0.08f;
         float elapsed = 0f;
-
-        // Mică retragere
         while (elapsed < duration)
         {
             transform.position = Vector3.Lerp(originalPos, bouncePos, Mathf.SmoothStep(0, 1, elapsed / duration));
             elapsed += Time.deltaTime;
             yield return null;
         }
-
         elapsed = 0f;
-        // Revenire la poziția originală
         while (elapsed < duration)
         {
             transform.position = Vector3.Lerp(bouncePos, originalPos, Mathf.SmoothStep(0, 1, elapsed / duration));
             elapsed += Time.deltaTime;
             yield return null;
         }
-
         transform.position = originalPos;
         _isShaking = false;
     }
@@ -186,10 +203,8 @@ public class Block : MonoBehaviour
     private void OnDrawGizmos()
     {
         if (!Application.isPlaying) return;
-
         Vector3 direction = transform.forward;
         RaycastHit hit;
-
         if (Physics.Raycast(transform.position, direction, out hit, 100f))
         {
             Gizmos.color = Color.red;

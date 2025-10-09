@@ -1,21 +1,33 @@
-﻿using UnityEngine;
+﻿// LevelManager.cs
+using UnityEngine;
 using System.Collections.Generic;
 
 public class LevelManager : MonoBehaviour
 {
+    [Header("Level Configuration")]
     public LevelData currentLevelData;
+    private int _currentLevelNumber = 1; // Începem cu nivelul 1
 
-    [Header("Prefabs")]
+    [Header("Object References")]
     public GameObject singleBlockPrefab;
+    public Transform levelContainer;
+    public UIManager uiManager; // Referință către UIManager
 
     [Header("Grid Settings")]
     public float gridUnitSize = 0.5f;
 
-    public Transform levelContainer;
-
     private List<Block> _activeBlocks = new List<Block>();
+    private int _totalBlocksInLevel; // NOU: Stocăm numărul total de blocuri
 
-    void Start() { GenerateLevel(); }
+    void Start()
+    {
+        if (uiManager == null)
+        {
+            Debug.LogError("UIManager nu este asignat în LevelManager!");
+            return;
+        }
+        GenerateLevel();
+    }
 
     public void GenerateLevel()
     {
@@ -25,24 +37,58 @@ public class LevelManager : MonoBehaviour
             return;
         }
 
+        // Curățăm nivelul anterior
         foreach (Transform child in levelContainer) { Destroy(child.gameObject); }
         _activeBlocks.Clear();
 
-        // Bucla de generare este acum mult mai simplă
-        foreach (BlockData data in currentLevelData.GetBlocks())
+        // Obținem lista de blocuri și stocăm numărul total
+        List<BlockData> blocksToGenerate = currentLevelData.GetBlocks();
+        _totalBlocksInLevel = blocksToGenerate.Count;
+
+        // --- Integrare UI ---
+        // Actualizăm afișajul nivelului și resetăm bara de progres
+        uiManager.UpdateLevelDisplay(_currentLevelNumber);
+        uiManager.UpdateProgressBar(_totalBlocksInLevel, _totalBlocksInLevel);
+        // --------------------
+
+        foreach (BlockData data in blocksToGenerate)
         {
             Vector3 worldPosition = (Vector3)data.position * gridUnitSize;
             Quaternion finalRotation = GetStableLookRotation(data.direction);
 
-            // Instantiem direct prefab-ul singular
             GameObject newBlockObj = Instantiate(singleBlockPrefab, worldPosition, finalRotation, levelContainer);
-
             Block blockScript = newBlockObj.GetComponent<Block>();
-            // CORECTAT: Am adăugat parametrul 'gridUnitSize' care lipsea
             blockScript.Initialize(data.direction, this, gridUnitSize);
             _activeBlocks.Add(blockScript);
         }
     }
+
+    public void OnBlockRemoved(Block block)
+    {
+        if (_activeBlocks.Remove(block))
+        {
+            // --- Integrare UI ---
+            // Actualizăm bara de progres de fiecare dată când un bloc este eliminat
+            uiManager.UpdateProgressBar(_activeBlocks.Count, _totalBlocksInLevel);
+            // --------------------
+            CheckWinCondition();
+        }
+    }
+
+    private void CheckWinCondition()
+    {
+        if (_activeBlocks.Count == 0)
+        {
+            Debug.Log($"Felicitări! Ai câștigat nivelul {_currentLevelNumber}!");
+            // Aici poți adăuga logica pentru a trece la nivelul următor
+            // De exemplu:
+            // _currentLevelNumber++;
+            // currentLevelData = LoadNextLevelData(); // O funcție ipotetică
+            // GenerateLevel();
+        }
+    }
+
+    // --- Funcțiile ajutătoare rămân neschimbate ---
 
     private Quaternion GetStableLookRotation(MoveDirection dir)
     {
@@ -65,8 +111,4 @@ public class LevelManager : MonoBehaviour
         }
         return Vector3.forward;
     }
-
-    public void OnBlockRemoved(Block block) { _activeBlocks.Remove(block); CheckWinCondition(); }
-    private void CheckWinCondition() { if (_activeBlocks.Count == 0) { Debug.Log("Felicitări! Ai câștigat nivelul!"); } }
 }
-
