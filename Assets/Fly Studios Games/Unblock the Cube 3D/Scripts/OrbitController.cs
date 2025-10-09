@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 
-// Am redenumit clasa pentru a reflecta noua funcționalitate.
 public class OrbitController : MonoBehaviour
 {
     // --- Variabile Principale ---
-    [Tooltip("Obiectul care va fi rotit.")]
+    [Tooltip("Obiectul părinte care conține toate blocurile.")]
     public Transform target;
 
     // --- Setări de Rotație ---
@@ -19,16 +18,42 @@ public class OrbitController : MonoBehaviour
     [Tooltip("Distanța maximă la care se poate depărta camera.")]
     public float maxDistance = 15f;
 
-    // Variabilă privată pentru a stoca distanța curentă
+    // --- Variabile Private ---
     private float _distance;
+    private Vector3 _centerPoint; // NOU: Punctul central în jurul căruia vom roti
 
     void Start()
     {
-        // La început, calculăm și stocăm distanța inițială dintre cameră și țintă.
         if (target != null)
         {
+            // La început, calculăm distanța inițială.
             _distance = Vector3.Distance(transform.position, target.position);
+
+            // NOU: Calculăm centrul geometric al tuturor copiilor.
+            CalculateCenterPoint();
         }
+    }
+
+    /// <summary>
+    /// Calculează punctul central pe baza poziției medii a tuturor copiilor obiectului target.
+    /// </summary>
+    public void CalculateCenterPoint()
+    {
+        if (target == null || target.childCount == 0)
+        {
+            // Dacă nu avem un target sau nu are copii, folosim poziția lui ca fallback.
+            _centerPoint = target != null ? target.position : Vector3.zero;
+            return;
+        }
+
+        Vector3 totalPosition = Vector3.zero;
+        foreach (Transform child in target)
+        {
+            totalPosition += child.position;
+        }
+
+        // Centrul este media tuturor pozițiilor
+        _centerPoint = totalPosition / target.childCount;
     }
 
     void LateUpdate()
@@ -53,26 +78,23 @@ public class OrbitController : MonoBehaviour
                     inputY = touch.deltaPosition.y * 0.1f;
                 }
 
-                // Aplicăm rotația direct pe OBIECT (target), nu pe cameră.
-                // Rotația pe orizontală se face în jurul axei Y a lumii (sus/jos).
-                target.Rotate(Vector3.up, -inputX * rotationSpeed, Space.World);
-                // Rotația pe verticală se face în jurul axei X a CAMEREI (dreapta/stânga ei).
-                target.Rotate(transform.right, inputY * rotationSpeed, Space.World);
+                // ▼▼▼ MODIFICARE CHEIE AICI ▼▼▼
+                // Folosim RotateAround pentru a roti în jurul centrului calculat.
+                target.RotateAround(_centerPoint, Vector3.up, -inputX * rotationSpeed);
+                target.RotateAround(_centerPoint, transform.right, inputY * rotationSpeed);
             }
 
             // --- Preluarea Input-ului pentru Zoom-ul Camerei ---
             float scroll = Input.GetAxis("Mouse ScrollWheel");
             if (scroll != 0.0f)
             {
-                // Modificăm distanța stocată
                 _distance -= scroll * zoomSpeed;
-                // Limităm distanța între valorile minime și maxime
                 _distance = Mathf.Clamp(_distance, minDistance, maxDistance);
 
-                // Recalculăm poziția camerei pentru a reflecta noul zoom.
-                // Direcția este de la țintă spre cameră.
-                Vector3 direction = (transform.position - target.position).normalized;
-                transform.position = target.position + direction * _distance;
+                // ▼▼▼ MODIFICARE CHEIE AICI ▼▼▼
+                // Ne asigurăm că și zoom-ul funcționează corect față de noul centru.
+                Vector3 direction = (transform.position - _centerPoint).normalized;
+                transform.position = _centerPoint + direction * _distance;
             }
         }
     }

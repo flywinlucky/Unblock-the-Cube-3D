@@ -4,9 +4,6 @@ using System.Collections;
 
 public class Block : MonoBehaviour
 {
-    [Tooltip("Trage aici obiectul copil 'ArrowShell' din Prefab.")]
-    public Renderer arrowShellRenderer;
-
     [Header("Animation Settings")]
     [Tooltip("Durata animației de dispariție (scale out) în secunde.")]
     public float dissolveDuration = 0.2f;
@@ -17,14 +14,11 @@ public class Block : MonoBehaviour
     private BoxCollider _collider;
     private float _gridUnitSize;
 
-    private static readonly int MoveDirectionID = Shader.PropertyToID("_MoveDirection");
     private bool _isShaking = false;
 
     private void Awake()
     {
         _collider = GetComponent<BoxCollider>();
-        if (arrowShellRenderer == null)
-            Debug.LogError("ArrowShell Renderer nu este asignat în Inspector!", this);
     }
 
     public void Initialize(MoveDirection dir, LevelManager manager, float gridUnitSize)
@@ -32,14 +26,6 @@ public class Block : MonoBehaviour
         _moveDirection = dir;
         _levelManager = manager;
         _gridUnitSize = gridUnitSize;
-
-        if (arrowShellRenderer != null)
-        {
-            MaterialPropertyBlock propBlock = new MaterialPropertyBlock();
-            arrowShellRenderer.GetPropertyBlock(propBlock);
-            propBlock.SetVector(MoveDirectionID, (Vector4)GetWorldDirection());
-            arrowShellRenderer.SetPropertyBlock(propBlock);
-        }
     }
 
     private void OnMouseUpAsButton()

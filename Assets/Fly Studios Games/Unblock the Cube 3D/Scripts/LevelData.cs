@@ -26,8 +26,6 @@ public class LevelData : ScriptableObject
 
     public List<BlockData> GetBlocks() => blocks;
 
-    // --- NOU: Funcția care lipsea ---
-    // Această metodă returnează mărimea gridului pe baza dificultății selectate.
     public int GetGridSize()
     {
         switch (difficulty)
@@ -48,12 +46,20 @@ public class LevelData : ScriptableObject
         Random.InitState(seed);
         int gridSize = GetGridSize();
 
+        // ▼▼▼ MODIFICARE CHEIE AICI ▼▼▼
+        // Calculăm un offset pentru a centra cubul în jurul originii (0,0,0)
+        int offset = gridSize / 2;
+
         List<BlockData> generatedBlocks = new List<BlockData>();
-        for (int x = 0; x < gridSize; x++)
+
+        // Modificăm buclele pentru a genera coordonate negative și pozitive
+        // Exemplu pentru gridSize = 3, offset = 1. Coordonatele vor fi -1, 0, 1
+        // Exemplu pentru gridSize = 4, offset = 2. Coordonatele vor fi -2, -1, 0, 1
+        for (int x = -offset; x < gridSize - offset; x++)
         {
-            for (int y = 0; y < gridSize; y++)
+            for (int y = -offset; y < gridSize - offset; y++)
             {
-                for (int z = 0; z < gridSize; z++)
+                for (int z = -offset; z < gridSize - offset; z++)
                 {
                     generatedBlocks.Add(new BlockData { position = new Vector3Int(x, y, z) });
                 }
@@ -126,8 +132,19 @@ public class LevelData : ScriptableObject
         Vector3Int.down, Vector3Int.left, Vector3Int.right
     };
 
-    private bool IsInBounds(Vector3Int pos, int gridSize) =>
-        pos.x >= 0 && pos.x < gridSize && pos.y >= 0 && pos.y < gridSize && pos.z >= 0 && pos.z < gridSize;
+    // ▼▼▼ MODIFICARE CHEIE AICI ▼▼▼
+    private bool IsInBounds(Vector3Int pos, int gridSize)
+    {
+        // Recalculăm limitele pe baza aceluiași offset
+        int offset = gridSize / 2;
+        int min = -offset;
+        int max = gridSize - offset;
+
+        // Verificăm dacă poziția se află în noul cub centrat
+        return pos.x >= min && pos.x < max &&
+               pos.y >= min && pos.y < max &&
+               pos.z >= min && pos.z < max;
+    }
 
     private MoveDirection GetEnumFromVector(Vector3Int dir)
     {
@@ -139,4 +156,3 @@ public class LevelData : ScriptableObject
         return MoveDirection.Right;
     }
 }
-
