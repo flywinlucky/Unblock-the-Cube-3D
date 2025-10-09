@@ -36,7 +36,7 @@ MonoBehaviour:
     randomVisualRotation: {x: 0, y: 0.7071067, z: -0.7071067, w: 0}
   - position: {x: -1, y: 1, z: -1}
     direction: 2
-    randomVisualRotation: {x: 0.70710677, y: -0.70710677, z: -0.00000003090862, w: -0.00000003090862}
+    randomVisualRotation: {x: 0.7068241, y: -0.7068241, z: -0.019990394, w: 0.019990234}
   - position: {x: -1, y: 1, z: 0}
     direction: 4
     randomVisualRotation: {x: 0, y: 0, z: 1, w: -0.00000004371139}
