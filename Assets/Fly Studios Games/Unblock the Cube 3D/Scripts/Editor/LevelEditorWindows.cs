@@ -13,19 +13,18 @@ public class LevelEditorWindow : EditorWindow
     // --- Variabile pentru Editare ---
     private GameObject _selectedBlockInstance;
     private int _selectedBlockIndex = -1;
-    private Vector2 _hierarchyScrollPosition; // NOU: Poziția de scroll pentru ierarhie
 
     // --- Variabile pentru Preview 3D ---
     private PreviewRenderUtility _previewRenderUtility;
     private GameObject _previewRoot;
     private Vector2 _previewRotation = new Vector2(150, -30);
     private float _previewZoom = 10f;
-    private Vector3 _previewPanOffset = Vector3.zero;
+    private Vector3 _previewPanOffset = Vector3.zero; // NOU: Pentru deplasarea camerei (panning)
     private const float MIN_ZOOM = 2f;
     private const float MAX_ZOOM = 100f;
     private readonly List<Collider> _previewColliders = new List<Collider>();
     private Ray _debugRay;
-    private Vector2 _mousePosition;
+    private Vector2 _mousePosition; // NOU: Stocăm poziția mouse-ului pentru a o folosi în Repaint
 
 
     // --- Stocare persistentă ---
@@ -161,11 +160,6 @@ public class LevelEditorWindow : EditorWindow
             {
                 EditorGUILayout.HelpBox("Assign a Block Prefab to enable generation.", MessageType.Warning);
             }
-
-            // NOU: Am adăugat panoul de ierarhie
-            EditorGUILayout.Space(20);
-            EditorGUILayout.LabelField("Level Hierarchy", EditorStyles.boldLabel);
-            DrawHierarchyPanel();
         }
         else
         {
@@ -175,52 +169,16 @@ public class LevelEditorWindow : EditorWindow
         EditorGUILayout.EndVertical();
     }
 
-    // NOU: Panoul de ierarhie a blocurilor
-    private void DrawHierarchyPanel()
-    {
-        GUIStyle boxStyle = new GUIStyle("box");
-        EditorGUILayout.BeginVertical(boxStyle, GUILayout.MinHeight(150), GUILayout.ExpandHeight(true));
-
-        _hierarchyScrollPosition = EditorGUILayout.BeginScrollView(_hierarchyScrollPosition);
-
-        if (_currentLevel != null && _previewRoot != null)
-        {
-            for (int i = 0; i < _currentLevel.GetBlocks().Count; i++)
-            {
-                if (i < _previewRoot.transform.childCount)
-                {
-                    string blockName = $"Block {i}";
-                    bool isSelected = (i == _selectedBlockIndex);
-
-                    if (GUILayout.Toggle(isSelected, blockName, "Button", GUILayout.ExpandWidth(true)))
-                    {
-                        if (!isSelected)
-                        {
-                            SelectBlock(_previewRoot.transform.GetChild(i).gameObject);
-                            Repaint();
-                        }
-                    }
-                }
-            }
-        }
-
-        EditorGUILayout.EndScrollView();
-        EditorGUILayout.EndVertical();
-    }
-
     private void DrawPreviewPanel()
     {
         EditorGUILayout.BeginVertical(_previewBoxStyle);
         Rect previewRect = GUILayoutUtility.GetRect(200, 200, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
 
-        // MODIFICAT: Folosim zona interioară a ferestrei pentru a corecta imprecizia razei
-        Rect interactiveRect = _previewBoxStyle.padding.Remove(previewRect);
-
-        HandlePreviewInput(interactiveRect);
+        HandlePreviewInput(previewRect);
 
         if (Event.current.type == EventType.Repaint)
         {
-            _previewRenderUtility.BeginPreview(interactiveRect, GUIStyle.none);
+            _previewRenderUtility.BeginPreview(previewRect, GUIStyle.none);
 
             Quaternion rotation = Quaternion.Euler(_previewRotation.y, _previewRotation.x, 0);
             Bounds bounds = CalculateLevelBounds();
@@ -230,8 +188,9 @@ public class LevelEditorWindow : EditorWindow
             _previewRenderUtility.camera.transform.position = camPosition;
             _previewRenderUtility.camera.transform.rotation = rotation;
 
-            Vector2 localMousePos = _mousePosition - interactiveRect.position;
-            localMousePos.y = interactiveRect.height - localMousePos.y;
+            // MODIFICAT: Calculăm raza aici, după ce am actualizat camera, pentru precizie maximă
+            Vector2 localMousePos = _mousePosition - previewRect.position;
+            localMousePos.y = previewRect.height - localMousePos.y;
             _debugRay = _previewRenderUtility.camera.ScreenPointToRay(localMousePos);
 
             _previewRenderUtility.Render();
@@ -242,14 +201,11 @@ public class LevelEditorWindow : EditorWindow
             DrawSelectionOutline_3D();
 
             Texture result = _previewRenderUtility.EndPreview();
-            GUI.DrawTexture(interactiveRect, result, ScaleMode.StretchToFill, false);
+            GUI.DrawTexture(previewRect, result, ScaleMode.StretchToFill, false);
         }
 
-        // MODIFICAT: Am încadrat panoul de editare într-un 'Clip' pentru a asigura
-        // poziționarea corectă și funcționalitatea butoanelor, independent de
-        // poziția ferestrei de preview.
-        GUI.BeginClip(interactiveRect);
-        DrawEditingPanel_GUI(interactiveRect);
+        GUI.BeginClip(previewRect);
+        DrawEditingButtons_GUI(previewRect);
         GUI.EndClip();
 
         EditorGUILayout.EndVertical();
@@ -259,11 +215,11 @@ public class LevelEditorWindow : EditorWindow
 
     #region Logică Tool
 
-    private void HandlePreviewInput(Rect activeRect)
+    private void HandlePreviewInput(Rect previewRect)
     {
         Event e = Event.current;
 
-        if (activeRect.Contains(e.mousePosition))
+        if (previewRect.Contains(e.mousePosition))
         {
             _mousePosition = e.mousePosition;
             if (e.type == EventType.MouseMove || e.type == EventType.MouseDrag || e.type == EventType.ScrollWheel)
@@ -272,14 +228,16 @@ public class LevelEditorWindow : EditorWindow
             }
         }
 
-        if (!activeRect.Contains(e.mousePosition)) return;
+        if (!previewRect.Contains(e.mousePosition)) return;
 
+        // NOU: Funcția Focus pe tasta 'F'
         if (e.type == EventType.KeyDown && e.keyCode == KeyCode.F)
         {
             FocusCamera();
             e.Use();
         }
 
+        // NOU: Panning cu CLICK-MIJLOC
         if (e.type == EventType.MouseDrag && e.button == 2)
         {
             _previewPanOffset -= (_previewRenderUtility.camera.transform.right * e.delta.x - _previewRenderUtility.camera.transform.up * e.delta.y) * 0.05f * (_previewZoom / 10f);
@@ -308,26 +266,27 @@ public class LevelEditorWindow : EditorWindow
         }
     }
 
+    // NOU: Funcție pentru a desena un grilaj
     private void DrawGrid_3D(Vector3 center)
     {
-        float gridSize = 20f;
-        int lineCount = 40;
+        float gridSize = 10f;
+        int lineCount = 20;
         float spacing = gridSize / lineCount;
-        Bounds bounds = CalculateLevelBounds();
-        float yPos = bounds.min.y - 0.25f;
+        float yPos = Mathf.Floor(center.y) - 0.5f;
 
         Handles.color = new Color(1, 1, 1, 0.1f);
         for (int i = 0; i <= lineCount; i++)
         {
             float pos = -gridSize / 2f + i * spacing;
-            Handles.DrawLine(new Vector3(pos + center.x, yPos, -gridSize / 2f + center.z), new Vector3(pos + center.x, yPos, gridSize / 2f + center.z));
-            Handles.DrawLine(new Vector3(-gridSize / 2f + center.x, yPos, pos + center.z), new Vector3(gridSize / 2f + center.x, yPos, pos + center.z));
+            Handles.DrawLine(new Vector3(pos, yPos, -gridSize / 2f), new Vector3(pos, yPos, gridSize / 2f));
+            Handles.DrawLine(new Vector3(-gridSize / 2f, yPos, pos), new Vector3(gridSize / 2f, yPos, pos));
         }
 
+        // Desenăm axele principale
         Handles.color = new Color(1, 0, 0, 0.3f);
-        Handles.DrawLine(new Vector3(-gridSize / 2f + center.x, yPos, center.z), new Vector3(gridSize / 2f + center.x, yPos, center.z));
+        Handles.DrawLine(new Vector3(-gridSize / 2f, yPos, 0), new Vector3(gridSize / 2f, yPos, 0)); // Axa X (roșu)
         Handles.color = new Color(0, 0, 1, 0.3f);
-        Handles.DrawLine(new Vector3(center.x, yPos, -gridSize / 2f + center.z), new Vector3(center.x, yPos, gridSize / 2f + center.z));
+        Handles.DrawLine(new Vector3(0, yPos, -gridSize / 2f), new Vector3(0, yPos, gridSize / 2f)); // Axa Z (albastru)
     }
 
     private void DrawRaycastGizmo_3D()
@@ -350,37 +309,37 @@ public class LevelEditorWindow : EditorWindow
         }
     }
 
-    // NOU: Panou de editare fix
-    private void DrawEditingPanel_GUI(Rect previewRect)
+    private void DrawEditingButtons_GUI(Rect previewRect)
     {
-        if (_selectedBlockIndex == -1) return;
+        if (_selectedBlockInstance == null) return;
 
-        Rect panelRect = new Rect(previewRect.width - 130, 10, 120, 115);
-
-        GUI.Box(panelRect, "Edit Block", "window");
-
-        GUILayout.BeginArea(new Rect(panelRect.x + 5, panelRect.y + 20, panelRect.width - 10, panelRect.height - 25));
-
-        EditorGUILayout.LabelField($"Selected: Block {_selectedBlockIndex}");
-
-        if (GUILayout.Button("Rotate Up (Y+)"))
+        Renderer renderer = _selectedBlockInstance.GetComponentInChildren<Renderer>();
+        if (renderer != null)
         {
-            RotateSelectedBlock(Vector3.up);
-        }
+            Vector3 screenPos = _previewRenderUtility.camera.WorldToScreenPoint(renderer.bounds.center);
 
-        if (GUILayout.Button("Rotate Down (Y-)"))
-        {
-            RotateSelectedBlock(Vector3.down);
-        }
+            if (screenPos.z > 0)
+            {
+                screenPos.y = previewRect.height - screenPos.y;
 
-        GUI.backgroundColor = new Color(1, 0.6f, 0.6f);
-        if (GUILayout.Button("Delete Block"))
-        {
-            DeleteSelectedBlock();
-        }
-        GUI.backgroundColor = Color.white;
+                float buttonSize = 25;
+                float spacing = 5;
 
-        GUILayout.EndArea();
+                if (GUI.Button(new Rect(screenPos.x - buttonSize / 2, screenPos.y - 45, buttonSize, buttonSize), "X"))
+                {
+                    DeleteSelectedBlock();
+                }
+
+                if (GUI.Button(new Rect(screenPos.x + spacing, screenPos.y - buttonSize / 2, buttonSize, buttonSize), ">"))
+                {
+                    RotateSelectedBlock(Vector3.up);
+                }
+                if (GUI.Button(new Rect(screenPos.x - buttonSize - spacing, screenPos.y - buttonSize / 2, buttonSize, buttonSize), "<"))
+                {
+                    RotateSelectedBlock(Vector3.down);
+                }
+            }
+        }
     }
 
     private void HandleSelection()
@@ -424,7 +383,6 @@ public class LevelEditorWindow : EditorWindow
                 break;
             }
         }
-        Repaint(); // Asigurăm redesenarea pentru a actualiza ierarhia
     }
 
     private void DeselectBlock()
@@ -533,6 +491,7 @@ public class LevelEditorWindow : EditorWindow
 
     #region Funcții Ajutătoare (Helpers)
 
+    // NOU: Calculează limitele tuturor blocurilor pentru centrare și focalizare
     private Bounds CalculateLevelBounds()
     {
         if (_previewRoot == null || _previewRoot.transform.childCount == 0)
@@ -540,28 +499,29 @@ public class LevelEditorWindow : EditorWindow
             return new Bounds(Vector3.zero, Vector3.one * 5);
         }
 
+        var bounds = new Bounds();
         var renderers = _previewRoot.GetComponentsInChildren<Renderer>();
         if (renderers.Length > 0)
         {
-            var bounds = new Bounds(renderers[0].bounds.center, Vector3.zero);
+            bounds = new Bounds(renderers[0].bounds.center, Vector3.zero);
             foreach (var r in renderers)
             {
                 bounds.Encapsulate(r.bounds);
             }
-            return bounds;
         }
-        return new Bounds(Vector3.zero, Vector3.one * 5);
+        return bounds;
     }
 
+    // NOU: Funcție pentru a focaliza camera pe nivel
     private void FocusCamera()
     {
         Bounds bounds = CalculateLevelBounds();
         _previewPanOffset = Vector3.zero;
 
-        float objectSize = Mathf.Max(bounds.size.x, bounds.size.y, bounds.size.z);
+        float objectSize = bounds.size.magnitude;
         float cameraDistance = objectSize / (2.0f * Mathf.Tan(0.5f * _previewRenderUtility.camera.fieldOfView * Mathf.Deg2Rad));
 
-        _previewZoom = Mathf.Clamp(cameraDistance * 1.5f, MIN_ZOOM, MAX_ZOOM);
+        _previewZoom = Mathf.Clamp(cameraDistance, MIN_ZOOM, MAX_ZOOM);
         Repaint();
     }
 
