@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 23837d9990ab88543a65be48b167f91b, type: 3}
-  m_Name: level
+  m_Name: rgb
   m_EditorClassIdentifier: 
   difficulty: 3
   customGridSize: 4
