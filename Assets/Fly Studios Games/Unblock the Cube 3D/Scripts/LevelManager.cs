@@ -17,6 +17,7 @@ public class LevelManager : MonoBehaviour
     public GameObject singleBlockPrefab;
     public Transform levelContainer;
     public UIManager uiManager; // Referință către UIManager
+    public AudioManager audioManager; // NOU: referință la AudioManager (lege în inspector)
 
     [Header("Grid Settings")]
     public float gridUnitSize = 0.5f;

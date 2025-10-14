@@ -7,12 +7,8 @@ public class AudioManager : MonoBehaviour
 	[Header("Audio Sources")]
 	[Tooltip("Background music AudioSource (looping).")]
 	public AudioSource musicSource;
-	[Tooltip("SFX AudioSource for clicks / UI / blocks.")]
-	public AudioSource sfxSource;
-
-	[Header("Optional Clips")]
-	[Tooltip("Clip pentru sunet click bloc (folosit cu PlaySFX).")]
-	public AudioClip blockClickClip;
+	[Tooltip("AudioSource pentru sunetul de click al blocului (atașat direct cu clip).")]
+	public AudioSource blockClickSource; // redenumit din sfxSource
 
 	// Stări curente (cache)
 	private bool _musicEnabled = true;
@@ -52,13 +48,18 @@ public class AudioManager : MonoBehaviour
 		}
 	}
 
-	// Redă un SFX (ex: click de bloc). Dacă clip e null folosește implicita blockClickClip.
-	public void PlaySFX(AudioClip clip = null)
+	// Redă sunetul de block click folosind clip-ul atașat pe blockClickSource
+	public void PlayBlockClick()
 	{
-		if (sfxSource == null || !_soundEnabled) return;
-		AudioClip toPlay = clip != null ? clip : blockClickClip;
-		if (toPlay == null) return;
-		sfxSource.PlayOneShot(toPlay);
+		if (blockClickSource == null || !_soundEnabled) return;
+		AudioClip clip = blockClickSource.clip;
+		if (clip == null)
+		{
+			// fallback: încercăm Play() dacă nu este clip dar e configurat AudioSource
+			if (!blockClickSource.isPlaying) blockClickSource.Play();
+			return;
+		}
+		blockClickSource.PlayOneShot(clip);
 	}
 
 	// Setări enable/disable apelate din SettingsManager
@@ -88,7 +89,7 @@ public class AudioManager : MonoBehaviour
 
 	private void ApplySoundState()
 	{
-		if (sfxSource == null) return;
-		sfxSource.mute = !_soundEnabled;
+		if (blockClickSource == null) return;
+		blockClickSource.mute = !_soundEnabled;
 	}
 }

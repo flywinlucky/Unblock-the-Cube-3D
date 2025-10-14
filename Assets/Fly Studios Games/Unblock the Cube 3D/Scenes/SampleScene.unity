@@ -908,8 +908,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   musicSource: {fileID: 1907998747}
-  sfxSource: {fileID: 1887080840}
-  blockClickClip: {fileID: 8300000, guid: 9ec59b94202f8eb4c97dd7d52914d077, type: 3}
+  blockClickSource: {fileID: 1887080840}
 --- !u!1 &517673875
 GameObject:
   m_ObjectHideFlags: 0
@@ -2010,6 +2009,7 @@ MonoBehaviour:
   singleBlockPrefab: {fileID: 8118699957492744284, guid: 7e4aea03383933a4494280f2a26b9efa, type: 3}
   levelContainer: {fileID: 1540090167}
   uiManager: {fileID: 1208760977}
+  audioManager: {fileID: 514135127}
   gridUnitSize: 0.5
   coinsPerLevel: 5
 --- !u!4 &1208760976
@@ -3212,7 +3212,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: bcd9bad527215014ebfbf3cb99918d96, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.5
+  m_Volume: 0.1
   m_Pitch: 1
   Loop: 0
   Mute: 0

@@ -32,6 +32,12 @@ public class Block : MonoBehaviour
     {
         if (_isMoving) return;
 
+        // Redăm sunetul de block (dacă există AudioManager legat în LevelManager)
+        if (_levelManager != null && _levelManager.audioManager != null)
+        {
+            _levelManager.audioManager.PlayBlockClick();
+        }
+
         Vector3 direction = transform.forward;
         RaycastHit hit;
         Vector3 targetPosition;
