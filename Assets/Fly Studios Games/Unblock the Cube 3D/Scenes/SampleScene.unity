@@ -1461,7 +1461,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 1540090167}
   mouseRotationSpeed: 3
-  touchRotationSpeed: 0.2
+  touchRotationSpeed: 0.3
   rotationDamping: 0.1
   zoomSpeed: 3
   pinchZoomSpeed: 0.02
