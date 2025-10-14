@@ -26,6 +26,12 @@ public class LevelManager : MonoBehaviour
     // Flag pentru a evita multiple tranziții simultane
     private bool _isTransitioning = false;
 
+    [Header("Coins")]
+    [Tooltip("Câte coins se acordă la finalizarea unui nivel.")]
+    public int coinsPerLevel = 5; // poți schimba în inspector
+
+    private const string CoinsKey = "PlayerCoins";
+
     // Helper: returnează LevelData curent sau null
     private LevelData GetCurrentLevelData()
     {
@@ -44,6 +50,16 @@ public class LevelManager : MonoBehaviour
 
     void Start()
     {
+        // Initializăm UI-ul de coins și afișajul nivelului la start
+        if (uiManager != null)
+        {
+            uiManager.UpdateGlobalCoinsDisplay(GetCoins());
+            uiManager.UpdateWinCoinsDisplay(0); // resetează textul din panelul de win la start
+        }
+
+        // Actualizăm numărul curent de nivel (va apela și UpdateLevelDisplay)
+        UpdateCurrentLevelNumber();
+
         // Generăm nivelul curent (dacă există)
         GenerateLevel();
     }
@@ -97,15 +113,32 @@ public class LevelManager : MonoBehaviour
         if (_activeBlocks.Count == 0)
         {
             Debug.Log($"Felicitări! Ai câștigat nivelul {_currentLevelNumber}!");
+
+            // Acordăm coins o singură dată și apoi afișăm panelul de win
             if (!_isTransitioning)
             {
-                StartCoroutine(ProceedToNextLevelCoroutine());
+                // acordăm coins
+                AddCoins(coinsPerLevel);
+
+                // actualizăm textul din win panel (dacă există)
+                if (uiManager != null)
+                {
+                    uiManager.UpdateWinCoinsDisplay(coinsPerLevel);
+                    uiManager.UpdateGlobalCoinsDisplay(GetCoins());
+                }
+
+                // Activăm panelul de level win din UI (dacă e setat)
+                if (uiManager != null && uiManager.levelWin_panel != null)
+                {
+                    uiManager.levelWin_panel.SetActive(true);
+                    _isTransitioning = true; // blocăm alte acțiuni până la alegerea jucătorului
+                }
+                else
+                {
+                    // fallback: dacă nu avem UI, trecem imediat la nivelul următor
+                    StartCoroutine(ProceedToNextLevelCoroutine());
+                }
             }
-            // Aici poți adăuga logica pentru a trece la nivelul următor
-            // De exemplu:
-            // _currentLevelNumber++;
-            // currentLevelData = LoadNextLevelData(); // O funcție ipotetică
-            // GenerateLevel();
         }
     }
 
@@ -153,5 +186,90 @@ public class LevelManager : MonoBehaviour
             case MoveDirection.Right: return Vector3.right;
         }
         return Vector3.forward;
+    }
+
+    // Public API apelabil din UI (legate la butoanele din levelWin_panel)
+    public void NextLevel()
+    {
+        // Închidem panelul de win
+        if (uiManager != null && uiManager.levelWin_panel != null)
+            uiManager.levelWin_panel.SetActive(false);
+
+        _isTransitioning = true;
+
+        // Trecem la nivelul următor din listă imediat
+        if (levelList != null && currentLevelIndex + 1 < levelList.Count)
+        {
+            currentLevelIndex++;
+            UpdateCurrentLevelNumber();
+            GenerateLevel();
+        }
+        else
+        {
+            Debug.Log("Nu există nivel următor. Ai terminat toate nivelele din listă!");
+            // Poți deschide shop sau afișa ecran final aici
+        }
+
+        _isTransitioning = false;
+    }
+
+    // Public API pentru butonul "Open Shop" din panelul de win
+    public void OpenShop()
+    {
+        if (uiManager != null && uiManager.shop_panel != null)
+        {
+            uiManager.shop_panel.SetActive(true);
+        }
+    }
+
+    // Închide panelul de win (buton cancel/close)
+    public void CloseLevelWin()
+    {
+        if (uiManager != null && uiManager.levelWin_panel != null)
+        {
+            uiManager.levelWin_panel.SetActive(false);
+        }
+        _isTransitioning = false;
+    }
+
+    // Inchide shop panel
+    public void CloseShop()
+    {
+        if (uiManager != null && uiManager.shop_panel != null)
+        {
+            uiManager.shop_panel.SetActive(false);
+        }
+    }
+
+    // --- Funcții pentru coins (persistență simplă) ---
+    public int GetCoins()
+    {
+        return PlayerPrefs.GetInt(CoinsKey, 0);
+    }
+
+    private void SetCoins(int amount)
+    {
+        PlayerPrefs.SetInt(CoinsKey, amount);
+        PlayerPrefs.Save();
+        // actualizăm UI global imediat dacă există
+        if (uiManager != null) uiManager.UpdateGlobalCoinsDisplay(amount);
+    }
+
+    public void AddCoins(int amount)
+    {
+        int newAmount = GetCoins() + amount;
+        SetCoins(newAmount);
+    }
+
+    // Returnează true dacă tranzacția a avut succes (suficiente coins)
+    public bool SpendCoins(int amount)
+    {
+        int current = GetCoins();
+        if (current >= amount)
+        {
+            SetCoins(current - amount);
+            return true;
+        }
+        return false;
     }
 }
