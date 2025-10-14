@@ -11,15 +11,13 @@ public class SettingsManager : MonoBehaviour
 	[Tooltip("Butonul pentru music (poate fi Button sau doar Image).")]
 	public Button musicButton;
 
-	[Header("Sprites")]
+	[Header("Sound Sprites")]
 	public Sprite soundOnSprite;
-	public Sprite soundOffSprite;
+    public Sprite soundOffSprite;
+    
+	[Header("Music Sprites")]
 	public Sprite musicOnSprite;
 	public Sprite musicOffSprite;
-
-	[Header("PlayerPrefs Keys")]
-	public string soundKey = "SoundEnabled";
-	public string musicKey = "MusicEnabled";
 
 	[Header("Audio Integration")]
 	[Tooltip("Referință la AudioManager din scenă (opțional).")]
@@ -28,6 +26,8 @@ public class SettingsManager : MonoBehaviour
 	// stările curente
 	private bool _soundEnabled = true;
 	private bool _musicEnabled = true;
+	private string soundKey = "SoundEnabled";
+	private string musicKey = "MusicEnabled";
 
 	private void Start()
 	{

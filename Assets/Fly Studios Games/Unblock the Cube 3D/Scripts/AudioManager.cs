@@ -28,14 +28,22 @@ public class AudioManager : MonoBehaviour
 		ApplySoundState();
 	}
 
-	// Play / Stop pentru muzica de background
+	// Play / Stop pentru muzica de background (Play păstrează comportamentul de start)
 	public void PlayMusic()
 	{
 		if (musicSource == null) return;
 		if (!_musicEnabled) return;
 		if (!musicSource.isPlaying)
 		{
-			musicSource.Play();
+			// Dacă a fost pus pe pauză, UnPause; altfel Play
+			if (musicSource.time > 0f && musicSource.clip != null)
+			{
+				musicSource.UnPause();
+			}
+			else
+			{
+				musicSource.Play();
+			}
 		}
 	}
 
@@ -44,7 +52,7 @@ public class AudioManager : MonoBehaviour
 		if (musicSource == null) return;
 		if (musicSource.isPlaying)
 		{
-			musicSource.Stop();
+			musicSource.Stop(); // forțează oprirea și resetează poziția
 		}
 	}
 
@@ -79,12 +87,55 @@ public class AudioManager : MonoBehaviour
 		ApplySoundState();
 	}
 
+	// NOU: Expuse direct pentru control explicit (opțional)
+	public void PauseMusic()
+	{
+		if (musicSource == null) return;
+		if (musicSource.isPlaying)
+		{
+			musicSource.Pause();
+		}
+	}
+
+	public void ResumeMusic()
+	{
+		if (musicSource == null) return;
+		// Resume doar dacă există clip și a fost pus pe pauză anterior
+		if (!musicSource.isPlaying && musicSource.clip != null)
+		{
+			musicSource.UnPause();
+		}
+	}
+
 	private void ApplyMusicState()
 	{
 		if (musicSource == null) return;
-		musicSource.mute = !_musicEnabled;
-		if (_musicEnabled) PlayMusic();
-		else StopMusic();
+
+		// Dacă muzica este activată -> reluăm (UnPause) sau pornim dacă nu a fost pornită
+		if (_musicEnabled)
+		{
+			musicSource.mute = false;
+			// Dacă sursa are clip și este într-o poziție > 0, reluăm; altfel pornim normal
+			if (musicSource.clip != null && musicSource.time > 0f)
+			{
+				musicSource.UnPause();
+			}
+			else
+			{
+				// Play va porni de la început dacă nu a fost pornită anterior
+				if (!musicSource.isPlaying)
+					musicSource.Play();
+			}
+		}
+		// Dacă muzica este dezactivată -> punem pe pauză (nu oprim complet, astfel păstrăm progresul)
+		else
+		{
+			if (musicSource.isPlaying)
+			{
+				musicSource.Pause();
+			}
+			musicSource.mute = true;
+		}
 	}
 
 	private void ApplySoundState()
