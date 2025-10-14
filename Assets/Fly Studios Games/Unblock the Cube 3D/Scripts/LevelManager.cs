@@ -33,6 +33,20 @@ public class LevelManager : MonoBehaviour
 
     private const string CoinsKey = "PlayerCoins";
 
+    // NOU: Undo stack - păstrează ultimele mov-uri / distrugeri
+    private struct MoveRecord
+    {
+        public bool wasDestroyed;
+        public Vector3 startPos;
+        public Vector3 endPos;
+        public Vector3Int gridPos;
+        public MoveDirection direction;
+        public Quaternion rotation;
+        public Vector3 scale;
+    }
+    private Stack<MoveRecord> _undoStack = new Stack<MoveRecord>();
+    public int maxUndo = 20;
+
     // Helper: returnează LevelData curent sau null
     private LevelData GetCurrentLevelData()
     {
@@ -95,7 +109,9 @@ public class LevelManager : MonoBehaviour
 
             GameObject newBlockObj = Instantiate(singleBlockPrefab, worldPosition, finalRotation, levelContainer);
             Block blockScript = newBlockObj.GetComponent<Block>();
-            blockScript.Initialize(data.direction, this, gridUnitSize);
+            // calculăm poziția pe grid pe baza poziției world
+            Vector3Int gridPos = Vector3Int.RoundToInt(worldPosition / gridUnitSize);
+            blockScript.Initialize(data.direction, this, gridUnitSize, gridPos);
             _activeBlocks.Add(blockScript);
         }
     }
@@ -272,5 +288,112 @@ public class LevelManager : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    // NOU: Block-uri apelează asta înainte de a porni mutarea/distrugerea
+    public void RegisterMove(Block block, Vector3 startPos, Vector3 endPos, bool wasDestroyed, Vector3Int gridPos, MoveDirection dir, Quaternion rot, Vector3 scale)
+    {
+        MoveRecord rec = new MoveRecord
+        {
+            wasDestroyed = wasDestroyed,
+            startPos = startPos,
+            endPos = endPos,
+            gridPos = gridPos,
+            direction = dir,
+            rotation = rot,
+            scale = scale
+        };
+
+        _undoStack.Push(rec);
+        if (_undoStack.Count > maxUndo) // păstrăm doar ultimele N
+        {
+            // pierdem cel mai vechi (pop all to temp queue approach)
+            var arr = _undoStack.ToArray();
+            _undoStack.Clear();
+            for (int i = 0; i < Mathf.Min(arr.Length, maxUndo); i++) _undoStack.Push(arr[Mathf.Min(arr.Length - 1, i)]);
+        }
+    }
+
+    // NOU: Undo - inversează ultima acțiune (mișcare sau distrugere)
+    public void UseUndo()
+    {
+        if (_undoStack == null || _undoStack.Count == 0) return;
+        MoveRecord rec = _undoStack.Pop();
+
+        if (rec.wasDestroyed)
+        {
+            // recreăm block la poziția start
+            Vector3 worldPos = rec.startPos;
+            GameObject newBlockObj = Instantiate(singleBlockPrefab, worldPos, rec.rotation, levelContainer);
+            Block blockScript = newBlockObj.GetComponent<Block>();
+            blockScript.Initialize(rec.direction, this, gridUnitSize, rec.gridPos);
+            _activeBlocks.Add(blockScript);
+        }
+        else
+        {
+            // găsim block-ul care s-a mutat la endPos (cautăm cel mai apropiat)
+            Block closest = null;
+            float best = float.MaxValue;
+            foreach (var b in _activeBlocks)
+            {
+                if (b == null) continue;
+                float d = Vector3.Distance(b.transform.position, rec.endPos);
+                if (d < best)
+                {
+                    best = d;
+                    closest = b;
+                }
+            }
+            if (closest != null)
+            {
+                // mutăm instant blocul înapoi la start
+                closest.transform.position = rec.startPos;
+            }
+        }
+
+        // actualizăm UI coins etc. (dacă este cazul)
+        if (uiManager != null) uiManager.UpdateGlobalCoinsDisplay(GetCoins());
+    }
+
+    // NOU: Hint - evidențiază un block care poate fi mutat (primul găsit)
+    public void UseHint()
+    {
+        foreach (var b in _activeBlocks)
+        {
+            if (b == null) continue;
+            // verificăm dacă are spațiu liber imediat în față (nu e blocat)
+            RaycastHit hit;
+            if (!Physics.Raycast(b.transform.position, b.transform.forward, out hit, _GetGridDetectionDistance(b)))
+            {
+                // găsit candidate
+                b.FlashHint();
+                return;
+            }
+        }
+        // dacă nu găsim nimic, ai putea arăta un mesaj
+        Debug.Log("No hint available: no movable block detected.");
+    }
+
+    // NOU: găsește un block pentru smash (folosim aceeași logică ca la hint) și îl distrugem
+    public void UseSmashHint()
+    {
+        foreach (var b in new List<Block>(_activeBlocks))
+        {
+            if (b == null) continue;
+            RaycastHit hit;
+            if (!Physics.Raycast(b.transform.position, b.transform.forward, out hit, _GetGridDetectionDistance(b)))
+            {
+                // înregistrăm și distrugem (Block.Smash se ocupă de animație și notificare)
+                b.Smash();
+                return;
+            }
+        }
+        Debug.Log("No smash target found.");
+    }
+
+    // Helper mic: distanța pentru testul de blocaj (folosim gridUnitSize)
+    private float _GetGridDetectionDistance(Block b)
+    {
+        return gridUnitSize * 0.6f; // detectăm obstacol imediat din față
     }
 }

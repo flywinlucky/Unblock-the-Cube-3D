@@ -16,16 +16,20 @@ public class Block : MonoBehaviour
 
     private bool _isShaking = false;
 
+    // NOU: păstrează poziția pe grid pentru refacere la undo
+    private Vector3Int _gridPosition;
+
     private void Awake()
     {
         _collider = GetComponent<BoxCollider>();
     }
 
-    public void Initialize(MoveDirection dir, LevelManager manager, float gridUnitSize)
+    public void Initialize(MoveDirection dir, LevelManager manager, float gridUnitSize, Vector3Int gridPosition)
     {
         _moveDirection = dir;
         _levelManager = manager;
         _gridUnitSize = gridUnitSize;
+        _gridPosition = gridPosition;
     }
 
     private void OnMouseUpAsButton()
@@ -37,6 +41,9 @@ public class Block : MonoBehaviour
         {
             _levelManager.audioManager.PlayBlockClick();
         }
+
+        // Înregistrăm mișcarea (start) — vom actualiza/destina ulterior în RegisterMove
+        Vector3 startPos = transform.position;
 
         Vector3 direction = transform.forward;
         RaycastHit hit;
@@ -56,6 +63,12 @@ public class Block : MonoBehaviour
         {
             targetPosition = transform.position + direction * 10f;
             shouldBeDestroyed = true;
+        }
+
+        // Înregistrăm mișcarea completă (copiem datele) înainte de a porni animația
+        if (_levelManager != null)
+        {
+            _levelManager.RegisterMove(this, startPos, targetPosition, shouldBeDestroyed, _gridPosition, _moveDirection, transform.rotation, transform.localScale);
         }
 
         if (Vector3.Distance(transform.position, targetPosition) > 0.1f)
@@ -124,6 +137,48 @@ public class Block : MonoBehaviour
 
         // La final, distrugem obiectul
         Destroy(gameObject);
+    }
+
+    // NOU: folosit de LevelManager pentru Smash (shop / powerup)
+    public void Smash()
+    {
+        if (_isMoving) return;
+        _collider.enabled = false;
+        // Înregistrăm starea de distrugere pentru undo (dacă nu a fost deja înregistrată)
+        if (_levelManager != null)
+        {
+            _levelManager.RegisterMove(this, transform.position, transform.position, true, _gridPosition, _moveDirection, transform.rotation, transform.localScale);
+            _levelManager.OnBlockRemoved(this);
+        }
+        StartCoroutine(ScaleOutAndDestroy());
+    }
+
+    // NOU: evidențiază un block ca hint (apelabil din LevelManager)
+    public void FlashHint(float duration = 0.6f, float scaleFactor = 1.25f)
+    {
+        StartCoroutine(FlashHintCoroutine(duration, scaleFactor));
+    }
+
+    private IEnumerator FlashHintCoroutine(float duration, float scaleFactor)
+    {
+        Vector3 originalScale = transform.localScale;
+        Vector3 targetScale = originalScale * scaleFactor;
+        float half = duration * 0.5f;
+        float t = 0f;
+        while (t < half)
+        {
+            transform.localScale = Vector3.Lerp(originalScale, targetScale, t / half);
+            t += Time.deltaTime;
+            yield return null;
+        }
+        t = 0f;
+        while (t < half)
+        {
+            transform.localScale = Vector3.Lerp(targetScale, originalScale, t / half);
+            t += Time.deltaTime;
+            yield return null;
+        }
+        transform.localScale = originalScale;
     }
 
     // --- Restul scriptului rămâne neschimbat ---
