@@ -528,7 +528,7 @@ public class LevelManager : MonoBehaviour
             // de ex: uiManager.ShowPrompt("Select a block to remove");
         }
         // notificare importantă, mai lungă
-        if (notificationManager != null) notificationManager.ShowNotification("Select a block to remove", 5f);
+        if (notificationManager != null) notificationManager.ShowNotification("Select a block to remove", 2f);
     }
 
     public bool IsAwaitingRemove()
