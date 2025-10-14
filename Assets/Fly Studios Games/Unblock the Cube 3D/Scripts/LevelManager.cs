@@ -1,11 +1,16 @@
 ﻿// LevelManager.cs
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 public class LevelManager : MonoBehaviour
 {
     [Header("Level Configuration")]
-    public LevelData currentLevelData;
+    // Lista de nivele - adaugă în inspector nivelurile dorite
+    public List<LevelData> levelList = new List<LevelData>();
+    [Tooltip("Indexul nivelului curent în listă (0 = primul nivel)")]
+    public int currentLevelIndex = 0;
+
     private int _currentLevelNumber = 1; // Începem cu nivelul 1
 
     [Header("Object References")]
@@ -17,23 +22,41 @@ public class LevelManager : MonoBehaviour
     public float gridUnitSize = 0.5f;
 
     private List<Block> _activeBlocks = new List<Block>();
-    private int _totalBlocksInLevel; // NOU: Stocăm numărul total de blocuri
+
+    // Flag pentru a evita multiple tranziții simultane
+    private bool _isTransitioning = false;
+
+    // Helper: returnează LevelData curent sau null
+    private LevelData GetCurrentLevelData()
+    {
+        if (levelList == null || levelList.Count == 0) return null;
+        if (currentLevelIndex < 0) currentLevelIndex = 0;
+        if (currentLevelIndex >= levelList.Count) currentLevelIndex = levelList.Count - 1;
+        return levelList[currentLevelIndex];
+    }
+
+    // Actualizează numărul afișat pentru nivel (folosim index+1)
+    private void UpdateCurrentLevelNumber()
+    {
+        _currentLevelNumber = currentLevelIndex + 1;
+        if (uiManager != null) uiManager.UpdateLevelDisplay(_currentLevelNumber);
+    }
 
     void Start()
     {
-        if (uiManager == null)
-        {
-            Debug.LogError("UIManager nu este asignat în LevelManager!");
-            return;
-        }
+        // Generăm nivelul curent (dacă există)
         GenerateLevel();
     }
 
     public void GenerateLevel()
     {
+        LevelData currentLevelData = GetCurrentLevelData();
         if (currentLevelData == null || singleBlockPrefab == null)
         {
-            Debug.LogError("Level Data or Single Block Prefab is not set!");
+            if (levelList == null || levelList.Count == 0)
+                Debug.LogError("No levels in levelList or Single Block Prefab is not set!");
+            else
+                Debug.LogError("Single Block Prefab is not set!");
             return;
         }
 
@@ -41,14 +64,11 @@ public class LevelManager : MonoBehaviour
         foreach (Transform child in levelContainer) { Destroy(child.gameObject); }
         _activeBlocks.Clear();
 
-        // Obținem lista de blocuri și stocăm numărul total
+        // Obținem lista de blocuri
         List<BlockData> blocksToGenerate = currentLevelData.GetBlocks();
-        _totalBlocksInLevel = blocksToGenerate.Count;
 
-        // --- Integrare UI ---
-        // Actualizăm afișajul nivelului și resetăm bara de progres
-        uiManager.UpdateLevelDisplay(_currentLevelNumber);
-        uiManager.UpdateProgressBar(_totalBlocksInLevel, _totalBlocksInLevel);
+        // --- Integrare UI: afișăm doar nivelul curent dacă avem UI ---
+        UpdateCurrentLevelNumber();
         // --------------------
 
         foreach (BlockData data in blocksToGenerate)
@@ -67,10 +87,7 @@ public class LevelManager : MonoBehaviour
     {
         if (_activeBlocks.Remove(block))
         {
-            // --- Integrare UI ---
-            // Actualizăm bara de progres de fiecare dată când un bloc este eliminat
-            uiManager.UpdateProgressBar(_activeBlocks.Count, _totalBlocksInLevel);
-            // --------------------
+            // Am eliminat actualizările către progress bar (componentă ștearsă).
             CheckWinCondition();
         }
     }
@@ -80,12 +97,38 @@ public class LevelManager : MonoBehaviour
         if (_activeBlocks.Count == 0)
         {
             Debug.Log($"Felicitări! Ai câștigat nivelul {_currentLevelNumber}!");
+            if (!_isTransitioning)
+            {
+                StartCoroutine(ProceedToNextLevelCoroutine());
+            }
             // Aici poți adăuga logica pentru a trece la nivelul următor
             // De exemplu:
             // _currentLevelNumber++;
             // currentLevelData = LoadNextLevelData(); // O funcție ipotetică
             // GenerateLevel();
         }
+    }
+
+    private IEnumerator ProceedToNextLevelCoroutine()
+    {
+        _isTransitioning = true;
+        // așteptăm 1 secundă înainte de a trece nivelul
+        yield return new WaitForSeconds(1f);
+
+        // încercăm să trecem la nivelul următor din listă
+        if (levelList != null && currentLevelIndex + 1 < levelList.Count)
+        {
+            currentLevelIndex++;
+            UpdateCurrentLevelNumber();
+            GenerateLevel();
+        }
+        else
+        {
+            Debug.Log("Ai terminat toate nivelele din listă!");
+            // Poți adăuga aici logică pentru restart / meniuri etc.
+        }
+
+        _isTransitioning = false;
     }
 
     // --- Funcțiile ajutătoare rămân neschimbate ---
