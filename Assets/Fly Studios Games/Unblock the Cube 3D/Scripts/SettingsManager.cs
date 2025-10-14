@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class SettingsManager : MonoBehaviour
 {
@@ -10,13 +11,14 @@ public class SettingsManager : MonoBehaviour
 	public Button soundButton;
 	[Tooltip("Butonul pentru music (poate fi Button sau doar Image).")]
 	public Button musicButton;
+	public Button restartButton;
 	public Button openSoundPanelButton;
 	public GameObject settingsPanel;
 
 	[Header("Sound Sprites")]
 	public Sprite soundOnSprite;
-    public Sprite soundOffSprite;
-    
+	public Sprite soundOffSprite;
+
 	[Header("Music Sprites")]
 	public Sprite musicOnSprite;
 	public Sprite musicOffSprite;
@@ -84,6 +86,12 @@ public class SettingsManager : MonoBehaviour
 		{
 			openSoundPanelButton.onClick.RemoveListener(ToggleSettingsPanel);
 			openSoundPanelButton.onClick.AddListener(ToggleSettingsPanel);
+		}
+
+		if(restartButton)
+		{
+			restartButton.onClick.RemoveListener(RestartCurrentScene);
+			restartButton.onClick.AddListener(RestartCurrentScene);
 		}
 
 		// NOU: setăm iconița inițială a butonului (settings) folosind Image copil prioritar
@@ -247,5 +255,11 @@ public class SettingsManager : MonoBehaviour
 				if (settingsIconSprite != null) imgToUse.sprite = settingsIconSprite;
 			}
 		}
+	}
+
+	public void RestartCurrentScene()
+	{
+		Scene currentScene = SceneManager.GetActiveScene();
+		SceneManager.LoadScene(currentScene.name);
 	}
 }
