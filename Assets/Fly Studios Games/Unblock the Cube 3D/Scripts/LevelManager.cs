@@ -47,6 +47,26 @@ public class LevelManager : MonoBehaviour
     private Stack<MoveRecord> _undoStack = new Stack<MoveRecord>();
     public int maxUndo = 20;
 
+    // NOU: Power-up inventory & costs
+    [Header("PowerUps")]
+    [Tooltip("Numărul curent de Undo disponibile.")]
+    public int undoCount = 0;
+    [Tooltip("Numărul curent de Hint disponibile.")]
+    public int hintCount = 0;
+    [Tooltip("Numărul curent de Smash disponibile.")]
+    public int smashCount = 0;
+
+    [Tooltip("Cost coins pentru a cumpăra un Undo.")]
+    public int undoCost = 5;
+    [Tooltip("Cost coins pentru a cumpăra un Hint.")]
+    public int hintCost = 5;
+    [Tooltip("Cost coins pentru a cumpăra un Smash.")]
+    public int smashCost = 10;
+
+    private const string UndoKey = "PlayerUndo";
+    private const string HintKey = "PlayerHint";
+    private const string SmashKey = "PlayerSmash";
+
     // Helper: returnează LevelData curent sau null
     private LevelData GetCurrentLevelData()
     {
@@ -75,8 +95,59 @@ public class LevelManager : MonoBehaviour
         // Actualizăm numărul curent de nivel (va apela și UpdateLevelDisplay)
         UpdateCurrentLevelNumber();
 
+        // NOU: încărcăm powerup-urile persistente la start și actualizăm UI
+        undoCount = PlayerPrefs.GetInt(UndoKey, undoCount);
+        hintCount = PlayerPrefs.GetInt(HintKey, hintCount);
+        smashCount = PlayerPrefs.GetInt(SmashKey, smashCount);
+        if (uiManager != null) uiManager.UpdatePowerUpCounts(undoCount, hintCount, smashCount);
+
         // Generăm nivelul curent (dacă există)
         GenerateLevel();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            AddCoins(100);
+        }
+    }
+
+    // NOU: cumpărare power-ups din shop
+    public bool BuyUndo()
+    {
+        if (SpendCoins(undoCost))
+        {
+            undoCount++;
+            PlayerPrefs.SetInt(UndoKey, undoCount);
+            if (uiManager != null) uiManager.UpdatePowerUpCounts(undoCount, hintCount, smashCount);
+            return true;
+        }
+        return false;
+    }
+
+    public bool BuyHint()
+    {
+        if (SpendCoins(hintCost))
+        {
+            hintCount++;
+            PlayerPrefs.SetInt(HintKey, hintCount);
+            if (uiManager != null) uiManager.UpdatePowerUpCounts(undoCount, hintCount, smashCount);
+            return true;
+        }
+        return false;
+    }
+
+    public bool BuySmash()
+    {
+        if (SpendCoins(smashCost))
+        {
+            smashCount++;
+            PlayerPrefs.SetInt(SmashKey, smashCount);
+            if (uiManager != null) uiManager.UpdatePowerUpCounts(undoCount, hintCount, smashCount);
+            return true;
+        }
+        return false;
     }
 
     public void GenerateLevel()
@@ -317,6 +388,15 @@ public class LevelManager : MonoBehaviour
     // NOU: Undo - inversează ultima acțiune (mișcare sau distrugere)
     public void UseUndo()
     {
+        if (undoCount <= 0)
+        {
+            Debug.Log("No Undos available.");
+            return;
+        }
+        undoCount--;
+        PlayerPrefs.SetInt(UndoKey, undoCount);
+        if (uiManager != null) uiManager.UpdatePowerUpCounts(undoCount, hintCount, smashCount);
+
         if (_undoStack == null || _undoStack.Count == 0) return;
         MoveRecord rec = _undoStack.Pop();
 
@@ -358,6 +438,15 @@ public class LevelManager : MonoBehaviour
     // NOU: Hint - evidențiază un block care poate fi mutat (primul găsit)
     public void UseHint()
     {
+        if (hintCount <= 0)
+        {
+            Debug.Log("No Hints available.");
+            return;
+        }
+        hintCount--;
+        PlayerPrefs.SetInt(HintKey, hintCount);
+        if (uiManager != null) uiManager.UpdatePowerUpCounts(undoCount, hintCount, smashCount);
+
         foreach (var b in _activeBlocks)
         {
             if (b == null) continue;
@@ -377,6 +466,15 @@ public class LevelManager : MonoBehaviour
     // NOU: găsește un block pentru smash (folosim aceeași logică ca la hint) și îl distrugem
     public void UseSmashHint()
     {
+        if (smashCount <= 0)
+        {
+            Debug.Log("No Smash available.");
+            return;
+        }
+        smashCount--;
+        PlayerPrefs.SetInt(SmashKey, smashCount);
+        if (uiManager != null) uiManager.UpdatePowerUpCounts(undoCount, hintCount, smashCount);
+
         foreach (var b in new List<Block>(_activeBlocks))
         {
             if (b == null) continue;
@@ -389,6 +487,57 @@ public class LevelManager : MonoBehaviour
             }
         }
         Debug.Log("No smash target found.");
+    }
+
+    // NOU: când true așteptăm ca jucătorul să dea click pe un bloc pentru a-l distruge manual
+    private bool _awaitingRemoveSelection = false;
+
+    // NOU: pornește modul în care următorul click pe un block îl va distruge (consumă un Smash la confirmare)
+    public void StartRemoveMode()
+    {
+        if (smashCount <= 0)
+        {
+            Debug.Log("No Smash items available.");
+            // poți afișa un mesaj în UI aici
+            return;
+        }
+
+        _awaitingRemoveSelection = true;
+
+        // Poți notifica UIManager pentru a afișa un prompt (opțional)
+        if (uiManager != null)
+        {
+            // de ex: uiManager.ShowPrompt("Select a block to remove");
+        }
+    }
+
+    public bool IsAwaitingRemove()
+    {
+        return _awaitingRemoveSelection;
+    }
+
+    // NOU: apelată când jucătorul a dat click pe un Block în modul Remove
+    public void ConfirmRemoveAtBlock(Block block)
+    {
+        if (!_awaitingRemoveSelection || block == null) return;
+
+        if (smashCount <= 0)
+        {
+            Debug.Log("No Smash items available.");
+            _awaitingRemoveSelection = false;
+            return;
+        }
+
+        // consumăm un Smash
+        smashCount--;
+        PlayerPrefs.SetInt(SmashKey, smashCount);
+        if (uiManager != null) uiManager.UpdatePowerUpCounts(undoCount, hintCount, smashCount);
+
+        // înregistrare pentru undo (opțional) și distrugere
+        // Block.Smash se ocupă de animatie și notificare OnBlockRemoved
+        block.Smash();
+
+        _awaitingRemoveSelection = false;
     }
 
     // Helper mic: distanța pentru testul de blocaj (folosim gridUnitSize)

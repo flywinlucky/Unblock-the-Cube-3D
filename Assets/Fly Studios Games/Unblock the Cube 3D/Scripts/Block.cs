@@ -36,6 +36,13 @@ public class Block : MonoBehaviour
     {
         if (_isMoving) return;
 
+        // DACA suntem in Remove-mode, confirmam remove pentru acest block si iesim
+        if (_levelManager != null && _levelManager.IsAwaitingRemove())
+        {
+            _levelManager.ConfirmRemoveAtBlock(this);
+            return;
+        }
+
         // Redăm sunetul de block (dacă există AudioManager legat în LevelManager)
         if (_levelManager != null && _levelManager.audioManager != null)
         {
