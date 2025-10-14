@@ -7,54 +7,51 @@ public class OrbitController : MonoBehaviour
     public Transform target;
 
     // --- Setări de Rotație ---
-    [Tooltip("Viteza cu care se rotește obiectul.")]
-    public float rotationSpeed = 5.0f;
+    [Header("Rotation Settings")]
+    [Tooltip("Viteza de rotație pentru mouse.")]
+    public float mouseRotationSpeed = 5.0f;
+    [Tooltip("Viteza de rotație pentru touch (ajusteaz-o independent pentru mobil).")]
+    public float touchRotationSpeed = 0.5f; // NOU: Sensibilitate separată pentru touch
+    [Tooltip("Cât de lină să fie rotația (0 = instant, 1 = nu se mișcă).")]
+    [Range(0.01f, 0.5f)]
+    public float rotationDamping = 0.1f;
 
     // --- Setări de Zoom (Scroll) ---
-    [Tooltip("Viteza cu care funcționează zoom-ul camerei.")]
+    [Header("Zoom Settings")]
+    [Tooltip("Viteza zoom-ului cu scroll-ul mouse-ului.")]
     public float zoomSpeed = 5.0f;
     [Tooltip("Viteza pinch-zoom pentru gesturi cu două degete (mobil).")]
-    public float pinchZoomSpeed = 0.02f; // NOU
+    public float pinchZoomSpeed = 0.02f;
+    [Tooltip("Cât de lin să fie zoom-ul (0 = instant, 1 = nu se mișcă).")]
+    [Range(0.01f, 0.5f)]
+    public float zoomDamping = 0.15f;
     [Tooltip("Distanța minimă la care se poate apropia camera.")]
     public float minDistance = 2f;
     [Tooltip("Distanța maximă la care se poate depărta camera.")]
     public float maxDistance = 15f;
 
-    // --- Variabile Private ---
-    private float _distance;
-    private Vector3 _centerPoint; // NOU: Punctul central în jurul căruia vom roti
-
-    // NOU: smoothing și gestionare touch
-    [Header("Touch Settings")]
-    [Tooltip("Sensibilitate pentru rotație pe touch.")]
-    public float touchRotationSensitivity = 0.2f;
-    [Tooltip("Factor de netezire pentru rotație touch (0..1). Valori mici -> mai neted).")]
-    [Range(0.01f, 1f)]
-    public float touchRotationSmooth = 0.15f;
-    [Tooltip("Factor de netezire pentru pinch zoom.")]
-    [Range(0.01f, 1f)]
-    public float touchZoomSmooth = 0.12f;
-
-    private bool _isTouchRotating = false;
-    private bool _isTouchPinching = false;
-    private Vector2 _smoothedRotationDelta = Vector2.zero;
-    private float _smoothedZoomDelta = 0f;
-    private float _lastPinchDistance = 0f;
-    private int _activeTouchId = -1; // pentru rotation single touch
-
-    // NOU: atunci când trecem din pinch la single-touch sărim primul update pentru a evita salturile
-    private bool _skipNextTouchRotation = false;
+    // --- Variabile Private pentru funcționare ---
+    private Vector3 _centerPoint;
+    private float _desiredDistance;
+    private float _currentDistance;
+    private Quaternion _desiredRotation;
+    private Vector3 _lastMousePosition; // NOU: Pentru a preveni salturi la primul click
 
     void Start()
     {
-        if (target != null)
+        if (target == null)
         {
-            // La început, calculăm distanța inițială.
-            _distance = Vector3.Distance(transform.position, target.position);
-
-            // NOU: Calculăm centrul geometric al tuturor copiilor.
-            CalculateCenterPoint();
+            Debug.LogError("Target object is not assigned in the OrbitController script.");
+            this.enabled = false;
+            return;
         }
+
+        CalculateCenterPoint();
+
+        // Inițializăm variabilele
+        _currentDistance = Vector3.Distance(transform.position, _centerPoint);
+        _desiredDistance = _currentDistance;
+        _desiredRotation = target.rotation;
     }
 
     /// <summary>
@@ -64,7 +61,6 @@ public class OrbitController : MonoBehaviour
     {
         if (target == null || target.childCount == 0)
         {
-            // Dacă nu avem un target sau nu are copii, folosim poziția lui ca fallback.
             _centerPoint = target != null ? target.position : Vector3.zero;
             return;
         }
@@ -74,8 +70,6 @@ public class OrbitController : MonoBehaviour
         {
             totalPosition += child.position;
         }
-
-        // Centrul este media tuturor pozițiilor
         _centerPoint = totalPosition / target.childCount;
     }
 
@@ -83,157 +77,99 @@ public class OrbitController : MonoBehaviour
     {
         if (target)
         {
-            // --- MOUSE ROTATION (desktop) ---
-            if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
+            HandleInput();
+            ApplyTransformations();
+        }
+    }
+
+    /// <summary>
+    /// Prelucrează input-urile de la utilizator (mouse și touch) pentru a determina rotația și zoom-ul dorite.
+    /// </summary>
+    private void HandleInput()
+    {
+        // --- GESTURI TOUCH (MOBIL) ---
+        if (Input.touchCount > 0)
+        {
+            // 1. Pinch-to-Zoom (două degete) - PRIORITAR
+            if (Input.touchCount == 2)
             {
-                float inputX = Input.GetAxis("Mouse X");
-                float inputY = Input.GetAxis("Mouse Y");
+                Touch t0 = Input.GetTouch(0);
+                Touch t1 = Input.GetTouch(1);
 
-                target.RotateAround(_centerPoint, Vector3.up, -inputX * rotationSpeed);
-                target.RotateAround(_centerPoint, transform.right, inputY * rotationSpeed);
+                Vector2 t0Prev = t0.position - t0.deltaPosition;
+                Vector2 t1Prev = t1.position - t1.deltaPosition;
 
-                // Reset touch accumulators când folosim mouse
-                _isTouchRotating = false;
-                _isTouchPinching = false;
-                _smoothedRotationDelta = Vector2.zero;
-                _smoothedZoomDelta = 0f;
-                _activeTouchId = -1;
-                _skipNextTouchRotation = false;
+                float prevMagnitude = (t0Prev - t1Prev).magnitude;
+                float currentMagnitude = (t0.position - t1.position).magnitude;
+                float deltaMagnitudeDiff = prevMagnitude - currentMagnitude;
+
+                _desiredDistance += deltaMagnitudeDiff * pinchZoomSpeed;
             }
-            // TOUCH handling (mobil)
-            else if (Input.touchCount > 0)
+            // 2. Rotație cu un singur deget
+            else if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Moved)
             {
-                // --- PINCH (două degete) ---
-                if (Input.touchCount == 2)
-                {
-                    Touch t0 = Input.GetTouch(0);
-                    Touch t1 = Input.GetTouch(1);
+                Touch touch = Input.GetTouch(0);
+                float inputX = touch.deltaPosition.x;
+                float inputY = touch.deltaPosition.y;
 
-                    float currentPinch = Vector2.Distance(t0.position, t1.position);
+                // Calculăm rotația dorită
+                Quaternion rotationX = Quaternion.AngleAxis(-inputX * touchRotationSpeed, Vector3.up);
+                Quaternion rotationY = Quaternion.AngleAxis(inputY * touchRotationSpeed, transform.right);
 
-                    // Începem pinch: inițializăm distanța pentru a evita saltul
-                    if (!_isTouchPinching)
-                    {
-                        _isTouchPinching = true;
-                        _isTouchRotating = false;
-                        _smoothedZoomDelta = 0f;
-                        _lastPinchDistance = currentPinch;
-                        _activeTouchId = -1;
-                        _skipNextTouchRotation = false;
-                    }
-                    else
-                    {
-                        float rawDelta = _lastPinchDistance - currentPinch;
-                        _lastPinchDistance = currentPinch;
-
-                        float dpiScale = (Screen.dpi > 0f) ? (160f / Screen.dpi) : 1f;
-                        _smoothedZoomDelta = Mathf.Lerp(_smoothedZoomDelta, rawDelta, 1f - Mathf.Exp(-touchZoomSmooth * 60f * Time.deltaTime));
-
-                        _distance += _smoothedZoomDelta * pinchZoomSpeed * dpiScale;
-                        _distance = Mathf.Clamp(_distance, minDistance, maxDistance);
-
-                        Vector3 dir = (transform.position - _centerPoint).normalized;
-                        transform.position = _centerPoint + dir * _distance;
-                    }
-                }
-                // --- SINGLE TOUCH (rotație) ---
-                else if (Input.touchCount == 1)
-                {
-                    Touch t = Input.GetTouch(0);
-
-                    // Dacă până acum eram în pinch și s-a eliberat un deget, pregătim skip ca să nu aplicăm rotație bruscă
-                    if (_isTouchPinching)
-                    {
-                        _isTouchPinching = false;
-                        _smoothedZoomDelta = 0f;
-                        _smoothedRotationDelta = Vector2.zero;
-                        _activeTouchId = -1;
-                        // următorul touch moved nu va aplica rotație (evităm salto)
-                        _skipNextTouchRotation = true;
-                    }
-
-                    // Dacă touch-ul tocmai a început, pornim rotația normal
-                    if (t.phase == TouchPhase.Began)
-                    {
-                        _isTouchRotating = true;
-                        _smoothedRotationDelta = Vector2.zero;
-                        _activeTouchId = t.fingerId;
-                        _skipNextTouchRotation = false;
-                    }
-                    else if (t.phase == TouchPhase.Moved)
-                    {
-                        // Dacă am intrat în single-touch din pinch, s-ar putea ca phase să fie Moved fără Began.
-                        // Dacă avem flag-ul de skip, consumăm primul delta fără a aplica rotația.
-                        if (!_isTouchRotating && _activeTouchId == -1)
-                        {
-                            // tratăm aceasta ca început
-                            _isTouchRotating = true;
-                            _activeTouchId = t.fingerId;
-                            _smoothedRotationDelta = Vector2.zero;
-                            // dacă skip e true, consumăm acest frame și nu aplicăm rotația
-                            if (_skipNextTouchRotation)
-                            {
-                                _skipNextTouchRotation = false;
-                                return;
-                            }
-                        }
-
-                        // Daca avem skip activ, consumăm primul moved și nu rotim
-                        if (_skipNextTouchRotation && t.fingerId == _activeTouchId)
-                        {
-                            _skipNextTouchRotation = false;
-                            _smoothedRotationDelta = Vector2.zero;
-                            return;
-                        }
-
-                        if (_isTouchRotating && t.fingerId == _activeTouchId)
-                        {
-                            float dpiScale = (Screen.dpi > 0f) ? (160f / Screen.dpi) : 1f;
-                            Vector2 rawDelta = t.deltaPosition * touchRotationSensitivity * dpiScale;
-
-                            float smoothFactor = 1f - Mathf.Exp(-touchRotationSmooth * 60f * Time.deltaTime);
-                            _smoothedRotationDelta = Vector2.Lerp(_smoothedRotationDelta, rawDelta, smoothFactor);
-
-                            float rotX = -_smoothedRotationDelta.x * rotationSpeed * Time.deltaTime;
-                            float rotY = _smoothedRotationDelta.y * rotationSpeed * Time.deltaTime;
-
-                            target.RotateAround(_centerPoint, Vector3.up, rotX);
-                            target.RotateAround(_centerPoint, transform.right, rotY);
-                        }
-                    }
-                    else if (t.phase == TouchPhase.Ended || t.phase == TouchPhase.Canceled)
-                    {
-                        _isTouchRotating = false;
-                        _activeTouchId = -1;
-                        _smoothedRotationDelta = Vector2.zero;
-                        _skipNextTouchRotation = false;
-                    }
-                }
-            }
-            else
-            {
-                // nici mouse nici touch -> resetăm stările touch
-                _isTouchRotating = false;
-                _isTouchPinching = false;
-                _activeTouchId = -1;
-                _smoothedRotationDelta = Vector2.zero;
-                _smoothedZoomDelta = 0f;
-                _skipNextTouchRotation = false;
+                _desiredRotation = rotationX * rotationY * _desiredRotation;
             }
         }
-
-        // Desktop scroll fallback (rămâne neschimbat)
-        if (Input.touchCount == 0)
+        // --- INPUT MOUSE (PC) ---
+        else
         {
+            // 1. Rotație cu mouse-ul
+            if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
+            {
+                 // Prevenim saltul la primul click
+                if(Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) {
+                    _lastMousePosition = Input.mousePosition;
+                }
+                
+                Vector3 delta = Input.mousePosition - _lastMousePosition;
+                float inputX = delta.x;
+                float inputY = delta.y;
+
+                // Calculăm rotația dorită
+                Quaternion rotationX = Quaternion.AngleAxis(-inputX * mouseRotationSpeed * Time.deltaTime, Vector3.up);
+                Quaternion rotationY = Quaternion.AngleAxis(inputY * mouseRotationSpeed * Time.deltaTime, transform.right);
+                
+                _desiredRotation = rotationX * rotationY * _desiredRotation;
+                _lastMousePosition = Input.mousePosition;
+            }
+
+            // 2. Zoom cu scroll
             float scroll = Input.GetAxis("Mouse ScrollWheel");
             if (scroll != 0.0f)
             {
-                _distance -= scroll * zoomSpeed;
-                _distance = Mathf.Clamp(_distance, minDistance, maxDistance);
-
-                Vector3 direction = (transform.position - _centerPoint).normalized;
-                transform.position = _centerPoint + direction * _distance;
+                _desiredDistance -= scroll * zoomSpeed;
             }
         }
+
+        // Aplicăm limitele pentru distanță
+        _desiredDistance = Mathf.Clamp(_desiredDistance, minDistance, maxDistance);
+    }
+
+    /// <summary>
+    /// Aplică lin (cu damping) rotația și zoom-ul calculate în HandleInput().
+    /// </summary>
+    private void ApplyTransformations()
+    {
+        // Aplicăm rotația cu Slerp pentru o mișcare lină
+        target.rotation = Quaternion.Slerp(target.rotation, _desiredRotation, rotationDamping);
+
+        // Aplicăm zoom-ul cu Lerp pentru o mișcare lină
+        _currentDistance = Mathf.Lerp(_currentDistance, _desiredDistance, zoomDamping);
+
+        // Actualizăm poziția camerei pe baza noii distanțe și a punctului central
+        Vector3 direction = (transform.position - _centerPoint).normalized;
+        transform.position = _centerPoint + direction * _currentDistance;
+
+        // Ne asigurăm că camera se uită mereu spre punctul central
+        transform.LookAt(_centerPoint);
     }
 }

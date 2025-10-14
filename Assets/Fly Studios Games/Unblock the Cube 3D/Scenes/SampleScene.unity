@@ -1460,14 +1460,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1540090167}
-  rotationSpeed: 3
-  zoomSpeed: 4
+  mouseRotationSpeed: 3
+  touchRotationSpeed: 0.2
+  rotationDamping: 0.1
+  zoomSpeed: 3
   pinchZoomSpeed: 0.02
+  zoomDamping: 0.15
   minDistance: 3
   maxDistance: 5
-  touchRotationSensitivity: 0.2
-  touchRotationSmooth: 0.15
-  touchZoomSmooth: 0.12
 --- !u!1 &977771152
 GameObject:
   m_ObjectHideFlags: 0
