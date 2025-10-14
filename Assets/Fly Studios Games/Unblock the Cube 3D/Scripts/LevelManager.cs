@@ -18,6 +18,8 @@ public class LevelManager : MonoBehaviour
     public Transform levelContainer;
     public UIManager uiManager; // Referință către UIManager
     public AudioManager audioManager; // NOU: referință la AudioManager (lege în inspector)
+    [Tooltip("Referință la NotificationManager pentru mesaje către jucător")]
+    public NotificationManager notificationManager;
 
     [Header("Grid Settings")]
     public float gridUnitSize = 0.5f;
@@ -123,6 +125,8 @@ public class LevelManager : MonoBehaviour
             if (uiManager != null) uiManager.UpdatePowerUpCounts(undoCount, hintCount, smashCount);
             return true;
         }
+        // notificăm jucătorul că nu are fonduri suficiente
+        if (notificationManager != null) notificationManager.ShowNotification("Not enough coins", 2f);
         return false;
     }
 
@@ -135,6 +139,7 @@ public class LevelManager : MonoBehaviour
             if (uiManager != null) uiManager.UpdatePowerUpCounts(undoCount, hintCount, smashCount);
             return true;
         }
+        if (notificationManager != null) notificationManager.ShowNotification("Not enough coins", 2f);
         return false;
     }
 
@@ -147,6 +152,7 @@ public class LevelManager : MonoBehaviour
             if (uiManager != null) uiManager.UpdatePowerUpCounts(undoCount, hintCount, smashCount);
             return true;
         }
+        if (notificationManager != null) notificationManager.ShowNotification("Not enough coins", 2f);
         return false;
     }
 
@@ -390,7 +396,7 @@ public class LevelManager : MonoBehaviour
     {
         if (undoCount <= 0)
         {
-            Debug.Log("No Undos available.");
+            if (notificationManager != null) notificationManager.ShowNotification("No undos available", 2f);
             return;
         }
         undoCount--;
@@ -452,7 +458,7 @@ public class LevelManager : MonoBehaviour
     {
         if (hintCount <= 0)
         {
-            Debug.Log("No Hints available.");
+            if (notificationManager != null) notificationManager.ShowNotification("No hints available", 2f);
             return;
         }
         hintCount--;
@@ -480,7 +486,7 @@ public class LevelManager : MonoBehaviour
     {
         if (smashCount <= 0)
         {
-            Debug.Log("No Smash available.");
+            if (notificationManager != null) notificationManager.ShowNotification("No smash items available", 2f);
             return;
         }
         smashCount--;
@@ -498,7 +504,7 @@ public class LevelManager : MonoBehaviour
                 return;
             }
         }
-        Debug.Log("No smash target found.");
+        if (notificationManager != null) notificationManager.ShowNotification("No smash target found", 2f);
     }
 
     // NOU: când true așteptăm ca jucătorul să dea click pe un bloc pentru a-l distruge manual
@@ -509,7 +515,7 @@ public class LevelManager : MonoBehaviour
     {
         if (smashCount <= 0)
         {
-            Debug.Log("No Smash items available.");
+            if (notificationManager != null) notificationManager.ShowNotification("No smash items available", 2f);
             // poți afișa un mesaj în UI aici
             return;
         }
@@ -521,6 +527,8 @@ public class LevelManager : MonoBehaviour
         {
             // de ex: uiManager.ShowPrompt("Select a block to remove");
         }
+        // notificare importantă, mai lungă
+        if (notificationManager != null) notificationManager.ShowNotification("Select a block to remove", 5f);
     }
 
     public bool IsAwaitingRemove()
@@ -535,7 +543,7 @@ public class LevelManager : MonoBehaviour
 
         if (smashCount <= 0)
         {
-            Debug.Log("No Smash items available.");
+            if (notificationManager != null) notificationManager.ShowNotification("No smash items available", 2f);
             _awaitingRemoveSelection = false;
             return;
         }
