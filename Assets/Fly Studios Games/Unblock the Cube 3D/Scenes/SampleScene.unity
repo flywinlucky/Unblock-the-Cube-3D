@@ -909,7 +909,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicSource: {fileID: 1907998747}
   sfxSource: {fileID: 1887080840}
-  blockClickClip: {fileID: 0}
+  blockClickClip: {fileID: 8300000, guid: 9ec59b94202f8eb4c97dd7d52914d077, type: 3}
 --- !u!1 &517673875
 GameObject:
   m_ObjectHideFlags: 0
@@ -2106,10 +2106,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: da05befe423fc4fd787bd16a716f59d9, type: 3}
-    m_FontSize: 74
+    m_FontSize: 90
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 0
     m_MaxSize: 106
     m_Alignment: 4
     m_AlignByGeometry: 0
