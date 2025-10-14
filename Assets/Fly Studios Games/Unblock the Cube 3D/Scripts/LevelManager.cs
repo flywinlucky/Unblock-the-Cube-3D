@@ -400,18 +400,28 @@ public class LevelManager : MonoBehaviour
         if (_undoStack == null || _undoStack.Count == 0) return;
         MoveRecord rec = _undoStack.Pop();
 
+        // Calculează poziția locală bazată pe gridPos (independentă de rotația/poziția curentă a levelContainer)
+        Vector3 localPos = (Vector3)rec.gridPos * gridUnitSize;
+
         if (rec.wasDestroyed)
         {
-            // recreăm block la poziția start
-            Vector3 worldPos = rec.startPos;
-            GameObject newBlockObj = Instantiate(singleBlockPrefab, worldPos, rec.rotation, levelContainer);
+            // recreăm block ca copil al levelContainer și setăm poziția/rotația locală direct
+            GameObject newBlockObj = Instantiate(singleBlockPrefab, levelContainer);
+            newBlockObj.transform.localPosition = localPos;
+
+            // FOLOSIM rotația locală salvată (rec.rotation este localRotation acum)
+            newBlockObj.transform.localRotation = rec.rotation;
+
+            // aplicăm scala salvată
+            newBlockObj.transform.localScale = rec.scale;
+
             Block blockScript = newBlockObj.GetComponent<Block>();
             blockScript.Initialize(rec.direction, this, gridUnitSize, rec.gridPos);
             _activeBlocks.Add(blockScript);
         }
         else
         {
-            // găsim block-ul care s-a mutat la endPos (cautăm cel mai apropiat)
+            // găsim block-ul cel mai apropiat de endPos (fallback), dar setăm poziția în local space pe gridPos
             Block closest = null;
             float best = float.MaxValue;
             foreach (var b in _activeBlocks)
@@ -426,8 +436,10 @@ public class LevelManager : MonoBehaviour
             }
             if (closest != null)
             {
-                // mutăm instant blocul înapoi la start
-                closest.transform.position = rec.startPos;
+                // setăm poziția locală și rotația locală (astfel va ține cont de rotația/poziția curentă a levelContainer)
+                closest.transform.SetParent(levelContainer, true);
+                closest.transform.localPosition = localPos;
+                closest.transform.localRotation = rec.rotation;
             }
         }
 
