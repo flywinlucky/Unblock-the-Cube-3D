@@ -10,6 +10,8 @@ public class SettingsManager : MonoBehaviour
 	public Button soundButton;
 	[Tooltip("Butonul pentru music (poate fi Button sau doar Image).")]
 	public Button musicButton;
+	public Button openSoundPanelButton;
+	public GameObject settingsPanel;
 
 	[Header("Sound Sprites")]
 	public Sprite soundOnSprite;
@@ -28,6 +30,17 @@ public class SettingsManager : MonoBehaviour
 	private bool _musicEnabled = true;
 	private string soundKey = "SoundEnabled";
 	private string musicKey = "MusicEnabled";
+
+	// NOU: iconițe pentru butonul de open/close settings
+	[Header("Settings Button Icons")]
+	[Tooltip("Iconița implicită pentru butonul de settings (open).")]
+	public Sprite settingsIconSprite;
+	[Tooltip("Iconița pentru butonul de settings când panelul este deschis (close).")]
+	public Sprite closeIconSprite;
+
+	// NOU: referință la Image din child-ul butonului (folosită pentru icon)
+	[Tooltip("Image component din child-ul butonului openSoundPanelButton utilizată ca icon.")]
+	public Image openSoundPanelIcon;
 
 	private void Start()
 	{
@@ -61,6 +74,30 @@ public class SettingsManager : MonoBehaviour
 			audioManager.SetSoundEnabled(_soundEnabled);
 			audioManager.SetMusicEnabled(_musicEnabled);
 		}
+
+		// NOU: la start închidem settings panel
+		if (settingsPanel != null)
+			settingsPanel.SetActive(false);
+
+		// NOU: legăm butonul pentru a deschide/închide panelul de setări
+		if (openSoundPanelButton != null)
+		{
+			openSoundPanelButton.onClick.RemoveListener(ToggleSettingsPanel);
+			openSoundPanelButton.onClick.AddListener(ToggleSettingsPanel);
+		}
+
+		// NOU: setăm iconița inițială a butonului (settings) folosind Image copil prioritar
+		if (openSoundPanelIcon == null && openSoundPanelButton != null)
+		{
+			// fallback: dacă nu avem Image copil detectat, încercăm să folosim image-ul butonului
+			if (openSoundPanelButton.image != null)
+				openSoundPanelIcon = openSoundPanelButton.image;
+		}
+
+		if (openSoundPanelIcon != null && settingsIconSprite != null)
+		{
+			openSoundPanelIcon.sprite = settingsIconSprite;
+		}
 	}
 
 	private void EnsureButtonImages()
@@ -85,6 +122,32 @@ public class SettingsManager : MonoBehaviour
 				musicButton.image = img;
 			}
 		}
+
+		// NOU: asigurăm Image pentru openSoundPanelButton (buton) și detectăm Image copil pentru icon
+		if (openSoundPanelButton != null)
+		{
+			// dacă butonul însăși nu are image, ne asigurăm că are (păstrăm compatibilitatea)
+			if (openSoundPanelButton.image == null)
+			{
+				Image img = openSoundPanelButton.GetComponent<Image>();
+				if (img == null) img = openSoundPanelButton.gameObject.AddComponent<Image>();
+				openSoundPanelButton.image = img;
+			}
+
+			// Dacă nu s-a setat manual openSoundPanelIcon, încercăm să găsim un Image copil (exclude imaginea butonului)
+			if (openSoundPanelIcon == null)
+			{
+				Image[] images = openSoundPanelButton.GetComponentsInChildren<Image>(true);
+				foreach (var img in images)
+				{
+					if (img.gameObject != openSoundPanelButton.gameObject)
+					{
+						openSoundPanelIcon = img;
+						break;
+					}
+				}
+			}
+		}
 	}
 
 	// Eliminăm listenerii la distrugere pentru siguranță
@@ -92,6 +155,9 @@ public class SettingsManager : MonoBehaviour
 	{
 		if (soundButton != null) soundButton.onClick.RemoveListener(ToggleSound);
 		if (musicButton != null) musicButton.onClick.RemoveListener(ToggleMusic);
+
+		// NOU: scoatem și listenerul pentru openSoundPanelButton
+		if (openSoundPanelButton != null) openSoundPanelButton.onClick.RemoveListener(ToggleSettingsPanel);
 	}
 
 	// Funcții publice pentru OnClick (legate din Inspector)
@@ -159,5 +225,27 @@ public class SettingsManager : MonoBehaviour
 		GameObject go = GameObject.Find(name);
 		if (go != null) return go.GetComponent<Image>();
 		return null;
+	}
+
+	// NOU: Toggle pentru settings panel (lege-l la butonul openSoundPanelButton)
+	public void ToggleSettingsPanel()
+	{
+		if (settingsPanel == null) return;
+		bool willBeActive = !settingsPanel.activeSelf;
+		settingsPanel.SetActive(willBeActive);
+
+		// Actualizăm iconița butonului în funcție de stare — folosim Image copil dacă există
+		Image imgToUse = openSoundPanelIcon != null ? openSoundPanelIcon : (openSoundPanelButton != null ? openSoundPanelButton.image : null);
+		if (imgToUse != null)
+		{
+			if (willBeActive)
+			{
+				if (closeIconSprite != null) imgToUse.sprite = closeIconSprite;
+			}
+			else
+			{
+				if (settingsIconSprite != null) imgToUse.sprite = settingsIconSprite;
+			}
+		}
 	}
 }

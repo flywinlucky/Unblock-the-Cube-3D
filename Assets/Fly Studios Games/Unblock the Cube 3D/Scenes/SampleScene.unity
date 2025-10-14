@@ -566,7 +566,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &292306359
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1846,6 +1846,7 @@ GameObject:
   - component: {fileID: 1151615590}
   - component: {fileID: 1151615592}
   - component: {fileID: 1151615591}
+  - component: {fileID: 1151615593}
   m_Layer: 5
   m_Name: Settings Open Button
   m_TagString: Untagged
@@ -1912,6 +1913,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1151615589}
   m_CullTransparentMesh: 1
+--- !u!114 &1151615593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1151615589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1151615591}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1208760974
 GameObject:
   m_ObjectHideFlags: 0
@@ -2268,11 +2313,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   soundButton: {fileID: 2115314467}
   musicButton: {fileID: 1860962172}
+  openSoundPanelButton: {fileID: 1151615593}
+  settingsPanel: {fileID: 292306358}
   soundOnSprite: {fileID: 21300000, guid: c0426dceda6cfe34ab40735c03bdedda, type: 3}
   soundOffSprite: {fileID: 21300000, guid: 62b18c73b5f4e35419ff19629d768d38, type: 3}
   musicOnSprite: {fileID: 21300000, guid: 0e1b8cfabc823ec40bd7ae5b16a019a8, type: 3}
   musicOffSprite: {fileID: 21300000, guid: dd7207d55aca0b8498138b7a4f60e530, type: 3}
   audioManager: {fileID: 514135127}
+  settingsIconSprite: {fileID: 21300000, guid: 5be4cc09f30115842a112ab53dc298c6, type: 3}
+  closeIconSprite: {fileID: 21300000, guid: abfea431ec52dd649829991e81b653f3, type: 3}
 --- !u!1 &1332100092
 GameObject:
   m_ObjectHideFlags: 0
@@ -3247,7 +3296,7 @@ GameObject:
   - component: {fileID: 1922104606}
   - component: {fileID: 1922104605}
   m_Layer: 5
-  m_Name: Settings (1)
+  m_Name: Settings Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
