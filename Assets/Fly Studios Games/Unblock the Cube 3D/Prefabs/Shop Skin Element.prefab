@@ -188,6 +188,7 @@ RectTransform:
   m_Children:
   - {fileID: 2558462740203951890}
   - {fileID: 2558462740348044645}
+  - {fileID: 2558462741438997931}
   - {fileID: 2558462741142239703}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -252,7 +253,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 38}
+  m_AnchoredPosition: {x: 0, y: 15}
   m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2558462740308906629
@@ -324,7 +325,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2558462740308906627}
-  - {fileID: 2558462741438997931}
   m_Father: {fileID: 2558462740212966281}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -481,7 +481,7 @@ RectTransform:
   - {fileID: 2558462740211997203}
   - {fileID: 2558462741685917509}
   m_Father: {fileID: 2558462740212966281}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -600,13 +600,13 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2558462740348044645}
-  m_RootOrder: 1
+  m_Father: {fileID: 2558462740212966281}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -65}
-  m_SizeDelta: {x: 0, y: 83.64844}
+  m_AnchoredPosition: {x: 0, y: 154.824}
+  m_SizeDelta: {x: 271.0314, y: 83.6484}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2558462741438997933
 CanvasRenderer:
@@ -643,13 +643,13 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 4
     m_MaxSize: 48
-    m_Alignment: 7
+    m_Alignment: 1
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: '{Name}'
+  m_Text: '{Name}wood textue'
 --- !u!1 &2558462741685917506
 GameObject:
   m_ObjectHideFlags: 0

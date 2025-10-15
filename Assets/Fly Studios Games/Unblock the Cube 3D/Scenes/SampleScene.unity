@@ -2792,14 +2792,42 @@ MonoBehaviour:
   shopSkinElementPrefab: {fileID: 2558462740212966278, guid: 3042b048c03f0654984d66123fa70de2, type: 3}
   contentRoot: {fileID: 1638096278}
   skins:
-  - displayName: wood
-    price: 2
-    icon: {fileID: 21300000, guid: 4d536542008619341b398b611c89b802, type: 3}
-    material: {fileID: 2100000, guid: 1ac89fbd5d778ff4ab76a81572e4a848, type: 2}
-  - displayName: rock
-    price: 4
-    icon: {fileID: 21300000, guid: 4d536542008619341b398b611c89b802, type: 3}
-    material: {fileID: 2100000, guid: 388fc297a2c85584f83878b0ddf34f61, type: 2}
+  - displayName: carbon
+    price: 1
+    icon: {fileID: 21300000, guid: 274ef3138b33495469cb24448e9ab7a2, type: 3}
+    material: {fileID: 2100000, guid: 3affd333d4ffa754baf786b19c7f8d7e, type: 2}
+  - displayName: briks
+    price: 1
+    icon: {fileID: 21300000, guid: 5b88bd40e8b6ac34b930197742fc51df, type: 3}
+    material: {fileID: 2100000, guid: dd9104c92416abf4983332fbe5330db0, type: 2}
+  - displayName: dark wood
+    price: 1
+    icon: {fileID: 21300000, guid: 1a4c4705a57f11149bffbf112b28d93c, type: 3}
+    material: {fileID: 2100000, guid: c79e04793b0340a4aae48892c695aae6, type: 2}
+  - displayName: grave
+    price: 1
+    icon: {fileID: 21300000, guid: 4ba49b8c008b1094f9a91a544926005e, type: 3}
+    material: {fileID: 2100000, guid: b61c8bab6da10704c9c8275cba81dadb, type: 2}
+  - displayName: paper
+    price: 1
+    icon: {fileID: 21300000, guid: f4e211a379ed42b4583d2ff35aad6a50, type: 3}
+    material: {fileID: 2100000, guid: b6367b2941b9e224ab3fc5457dcc99ce, type: 2}
+  - displayName: piele
+    price: 1
+    icon: {fileID: 21300000, guid: 0418934be03949b48ba981c015e70c75, type: 3}
+    material: {fileID: 2100000, guid: 991978a11e190d240a90cf160ab9339b, type: 2}
+  - displayName: sand
+    price: 1
+    icon: {fileID: 21300000, guid: c8b01af5a9763ed489d6b3722dda69ee, type: 3}
+    material: {fileID: 2100000, guid: 20fb6ce9193a25942b5a9ed7e4d38991, type: 2}
+  - displayName: scidura light
+    price: 1
+    icon: {fileID: 21300000, guid: 1e1750f66459a0d4785eb18b2775835a, type: 3}
+    material: {fileID: 2100000, guid: d6aabae2a978028499fb73c0cdf99abb, type: 2}
+  - displayName: grass
+    price: 1
+    icon: {fileID: 21300000, guid: 9eee871eede8371438752eefeef2f3b4, type: 3}
+    material: {fileID: 2100000, guid: 109ef985278a5ab4f9993f993811f4d1, type: 2}
   levelManager: {fileID: 1208760975}
   selectedSkinId: 
   selectedMaterial: {fileID: 0}
@@ -3467,7 +3495,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.6}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.8}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4481,7 +4509,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.6}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.8}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -5668,7 +5696,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1873798532
 RectTransform:
   m_ObjectHideFlags: 0
