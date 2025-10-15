@@ -24,8 +24,10 @@ public class ShopManager : MonoBehaviour
 	public LevelManager levelManager; // pentru a aplica skin la blocuri
 
 	private const string SelectedSkinKey = "SelectedSkin";
-	private HashSet<string> _owned = new HashSet<string>();
-	public string selectedSkinId;
+    private HashSet<string> _owned = new HashSet<string>();
+     [HideInInspector]
+    public string selectedSkinId;
+    [HideInInspector]
 	public Material selectedMaterial;
 
 	private void Start()
