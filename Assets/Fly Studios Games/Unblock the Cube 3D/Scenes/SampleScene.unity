@@ -2108,15 +2108,13 @@ MonoBehaviour:
   shopSkinElementPrefab: {fileID: 2558462740212966278, guid: 3042b048c03f0654984d66123fa70de2, type: 3}
   contentRoot: {fileID: 1638096278}
   skins:
-  - id: 1
-    displayName: wood
+  - displayName: wood
     price: 2
-    icon: {fileID: 21300000, guid: abfea431ec52dd649829991e81b653f3, type: 3}
+    icon: {fileID: 21300000, guid: 4d536542008619341b398b611c89b802, type: 3}
     material: {fileID: 2100000, guid: 1ac89fbd5d778ff4ab76a81572e4a848, type: 2}
-  - id: 2
-    displayName: rock
+  - displayName: rock
     price: 4
-    icon: {fileID: 21300000, guid: dd7207d55aca0b8498138b7a4f60e530, type: 3}
+    icon: {fileID: 21300000, guid: 4d536542008619341b398b611c89b802, type: 3}
     material: {fileID: 2100000, guid: 1ac89fbd5d778ff4ab76a81572e4a848, type: 2}
   levelManager: {fileID: 1208760975}
   selectedSkinId: 

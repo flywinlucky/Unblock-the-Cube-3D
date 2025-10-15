@@ -195,16 +195,30 @@ public class Block : MonoBehaviour
         transform.localScale = originalScale;
     }
 
-    // NOU: Aplică materialul skin-ului pe toate rendererele din block
+    // NOU: Aplică materialul skin-ului pe renderer-ul de pe GameObject-ul curent (nu pe copii)
     public void ApplySkin(Material mat)
     {
         if (mat == null) return;
-        Renderer[] rends = GetComponentsInChildren<Renderer>(true);
-        foreach (var r in rends)
+
+        // Aplicăm doar pe Renderer-ul de pe același GameObject care are componenta Block
+        Renderer rend = GetComponent<Renderer>();
+        if (rend != null)
         {
-            // folosim o instanță a materialului pentru a nu modifica sharedMaterial global
-            r.material = mat;
+            rend.material = mat;
+            return;
         }
+
+        // Fallback minimal: încercăm MeshRenderer dacă e prezent sub un alt tip
+        MeshRenderer meshRend = GetComponent<MeshRenderer>();
+        if (meshRend != null)
+        {
+            meshRend.material = mat;
+            return;
+        }
+
+        // Dacă nu există renderer pe root, nu aplicăm pe copii (cerința ta).
+        // Poți debuga aici dacă e nevoie:
+        // Debug.LogWarning("ApplySkin: no Renderer found on root GameObject to apply skin.", this);
     }
 
     // --- Restul scriptului rămâne neschimbat ---
