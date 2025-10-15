@@ -20,6 +20,7 @@ public class LevelManager : MonoBehaviour
     public AudioManager audioManager; // NOU: referință la AudioManager (lege în inspector)
     [Tooltip("Referință la NotificationManager pentru mesaje către jucător")]
     public NotificationManager notificationManager;
+    public ShopManager shopManager; // NOU: legi în inspector
 
     [Header("Grid Settings")]
     public float gridUnitSize = 0.5f;
@@ -173,8 +174,22 @@ public class LevelManager : MonoBehaviour
             // calculăm poziția pe grid pe baza poziției world
             Vector3Int gridPos = Vector3Int.RoundToInt(worldPosition / gridUnitSize);
             blockScript.Initialize(data.direction, this, gridUnitSize, gridPos);
+
+            // Aplicăm skin-ul curent dacă există (dacă ShopManager este setat)
+            if (shopManager != null && shopManager.selectedMaterial != null)
+            {
+                blockScript.ApplySkin(shopManager.selectedMaterial);
+            }
+
             _activeBlocks.Add(blockScript);
         }
+    }
+
+    // NOU: expune block-urile active (ShopManager folosește aceasta)
+    public List<Block> GetActiveBlocks()
+    {
+        // returnăm o copie pentru a evita modificări neintenționate din exterior
+        return new List<Block>(_activeBlocks);
     }
 
     public void OnBlockRemoved(Block block)

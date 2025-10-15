@@ -30,6 +30,12 @@ public class Block : MonoBehaviour
         _levelManager = manager;
         _gridUnitSize = gridUnitSize;
         _gridPosition = gridPosition;
+
+        // NOU: aplicăm skin-ul curent dacă există (asigurăm compatibilitate când blocul e creat din undo/generare)
+        if (_levelManager != null && _levelManager.shopManager != null && _levelManager.shopManager.selectedMaterial != null)
+        {
+            ApplySkin(_levelManager.shopManager.selectedMaterial);
+        }
     }
 
     private void OnMouseUpAsButton()
@@ -187,6 +193,18 @@ public class Block : MonoBehaviour
             yield return null;
         }
         transform.localScale = originalScale;
+    }
+
+    // NOU: Aplică materialul skin-ului pe toate rendererele din block
+    public void ApplySkin(Material mat)
+    {
+        if (mat == null) return;
+        Renderer[] rends = GetComponentsInChildren<Renderer>(true);
+        foreach (var r in rends)
+        {
+            // folosim o instanță a materialului pentru a nu modifica sharedMaterial global
+            r.material = mat;
+        }
     }
 
     // --- Restul scriptului rămâne neschimbat ---
