@@ -41,6 +41,12 @@ public class UIManager : MonoBehaviour
     [Tooltip("Text care afișează prețul pentru Smash în shop.")]
     public Text buySmashPriceText;
 
+    [Header("Shop Buttons (Open/Close)")]
+    [Tooltip("Buton care deschide shop panel-ul.")]
+    public Button openShopButton;
+    [Tooltip("Buton care închide shop panel-ul.")]
+    public Button closeShopButton;
+
     /// <summary>
     /// Actualizează textele pentru nivelul curent.
     /// </summary>
@@ -101,6 +107,18 @@ public class UIManager : MonoBehaviour
             useSmashButton.onClick.AddListener(() => { levelManager.StartRemoveMode(); UpdatePowerUpCounts(levelManager.undoCount, levelManager.smashCount); });
         }
 
+        // Legăm butoanele de open/close shop (dacă sunt setate)
+        if (openShopButton != null)
+        {
+            openShopButton.onClick.RemoveAllListeners();
+            openShopButton.onClick.AddListener(() => OpenShopPanel());
+        }
+        if (closeShopButton != null)
+        {
+            closeShopButton.onClick.RemoveAllListeners();
+            closeShopButton.onClick.AddListener(() => CloseShopPanel());
+        }
+
         // inițializăm afișajul contorilor
         if (levelManager != null)
             UpdatePowerUpCounts(levelManager.undoCount, levelManager.smashCount);
@@ -118,5 +136,21 @@ public class UIManager : MonoBehaviour
     {
         if (undoCountText != null) undoCountText.text = undo.ToString();
         if (smashCountText != null) smashCountText.text = smash.ToString();
+    }
+
+    // NOU: deschide shop panel-ul
+    public void OpenShopPanel()
+    {
+        if (shop_panel != null) shop_panel.SetActive(true);
+        // sincronizare cu LevelManager (opțional)
+        if (levelManager != null) levelManager.OpenShop();
+    }
+
+    // NOU: închide shop panel-ul
+    public void CloseShopPanel()
+    {
+        if (shop_panel != null) shop_panel.SetActive(false);
+        // sincronizare cu LevelManager (opțional)
+        if (levelManager != null) levelManager.CloseShop();
     }
 }

@@ -393,7 +393,7 @@ GameObject:
   - component: {fileID: 82880877}
   - component: {fileID: 82880876}
   m_Layer: 5
-  m_Name: Settings Open Button
+  m_Name: Close Shop Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -408,16 +408,16 @@ RectTransform:
   m_GameObject: {fileID: 82880874}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.79675, y: 0.79675, z: 0.79675}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1906955137}
-  m_Father: {fileID: 998833970}
-  m_RootOrder: 0
+  m_Father: {fileID: 1008209897}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 79.10634, y: -68.000084}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 79.10635, y: 68}
   m_SizeDelta: {x: 158.2127, y: 136}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &82880876
@@ -608,13 +608,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 168877489}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1266432603}
-  m_Father: {fileID: 1002683988}
+  m_Father: {fileID: 634393279}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.24129169}
@@ -1849,6 +1849,7 @@ RectTransform:
   m_Children:
   - {fileID: 1002683988}
   - {fileID: 1732229307}
+  - {fileID: 168877490}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2115,7 +2116,7 @@ MonoBehaviour:
   - displayName: rock
     price: 4
     icon: {fileID: 21300000, guid: 4d536542008619341b398b611c89b802, type: 3}
-    material: {fileID: 2100000, guid: 1ac89fbd5d778ff4ab76a81572e4a848, type: 2}
+    material: {fileID: 2100000, guid: 388fc297a2c85584f83878b0ddf34f61, type: 2}
   levelManager: {fileID: 1208760975}
   selectedSkinId: 
   selectedMaterial: {fileID: 0}
@@ -2466,52 +2467,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &998833969
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 998833970}
-  - component: {fileID: 998833971}
-  m_Layer: 5
-  m_Name: Close Shop
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &998833970
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 998833969}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.79675, y: 0.79675, z: 0.79675}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 82880875}
-  m_Father: {fileID: 1008209897}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 74, y: -74}
-  m_SizeDelta: {x: 158.2127, y: 136}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &998833971
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 998833969}
-  m_CullTransparentMesh: 1
 --- !u!1 &1002683987
 GameObject:
   m_ObjectHideFlags: 0
@@ -2543,7 +2498,6 @@ RectTransform:
   m_Children:
   - {fileID: 620606404}
   - {fileID: 517673876}
-  - {fileID: 168877490}
   m_Father: {fileID: 634393279}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2595,7 +2549,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 189340412}
-  - {fileID: 998833970}
+  - {fileID: 82880875}
   - {fileID: 1566740873}
   m_Father: {fileID: 1732229307}
   m_RootOrder: 0
@@ -3138,6 +3092,8 @@ MonoBehaviour:
   levelManager: {fileID: 1208760975}
   buyUndoPriceText: {fileID: 380039314}
   buySmashPriceText: {fileID: 2099780929}
+  openShopButton: {fileID: 1617256676}
+  closeShopButton: {fileID: 82880876}
 --- !u!1 &1221926796
 GameObject:
   m_ObjectHideFlags: 0
@@ -3630,7 +3586,7 @@ GameObject:
   - component: {fileID: 1566740875}
   - component: {fileID: 1566740874}
   m_Layer: 5
-  m_Name: You Win Text
+  m_Name: Skin Shop Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3779,7 +3735,7 @@ GameObject:
   - component: {fileID: 1617256677}
   - component: {fileID: 1617256676}
   m_Layer: 5
-  m_Name: Shop Button
+  m_Name: open Shop Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3803,8 +3759,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 79.106445, y: 0}
-  m_SizeDelta: {x: 158.21265, y: 136}
+  m_AnchoredPosition: {x: 80, y: 0}
+  m_SizeDelta: {x: 158, y: 136}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1617256676
 MonoBehaviour:
@@ -4480,7 +4436,7 @@ GameObject:
   - component: {fileID: 1906955139}
   - component: {fileID: 1906955138}
   m_Layer: 5
-  m_Name: Settings Icon
+  m_Name: Close Shop Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
