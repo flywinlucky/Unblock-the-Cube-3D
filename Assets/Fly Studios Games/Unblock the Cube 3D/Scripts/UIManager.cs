@@ -20,24 +20,26 @@ public class UIManager : MonoBehaviour
     [Header("PowerUp UI")]
     [Tooltip("Text care arată câte Undo avem.")]
     public Text undoCountText;
-    [Tooltip("Text care arată câte Hint avem.")]
-    public Text hintCountText;
     [Tooltip("Text care arată câte Smash avem.")]
     public Text smashCountText;
 
     [Header("Shop Buttons")]
     public Button buyUndoButton;
-    public Button buyHintButton;
     public Button buySmashButton;
 
     [Header("Use Buttons")]
     public Button useUndoButton;
-    public Button useHintButton;
     public Button useSmashButton;
 
     [Header("References")]
     [Tooltip("Referință către LevelManager pentru a comanda cumpărări/folosiri.")]
     public LevelManager levelManager;
+
+    [Header("Shop Price Labels")]
+    [Tooltip("Text care afișează prețul pentru Undo în shop.")]
+    public Text buyUndoPriceText;
+    [Tooltip("Text care afișează prețul pentru Smash în shop.")]
+    public Text buySmashPriceText;
 
     /// <summary>
     /// Actualizează textele pentru nivelul curent.
@@ -75,21 +77,14 @@ public class UIManager : MonoBehaviour
         {
             buyUndoButton.onClick.RemoveAllListeners();
             buyUndoButton.onClick.AddListener(() => {
-                if (levelManager.BuyUndo()) UpdatePowerUpCounts(levelManager.undoCount, levelManager.hintCount, levelManager.smashCount);
-            });
-        }
-        if (buyHintButton != null && levelManager != null)
-        {
-            buyHintButton.onClick.RemoveAllListeners();
-            buyHintButton.onClick.AddListener(() => {
-                if (levelManager.BuyHint()) UpdatePowerUpCounts(levelManager.undoCount, levelManager.hintCount, levelManager.smashCount);
+                if (levelManager.BuyUndo()) UpdatePowerUpCounts(levelManager.undoCount, levelManager.smashCount);
             });
         }
         if (buySmashButton != null && levelManager != null)
         {
             buySmashButton.onClick.RemoveAllListeners();
             buySmashButton.onClick.AddListener(() => {
-                if (levelManager.BuySmash()) UpdatePowerUpCounts(levelManager.undoCount, levelManager.hintCount, levelManager.smashCount);
+                if (levelManager.BuySmash()) UpdatePowerUpCounts(levelManager.undoCount, levelManager.smashCount);
             });
         }
 
@@ -97,30 +92,31 @@ public class UIManager : MonoBehaviour
         if (useUndoButton != null && levelManager != null)
         {
             useUndoButton.onClick.RemoveAllListeners();
-            useUndoButton.onClick.AddListener(() => { levelManager.UseUndo(); UpdatePowerUpCounts(levelManager.undoCount, levelManager.hintCount, levelManager.smashCount); });
-        }
-        if (useHintButton != null && levelManager != null)
-        {
-            useHintButton.onClick.RemoveAllListeners();
-            useHintButton.onClick.AddListener(() => { levelManager.UseHint(); UpdatePowerUpCounts(levelManager.undoCount, levelManager.hintCount, levelManager.smashCount); });
+            useUndoButton.onClick.AddListener(() => { levelManager.UseUndo(); UpdatePowerUpCounts(levelManager.undoCount, levelManager.smashCount); });
         }
         if (useSmashButton != null && levelManager != null)
         {
             useSmashButton.onClick.RemoveAllListeners();
             // schimbăm comportamentul: apăsarea butonului pornește modul de selecție pentru a alege block-ul de distrus
-            useSmashButton.onClick.AddListener(() => { levelManager.StartRemoveMode(); UpdatePowerUpCounts(levelManager.undoCount, levelManager.hintCount, levelManager.smashCount); });
+            useSmashButton.onClick.AddListener(() => { levelManager.StartRemoveMode(); UpdatePowerUpCounts(levelManager.undoCount, levelManager.smashCount); });
         }
 
         // inițializăm afișajul contorilor
         if (levelManager != null)
-            UpdatePowerUpCounts(levelManager.undoCount, levelManager.hintCount, levelManager.smashCount);
+            UpdatePowerUpCounts(levelManager.undoCount, levelManager.smashCount);
+
+        // setăm prețurile pe butoane (dacă există)
+        if (levelManager != null)
+        {
+            if (buyUndoPriceText != null) buyUndoPriceText.text = levelManager.undoCost.ToString();
+            if (buySmashPriceText != null) buySmashPriceText.text = levelManager.smashCost.ToString();
+        }
     }
 
     // NOU: actualizează textele power-up
-    public void UpdatePowerUpCounts(int undo, int hint, int smash)
+    public void UpdatePowerUpCounts(int undo, int smash)
     {
         if (undoCountText != null) undoCountText.text = undo.ToString();
-        if (hintCountText != null) hintCountText.text = hint.ToString();
         if (smashCountText != null) smashCountText.text = smash.ToString();
     }
 }

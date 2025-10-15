@@ -26,6 +26,9 @@ public class LevelManager : MonoBehaviour
 
     private List<Block> _activeBlocks = new List<Block>();
 
+    // NOU: flag pentru modul "remove" (următorul click va distruge block-ul selectat)
+    private bool _awaitingRemoveSelection = false;
+    
     // Flag pentru a evita multiple tranziții simultane
     private bool _isTransitioning = false;
 
@@ -53,20 +56,15 @@ public class LevelManager : MonoBehaviour
     [Header("PowerUps")]
     [Tooltip("Numărul curent de Undo disponibile.")]
     public int undoCount = 0;
-    [Tooltip("Numărul curent de Hint disponibile.")]
-    public int hintCount = 0;
     [Tooltip("Numărul curent de Smash disponibile.")]
     public int smashCount = 0;
 
     [Tooltip("Cost coins pentru a cumpăra un Undo.")]
     public int undoCost = 5;
-    [Tooltip("Cost coins pentru a cumpăra un Hint.")]
-    public int hintCost = 5;
     [Tooltip("Cost coins pentru a cumpăra un Smash.")]
     public int smashCost = 10;
 
     private const string UndoKey = "PlayerUndo";
-    private const string HintKey = "PlayerHint";
     private const string SmashKey = "PlayerSmash";
 
     // Helper: returnează LevelData curent sau null
@@ -99,9 +97,8 @@ public class LevelManager : MonoBehaviour
 
         // NOU: încărcăm powerup-urile persistente la start și actualizăm UI
         undoCount = PlayerPrefs.GetInt(UndoKey, undoCount);
-        hintCount = PlayerPrefs.GetInt(HintKey, hintCount);
         smashCount = PlayerPrefs.GetInt(SmashKey, smashCount);
-        if (uiManager != null) uiManager.UpdatePowerUpCounts(undoCount, hintCount, smashCount);
+        if (uiManager != null) uiManager.UpdatePowerUpCounts(undoCount, smashCount);
 
         // Generăm nivelul curent (dacă există)
         GenerateLevel();
@@ -122,23 +119,10 @@ public class LevelManager : MonoBehaviour
         {
             undoCount++;
             PlayerPrefs.SetInt(UndoKey, undoCount);
-            if (uiManager != null) uiManager.UpdatePowerUpCounts(undoCount, hintCount, smashCount);
+            if (uiManager != null) uiManager.UpdatePowerUpCounts(undoCount, smashCount);
             return true;
         }
         // notificăm jucătorul că nu are fonduri suficiente
-        if (notificationManager != null) notificationManager.ShowNotification("Not enough coins", 2f);
-        return false;
-    }
-
-    public bool BuyHint()
-    {
-        if (SpendCoins(hintCost))
-        {
-            hintCount++;
-            PlayerPrefs.SetInt(HintKey, hintCount);
-            if (uiManager != null) uiManager.UpdatePowerUpCounts(undoCount, hintCount, smashCount);
-            return true;
-        }
         if (notificationManager != null) notificationManager.ShowNotification("Not enough coins", 2f);
         return false;
     }
@@ -149,7 +133,7 @@ public class LevelManager : MonoBehaviour
         {
             smashCount++;
             PlayerPrefs.SetInt(SmashKey, smashCount);
-            if (uiManager != null) uiManager.UpdatePowerUpCounts(undoCount, hintCount, smashCount);
+            if (uiManager != null) uiManager.UpdatePowerUpCounts(undoCount, smashCount);
             return true;
         }
         if (notificationManager != null) notificationManager.ShowNotification("Not enough coins", 2f);
@@ -394,16 +378,25 @@ public class LevelManager : MonoBehaviour
     // NOU: Undo - inversează ultima acțiune (mișcare sau distrugere)
     public void UseUndo()
     {
+        // Verificăm dacă avem item Undo
         if (undoCount <= 0)
         {
             if (notificationManager != null) notificationManager.ShowNotification("No undos available", 2f);
             return;
         }
+
+        // Verificăm dacă există ceva de refăcut în istoric
+        if (_undoStack == null || _undoStack.Count == 0)
+        {
+            if (notificationManager != null) notificationManager.ShowNotification("No moves to undo", 2f);
+            return;
+        }
+
+        // Consumăm Undo doar după ce știm că putem anula ceva
         undoCount--;
         PlayerPrefs.SetInt(UndoKey, undoCount);
-        if (uiManager != null) uiManager.UpdatePowerUpCounts(undoCount, hintCount, smashCount);
+        if (uiManager != null) uiManager.UpdatePowerUpCounts(undoCount, smashCount);
 
-        if (_undoStack == null || _undoStack.Count == 0) return;
         MoveRecord rec = _undoStack.Pop();
 
         // Calculează poziția locală bazată pe gridPos (independentă de rotația/poziția curentă a levelContainer)
@@ -453,62 +446,43 @@ public class LevelManager : MonoBehaviour
         if (uiManager != null) uiManager.UpdateGlobalCoinsDisplay(GetCoins());
     }
 
-    // NOU: Hint - evidențiază un block care poate fi mutat (primul găsit)
-    public void UseHint()
-    {
-        if (hintCount <= 0)
-        {
-            if (notificationManager != null) notificationManager.ShowNotification("No hints available", 2f);
-            return;
-        }
-        hintCount--;
-        PlayerPrefs.SetInt(HintKey, hintCount);
-        if (uiManager != null) uiManager.UpdatePowerUpCounts(undoCount, hintCount, smashCount);
-
-        foreach (var b in _activeBlocks)
-        {
-            if (b == null) continue;
-            // verificăm dacă are spațiu liber imediat în față (nu e blocat)
-            RaycastHit hit;
-            if (!Physics.Raycast(b.transform.position, b.transform.forward, out hit, _GetGridDetectionDistance(b)))
-            {
-                // găsit candidate
-                b.FlashHint();
-                return;
-            }
-        }
-        // dacă nu găsim nimic, ai putea arăta un mesaj
-        Debug.Log("No hint available: no movable block detected.");
-    }
-
     // NOU: găsește un block pentru smash (folosim aceeași logică ca la hint) și îl distrugem
     public void UseSmashHint()
     {
+        // Verificăm dacă avem item Smash
         if (smashCount <= 0)
         {
             if (notificationManager != null) notificationManager.ShowNotification("No smash items available", 2f);
             return;
         }
-        smashCount--;
-        PlayerPrefs.SetInt(SmashKey, smashCount);
-        if (uiManager != null) uiManager.UpdatePowerUpCounts(undoCount, hintCount, smashCount);
 
+        // Căutăm mai întâi o țintă validă, fără a consuma nimic
+        Block candidate = null;
         foreach (var b in new List<Block>(_activeBlocks))
         {
             if (b == null) continue;
             RaycastHit hit;
             if (!Physics.Raycast(b.transform.position, b.transform.forward, out hit, _GetGridDetectionDistance(b)))
             {
-                // înregistrăm și distrugem (Block.Smash se ocupă de animație și notificare)
-                b.Smash();
-                return;
+                candidate = b;
+                break;
             }
         }
-        if (notificationManager != null) notificationManager.ShowNotification("No smash target found", 2f);
-    }
 
-    // NOU: când true așteptăm ca jucătorul să dea click pe un bloc pentru a-l distruge manual
-    private bool _awaitingRemoveSelection = false;
+        // Dacă nu găsim țintă, notificăm și nu consumăm
+        if (candidate == null)
+        {
+            if (notificationManager != null) notificationManager.ShowNotification("No smash target found", 2f);
+            return;
+        }
+
+        // Avem țintă -> consumăm item-ul și aplicăm efectul
+        smashCount--;
+        PlayerPrefs.SetInt(SmashKey, smashCount);
+        if (uiManager != null) uiManager.UpdatePowerUpCounts(undoCount, smashCount);
+
+        candidate.Smash();
+    }
 
     // NOU: pornește modul în care următorul click pe un block îl va distruge (consumă un Smash la confirmare)
     public void StartRemoveMode()
@@ -516,19 +490,20 @@ public class LevelManager : MonoBehaviour
         if (smashCount <= 0)
         {
             if (notificationManager != null) notificationManager.ShowNotification("No smash items available", 2f);
-            // poți afișa un mesaj în UI aici
+            return;
+        }
+
+        // dacă nu există blocuri în scenă, nu porni modul
+        if (_activeBlocks == null || _activeBlocks.Count == 0)
+        {
+            if (notificationManager != null) notificationManager.ShowNotification("No blocks to remove", 2f);
             return;
         }
 
         _awaitingRemoveSelection = true;
 
-        // Poți notifica UIManager pentru a afișa un prompt (opțional)
-        if (uiManager != null)
-        {
-            // de ex: uiManager.ShowPrompt("Select a block to remove");
-        }
         // notificare importantă, mai lungă
-        if (notificationManager != null) notificationManager.ShowNotification("Select a block to remove", 2f);
+        if (notificationManager != null) notificationManager.ShowNotification("Select a block to remove", 5f);
     }
 
     public bool IsAwaitingRemove()
@@ -551,7 +526,7 @@ public class LevelManager : MonoBehaviour
         // consumăm un Smash
         smashCount--;
         PlayerPrefs.SetInt(SmashKey, smashCount);
-        if (uiManager != null) uiManager.UpdatePowerUpCounts(undoCount, hintCount, smashCount);
+        if (uiManager != null) uiManager.UpdatePowerUpCounts(undoCount, smashCount);
 
         // înregistrare pentru undo (opțional) și distrugere
         // Block.Smash se ocupă de animatie și notificare OnBlockRemoved
