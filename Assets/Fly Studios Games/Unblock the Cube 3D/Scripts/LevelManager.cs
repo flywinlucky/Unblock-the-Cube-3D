@@ -21,6 +21,7 @@ public class LevelManager : MonoBehaviour
     [Tooltip("Referință la NotificationManager pentru mesaje către jucător")]
     public NotificationManager notificationManager;
     public ShopManager shopManager; // NOU: legi în inspector
+    public CameraControler cameraControler;
 
     [Header("Grid Settings")]
     public float gridUnitSize = 0.5f;
@@ -111,6 +112,12 @@ public class LevelManager : MonoBehaviour
         {
             AddCoins(100);
         }
+
+        // Apasă F pentru a re-încadra instantaneu obiectul
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            cameraControler.FrameTarget();
+        }
     }
 
     // NOU: cumpărare power-ups din shop
@@ -182,6 +189,28 @@ public class LevelManager : MonoBehaviour
             }
 
             _activeBlocks.Add(blockScript);
+        }
+
+        // Centrare cameră pe noul nivel (dacă CameraControler este setat)
+        // apelăm FrameTarget la finalul frame-ului pentru a ne asigura
+        // că Renderer.bounds sunt actualizate după instanțiere.
+        if (cameraControler != null)
+        {
+            StartCoroutine(FrameCameraNextFrame());
+        }
+        else
+        {
+            Debug.LogWarning("CameraControler is not assigned; cannot frame target.", this);
+        }
+    }
+    
+    // Așteaptă finalul frame-ului și apoi centrează camera (avoid incorrect bounds)
+    private IEnumerator FrameCameraNextFrame()
+    {
+        yield return new WaitForEndOfFrame();
+        if (cameraControler != null)
+        {
+            cameraControler.FrameTarget();
         }
     }
 

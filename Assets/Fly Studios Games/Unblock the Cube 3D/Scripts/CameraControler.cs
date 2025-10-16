@@ -70,11 +70,7 @@ public class CameraControler : MonoBehaviour
             transform.LookAt(_centerPoint);
         }
 
-        // Apasă F pentru a re-încadra instantaneu obiectul
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            FrameTarget();
-        }
+        
     }
 
     /// <summary>
