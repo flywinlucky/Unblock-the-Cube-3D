@@ -2,7 +2,7 @@
 
 /// <summary>
 /// Controlează rotația unui obiect "target" în jurul centrului său geometric și zoom-ul camerei.
-/// Rotația se face direct pe obiectul target, iar camera își menține poziția, uitându-se mereu la centru.
+/// Include o funcție pentru a încadra automat obiectul în vizorul camerei.
 /// </summary>
 public class CameraControler : MonoBehaviour
 {
@@ -25,12 +25,15 @@ public class CameraControler : MonoBehaviour
     [Tooltip("Distanța minimă la care se poate apropia camera.")]
     public float minDistance = 3f;
     [Tooltip("Distanța maximă la care se poate depărta camera.")]
-    public float maxDistance = 15f;
+    public float maxDistance = 50f; // Am mărit valoarea maximă pentru a permite obiecte mari
+    [Tooltip("Marginea lăsată în jurul obiectului la încadrare (ex: 1.2 = 20% buffer).")]
+    public float frameBuffer = 1.2f;
 
     // --- Variabile Private ---
     private Vector3 _centerPoint;
     private float _currentDistance;
     private float _desiredDistance;
+    private Camera _mainCamera;
 
     // Variabile pentru rotație lină
     private Vector2 _rotationInput;
@@ -38,19 +41,16 @@ public class CameraControler : MonoBehaviour
 
     void Start()
     {
-        if (target == null)
+        _mainCamera = Camera.main;
+        if (target == null || _mainCamera == null)
         {
-            Debug.LogError("Target-ul nu a fost setat în scriptul CameraControler.", this);
+            Debug.LogError("Target-ul sau Camera principală nu au fost setate.", this);
             this.enabled = false;
             return;
         }
 
-        // 1. Calculăm centrul geometric al copiilor
-        CalculateCenterPoint();
-
-        // 2. Inițializăm distanța camerei
-        _currentDistance = Vector3.Distance(transform.position, _centerPoint);
-        _desiredDistance = _currentDistance;
+        // Calculează și poziționează camera instantaneu la distanța optimă la pornire
+        FrameTarget(true);
     }
 
     void LateUpdate()
@@ -63,26 +63,62 @@ public class CameraControler : MonoBehaviour
             // La final, ne asigurăm că, indiferent de zoom, camera se uită mereu la centru
             transform.LookAt(_centerPoint);
         }
+
+        // Apasă F pentru a re-încadra instantaneu obiectul
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            FrameTarget(true);
+        }
     }
 
     /// <summary>
-    /// Calculează punctul central pe baza poziției medii a tuturor copiilor obiectului target.
+    /// Ajustează automat distanța camerei pentru a încadra perfect întregul obiect.
+    /// Apelează această funcție din alte scripturi când încarci un nou nivel sau schimbi target-ul.
     /// </summary>
-    private void CalculateCenterPoint()
+    /// <param name="snapImmediately">Dacă este true, camera sare instantaneu la noua poziție. Altfel, se mișcă lin.</param>
+    public void FrameTarget(bool snapImmediately = false)
     {
-        if (target.childCount == 0)
+        // Pasul 1: Calculează "cutia" invizibilă (Bounds) care înconjoară toți copiii
+        Bounds totalBounds = new Bounds();
+        Renderer[] renderers = target.GetComponentsInChildren<Renderer>();
+
+        if (renderers.Length == 0)
         {
             _centerPoint = target.position;
-            Debug.LogWarning("Target-ul nu are copii. Se folosește pivotul propriu ca centru de rotație.", target);
-            return;
+            Debug.LogWarning("Target-ul nu are componente Renderer. Încadrarea poate fi imprecisă.", target);
+            totalBounds = new Bounds(target.position, Vector3.one); // O cutie de rezervă
+        }
+        else
+        {
+            totalBounds = renderers[0].bounds;
+            foreach (Renderer rend in renderers)
+            {
+                totalBounds.Encapsulate(rend.bounds);
+            }
         }
 
-        Vector3 totalPosition = Vector3.zero;
-        foreach (Transform child in target)
+        // Actualizăm punctul central pentru rotație, bazat pe centrul real al obiectului compus
+        _centerPoint = totalBounds.center;
+
+        // Pasul 2: Calculează distanța necesară pentru a vedea întreaga "cutie"
+        float objectSize = Mathf.Max(totalBounds.size.x, totalBounds.size.y); // Luăm cea mai mare dimensiune (lățime sau înălțime)
+        float cameraView = 2.0f * Mathf.Tan(0.5f * _mainCamera.fieldOfView * Mathf.Deg2Rad); // Cât vede camera la 1 unitate distanță
+        float distanceToFit = (objectSize / _mainCamera.aspect) / cameraView; // Calculăm distanța
+
+        // Adăugăm un buffer pentru a nu fi exact la margine, folosind variabila publică
+        float finalDistance = distanceToFit * frameBuffer;
+
+        // Pasul 3: Setăm noua distanță dorită, respectând limitele min/max
+        _desiredDistance = Mathf.Clamp(finalDistance, minDistance, maxDistance);
+
+        if (snapImmediately)
         {
-            totalPosition += child.position;
+            _currentDistance = _desiredDistance;
+            // Poziționăm camera instantaneu
+            Vector3 directionFromCenter = (transform.position - _centerPoint).normalized;
+            if (directionFromCenter == Vector3.zero) directionFromCenter = -transform.forward; // O direcție de rezervă
+            transform.position = _centerPoint + directionFromCenter * _currentDistance;
         }
-        _centerPoint = totalPosition / target.childCount;
     }
 
     /// <summary>
@@ -94,7 +130,6 @@ public class CameraControler : MonoBehaviour
         Vector2 rawInput = Vector2.zero;
         if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
         {
-            // Folosim direct GetAxis pentru a fi independent de framerate
             rawInput = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
         }
 
@@ -104,10 +139,7 @@ public class CameraControler : MonoBehaviour
         // Aplicăm rotația pe target în jurul centrului calculat
         if (_rotationInput.magnitude > 0.001f)
         {
-            // Rotație orizontală (stânga/dreapta) în jurul axei globale Y
             target.RotateAround(_centerPoint, Vector3.up, -_rotationInput.x * rotationSpeed);
-
-            // Rotație verticală (sus/jos) în jurul axei 'right' a camerei
             target.RotateAround(_centerPoint, transform.right, _rotationInput.y * rotationSpeed);
         }
     }
@@ -126,10 +158,7 @@ public class CameraControler : MonoBehaviour
 
         _currentDistance = Mathf.Lerp(_currentDistance, _desiredDistance, zoomDamping);
 
-        // Obținem direcția de la centru spre cameră
         Vector3 directionFromCenter = (transform.position - _centerPoint).normalized;
-
-        // Poziția corectă este la centrul, plus direcția înmulțită cu distanța
         transform.position = _centerPoint + directionFromCenter * _currentDistance;
     }
 }
