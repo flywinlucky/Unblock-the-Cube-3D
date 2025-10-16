@@ -479,6 +479,9 @@ public class LevelEditorWindow : EditorWindow
 	{
 		if (_selectedBlockInstance == null) return;
 
+		// Dacă nu avem preview camera, sărim, deoarece butoanele sunt specifice preview-ului
+		if (_previewRenderUtility == null || _previewRenderUtility.camera == null) return;
+
 		Renderer renderer = _selectedBlockInstance.GetComponentInChildren<Renderer>();
 		if (renderer != null)
 		{
@@ -840,22 +843,32 @@ public class LevelEditorWindow : EditorWindow
 	// NOU: Calculează limitele tuturor blocurilor pentru centrare și focalizare
 	private Bounds CalculateLevelBounds()
 	{
-		if (_previewRoot == null || _previewRoot.transform.childCount == 0)
+		// Prioritizăm scena reală (_sceneRootGO) dacă este deschisă
+		GameObject root = _sceneRootGO != null ? _sceneRootGO : _previewRoot;
+
+		if (root == null || root.transform.childCount == 0)
 		{
 			return new Bounds(Vector3.zero, Vector3.one * 5);
 		}
 
-		var bounds = new Bounds();
-		var renderers = _previewRoot.GetComponentsInChildren<Renderer>();
-		if (renderers.Length > 0)
+		var renderers = root.GetComponentsInChildren<Renderer>();
+		if (renderers == null || renderers.Length == 0)
 		{
-			bounds = new Bounds(renderers[0].bounds.center, Vector3.zero);
-			foreach (var r in renderers)
+			// fallback: calculăm bounds din pozițiile copiilor dacă nu există renderer
+			var bounds = new Bounds(root.transform.GetChild(0).position, Vector3.zero);
+			for (int i = 0; i < root.transform.childCount; i++)
 			{
-				bounds.Encapsulate(r.bounds);
+				bounds.Encapsulate(root.transform.GetChild(i).position);
 			}
+			return bounds;
 		}
-		return bounds;
+
+		var b = new Bounds(renderers[0].bounds.center, Vector3.zero);
+		foreach (var r in renderers)
+		{
+			if (r != null) b.Encapsulate(r.bounds);
+		}
+		return b;
 	}
 
 	// NOU: Funcție pentru a focaliza camera pe nivel
@@ -864,8 +877,28 @@ public class LevelEditorWindow : EditorWindow
 		Bounds bounds = CalculateLevelBounds();
 		_previewPanOffset = Vector3.zero;
 
+		// Determinăm un FOV sigur: preferăm preview camera, apoi SceneView, apoi un fallback
+		float fov = 30f;
+		if (_previewRenderUtility != null && _previewRenderUtility.camera != null)
+		{
+			fov = _previewRenderUtility.camera.fieldOfView;
+		}
+		else
+		{
+#if UNITY_EDITOR
+			if (UnityEditor.SceneView.lastActiveSceneView != null && UnityEditor.SceneView.lastActiveSceneView.camera != null)
+			{
+				fov = UnityEditor.SceneView.lastActiveSceneView.camera.fieldOfView;
+			}
+#endif
+		}
+
 		float objectSize = bounds.size.magnitude;
-		float cameraDistance = objectSize / (2.0f * Mathf.Tan(0.5f * _previewRenderUtility.camera.fieldOfView * Mathf.Deg2Rad));
+		// Protecție contra divizare la zero (în caz de bounds foarte mici)
+		float denom = 2.0f * Mathf.Tan(0.5f * fov * Mathf.Deg2Rad);
+		if (denom <= 0.0001f) denom = 0.0001f;
+
+		float cameraDistance = objectSize / denom;
 
 		_previewZoom = Mathf.Clamp(cameraDistance, MIN_ZOOM, MAX_ZOOM);
 		Repaint();
