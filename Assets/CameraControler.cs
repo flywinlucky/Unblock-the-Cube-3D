@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 /// <summary>
 /// Controlează rotația unui obiect "target" în jurul centrului său geometric și zoom-ul camerei.
@@ -25,7 +26,7 @@ public class CameraControler : MonoBehaviour
     [Tooltip("Distanța minimă la care se poate apropia camera.")]
     public float minDistance = 3f;
     [Tooltip("Distanța maximă la care se poate depărta camera.")]
-    public float maxDistance = 50f; // Am mărit valoarea maximă pentru a permite obiecte mari
+    public float maxDistance = 50f;
     [Tooltip("Marginea lăsată în jurul obiectului la încadrare (ex: 1.2 = 20% buffer).")]
     public float frameBuffer = 1.5f;
 
@@ -39,18 +40,23 @@ public class CameraControler : MonoBehaviour
     private Vector2 _rotationInput;
     private Vector2 _smoothVelocity;
 
-    void Start()
+    // Schimbat în IEnumerator pentru a ne asigura că totul este inițializat corect
+    IEnumerator Start()
     {
         _mainCamera = Camera.main;
         if (target == null || _mainCamera == null)
         {
             Debug.LogError("Target-ul sau Camera principală nu au fost setate.", this);
             this.enabled = false;
-            return;
+            yield break; // Oprește execuția dacă ceva lipsește
         }
 
-        // Calculează și poziționează camera instantaneu la distanța optimă la pornire
-        FrameTarget(true);
+        // Așteptăm un singur frame pentru a permite tuturor obiectelor (cuburilor)
+        // să se inițializeze înainte de a calcula încadrarea.
+        yield return new WaitForEndOfFrame();
+
+        // Acum apelăm funcția de încadrare, care va acționa instantaneu.
+        FrameTarget();
     }
 
     void LateUpdate()
@@ -67,16 +73,14 @@ public class CameraControler : MonoBehaviour
         // Apasă F pentru a re-încadra instantaneu obiectul
         if (Input.GetKeyDown(KeyCode.F))
         {
-            FrameTarget(true);
+            FrameTarget();
         }
     }
 
     /// <summary>
-    /// Ajustează automat distanța camerei pentru a încadra perfect întregul obiect.
-    /// Apelează această funcție din alte scripturi când încarci un nou nivel sau schimbi target-ul.
+    /// Calculează și aplică INSTANTANEU poziția optimă a camerei pentru a încadra obiectul.
     /// </summary>
-    /// <param name="snapImmediately">Dacă este true, camera sare instantaneu la noua poziție. Altfel, se mișcă lin.</param>
-    public void FrameTarget(bool snapImmediately = false)
+    public void FrameTarget()
     {
         // Pasul 1: Calculează "cutia" invizibilă (Bounds) care înconjoară toți copiii
         Bounds totalBounds = new Bounds();
@@ -108,17 +112,16 @@ public class CameraControler : MonoBehaviour
         // Adăugăm un buffer pentru a nu fi exact la margine, folosind variabila publică
         float finalDistance = distanceToFit * frameBuffer;
 
-        // Pasul 3: Setăm noua distanță dorită, respectând limitele min/max
-        _desiredDistance = Mathf.Clamp(finalDistance, minDistance, maxDistance);
+        // Pasul 3: Setăm noua distanță și o aplicăm IMEDIAT
+        float targetDistance = Mathf.Clamp(finalDistance, minDistance, maxDistance);
 
-        if (snapImmediately)
-        {
-            _currentDistance = _desiredDistance;
-            // Poziționăm camera instantaneu
-            Vector3 directionFromCenter = (transform.position - _centerPoint).normalized;
-            if (directionFromCenter == Vector3.zero) directionFromCenter = -transform.forward; // O direcție de rezervă
-            transform.position = _centerPoint + directionFromCenter * _currentDistance;
-        }
+        // Setăm ambele distanțe (curentă și dorită) la aceeași valoare pentru a anula orice efect de Lerp
+        _desiredDistance = targetDistance;
+        _currentDistance = targetDistance;
+
+        // Poziționăm camera la distanța corectă de noul centru,
+        // menținând direcția curentă a camerei. LookAt() din LateUpdate va corecta unghiul.
+        transform.position = _centerPoint - transform.forward * _currentDistance;
     }
 
     /// <summary>
@@ -156,9 +159,11 @@ public class CameraControler : MonoBehaviour
             _desiredDistance = Mathf.Clamp(_desiredDistance, minDistance, maxDistance);
         }
 
+        // Zoom-ul cu scroll-ul rămâne lin, dar încadrarea este instantanee
         _currentDistance = Mathf.Lerp(_currentDistance, _desiredDistance, zoomDamping);
 
         Vector3 directionFromCenter = (transform.position - _centerPoint).normalized;
+        if (directionFromCenter == Vector3.zero) directionFromCenter = -transform.forward;
         transform.position = _centerPoint + directionFromCenter * _currentDistance;
     }
 }
