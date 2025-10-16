@@ -6,8 +6,17 @@ public class LevelDataEditor : Editor
 {
     public override void OnInspectorGUI()
     {
-        // Redesenăm interfața default. Câmpurile care nu mai există în LevelData vor dispărea automat.
-        base.DrawDefaultInspector();
+        // Desenăm toate proprietățile serializate, EXCEPȚIE "blocks" (blocurile sunt gestionate în LevelEditorWindow)
+        serializedObject.Update();
+        SerializedProperty prop = serializedObject.GetIterator();
+        bool enterChildren = true;
+        while (prop.NextVisible(enterChildren))
+        {
+            enterChildren = false;
+            if (prop.name == "blocks") continue; // sărim lista raw de block-uri
+            EditorGUILayout.PropertyField(prop, true);
+        }
+        serializedObject.ApplyModifiedProperties();
 
         EditorGUILayout.Space();
 

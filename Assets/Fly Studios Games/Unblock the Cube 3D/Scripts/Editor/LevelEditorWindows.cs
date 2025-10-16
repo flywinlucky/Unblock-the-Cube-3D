@@ -2,6 +2,8 @@
 using UnityEditor;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.SceneManagement;
+using UnityEngine.SceneManagement;
 
 public class LevelEditorWindow : EditorWindow
 {
@@ -36,6 +38,18 @@ public class LevelEditorWindow : EditorWindow
     // Unitatea grilei folosită pentru poziționarea blocurilor în preview (potrivita cu runtime)
     private float _gridUnitSize = 0.5f;
 
+    // Editor-scene integration
+    [Tooltip("If true, the editor scene will be opened automatically when the window is enabled.")]
+    private bool _autoOpenEditorScene = true;
+    private Scene _tempEditorScene;
+    private bool _editorSceneOpen = false;
+    private GameObject _sceneRootGO;
+    private const string TempSceneName = "LevelEditor_TempScene";
+
+    // snapshot pentru detectarea modificărilor din scena editor
+    private List<BlockData> _lastSceneSnapshot = new List<BlockData>();
+    private bool _suppressSceneSync = false; // pentru a evita bucle când populăm scena
+
     // --- Compatibilitate nume vechi ---
     // Unele părți ale codului foloseau nume alternative (_selectedInstance, _selectedIndex, CalculateBounds).
     // Pentru a evita erori de compilare le mapăm către variantele curente.
@@ -55,6 +69,84 @@ public class LevelEditorWindow : EditorWindow
     private Bounds CalculateBounds()
     {
         return CalculateLevelBounds();
+    }
+
+    // manager pentru lista nivelelor din proiect
+    private List<LevelData> _allLevels = new List<LevelData>();
+    private Vector2 _levelsScroll = Vector2.zero;
+
+    // dirty tracking
+    private bool _isDirty = false;
+
+    // --- ADĂUGATE: helper methods lipsă ---
+    // Reîncarcă lista de LevelData din proiect
+    private void RefreshLevelList()
+    {
+        _allLevels.Clear();
+        string[] guids = AssetDatabase.FindAssets("t:LevelData");
+        foreach (string g in guids)
+        {
+            string path = AssetDatabase.GUIDToAssetPath(g);
+            LevelData lvl = AssetDatabase.LoadAssetAtPath<LevelData>(path);
+            if (lvl != null) _allLevels.Add(lvl);
+        }
+    }
+
+    // Șterge asset-ul LevelData curent (cu confirmare) și actualizează lista
+    private void DeleteCurrentLevelAsset()
+    {
+        if (_currentLevel == null) return;
+        string path = AssetDatabase.GetAssetPath(_currentLevel);
+        if (string.IsNullOrEmpty(path))
+        {
+            Debug.LogWarning("Cannot delete level: invalid asset path.");
+            return;
+        }
+        if (!EditorUtility.DisplayDialog("Delete Level", $"Are you sure you want to delete {_currentLevel.name}?", "Delete", "Cancel"))
+            return;
+
+        bool success = AssetDatabase.DeleteAsset(path);
+        if (success)
+        {
+            AssetDatabase.SaveAssets();
+            _currentLevel = null;
+            RefreshLevelList();
+            RebuildPreview();
+            Debug.Log("Level asset deleted.");
+        }
+        else
+        {
+            Debug.LogWarning("Failed to delete level asset: " + path);
+        }
+    }
+
+    // Încearcă schimbarea selecției la un alt LevelData. Dacă există modificări nesalvate,
+    // întreabă utilizatorul. Returnează true dacă schimbarea a avut loc.
+    private bool TryChangeSelection(LevelData newLevel)
+    {
+        if (newLevel == _currentLevel) return true;
+
+        if (_isDirty && _currentLevel != null)
+        {
+            int choice = EditorUtility.DisplayDialogComplex("Unsaved changes", $"Save changes to {_currentLevel.name}?", "Save", "Don't Save", "Cancel");
+            if (choice == 0)
+            {
+                SaveChanges();
+            }
+            else if (choice == 2)
+            {
+                // Cancel
+                return false;
+            }
+            // If "Don't Save" (choice == 1) fallthrough and change selection
+        }
+
+        _currentLevel = newLevel;
+        DeselectBlock();
+        RebuildPreview();
+        _isDirty = false;
+        FocusCamera();
+        return true;
     }
 
     [MenuItem("Tools/Unblock Cube/Level Editor")]
@@ -100,12 +192,41 @@ public class LevelEditorWindow : EditorWindow
         {
             _blockPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
         }
+
+        RefreshLevelList();
+
+        // subscribe update pentru sincronizare scena -> LevelData
+        EditorApplication.update -= EditorUpdate;
+        EditorApplication.update += EditorUpdate;
+
+        // Dacă cerem auto-open, deschidem scena editor (single mode) automat
+        if (_autoOpenEditorScene)
+        {
+            OpenLevelInScene(singleMode: true);
+        }
     }
 
     private void OnDisable()
     {
         _previewRenderUtility.Cleanup();
         _previewRenderUtility = null;
+        // unsubscribe update și închidem scena editor dacă e deschisă
+        EditorApplication.update -= EditorUpdate;
+
+        // Prompt save la închiderea ferestrei dacă avem modificări nesalvate
+        if (_isDirty && _currentLevel != null)
+        {
+            int choice = EditorUtility.DisplayDialogComplex("Unsaved changes", $"Save changes to {_currentLevel.name}?", "Save", "Don't Save", "Cancel");
+            if (choice == 0) SaveChanges();
+            else if (choice == 2)
+            {
+                // dacă utilizatorul a ales Cancel, păstrăm scena deschisă (nu închidem acum)
+                // pentru simplitate aici nu re-opens scena, doar avertizăm
+                Debug.Log("Close canceled - unsaved changes remain.");
+            }
+        }
+
+        if (_editorSceneOpen) CloseEditorScene();
     }
 
     #endregion
@@ -125,6 +246,12 @@ public class LevelEditorWindow : EditorWindow
         EditorGUILayout.BeginHorizontal(EditorStyles.toolbar);
         if (GUILayout.Button("New Level", EditorStyles.toolbarButton)) CreateNewLevelAsset();
         if (GUILayout.Button("Save Changes", EditorStyles.toolbarButton)) SaveChanges();
+        // Buton pentru deschiderea nivelului în Scene view (editor normal)
+        if (GUILayout.Button(_editorSceneOpen ? "Close Scene" : "Open In Scene", EditorStyles.toolbarButton))
+        {
+            if (!_editorSceneOpen) OpenLevelInScene(singleMode: true);
+            else CloseEditorScene();
+        }
         GUILayout.FlexibleSpace();
         if (GUILayout.Button("Rebuild Preview", EditorStyles.toolbarButton))
         {
@@ -136,6 +263,33 @@ public class LevelEditorWindow : EditorWindow
     private void DrawPropertiesPanel()
     {
         EditorGUILayout.BeginVertical(GUILayout.Width(300));
+
+        EditorGUILayout.LabelField("Levels", EditorStyles.boldLabel);
+
+        // Lista nivelelor din proiect
+        EditorGUILayout.BeginHorizontal();
+        if (GUILayout.Button("Refresh")) RefreshLevelList();
+        if (GUILayout.Button("New")) CreateNewLevelAsset();
+        if (_currentLevel != null && GUILayout.Button("Delete")) { if (EditorUtility.DisplayDialog("Delete Level", $"Delete {_currentLevel.name}?", "Yes", "No")) DeleteCurrentLevelAsset(); }
+        EditorGUILayout.EndHorizontal();
+
+        _levelsScroll = EditorGUILayout.BeginScrollView(_levelsScroll, GUILayout.Height(120));
+        for (int i = 0; i < _allLevels.Count; i++)
+        {
+            LevelData lvl = _allLevels[i];
+            if (lvl == null) continue;
+            EditorGUILayout.BeginHorizontal();
+            bool isSelected = (lvl == _currentLevel);
+            if (GUILayout.Toggle(isSelected, lvl.name, "Button"))
+            {
+                if (_currentLevel != lvl) { if (!TryChangeSelection(lvl)) break; }
+            }
+            EditorGUILayout.EndHorizontal();
+        }
+        EditorGUILayout.EndScrollView();
+
+        EditorGUILayout.Space(8);
+
         EditorGUILayout.LabelField("Editor Settings", EditorStyles.boldLabel);
 
         // Permitem ajustarea unității grilei în editor (corelează cu gridRuntime de 0.5)
@@ -180,6 +334,8 @@ public class LevelEditorWindow : EditorWindow
                 SaveChanges();
                 FocusCamera();
                 Debug.Log("Level generated and preview updated!");
+                // NOU: populăm scena editor dacă este deschisă
+                if (_editorSceneOpen) PopulateEditorScene();
             }
             EditorGUI.EndDisabledGroup();
 
@@ -529,6 +685,8 @@ public class LevelEditorWindow : EditorWindow
         {
             EditorUtility.SetDirty(_currentLevel);
             AssetDatabase.SaveAssets();
+            _isDirty = false;
+            Debug.Log($"Saved Level {_currentLevel.name}");
         }
     }
 
@@ -545,6 +703,159 @@ public class LevelEditorWindow : EditorWindow
         EditorUtility.FocusProjectWindow();
         Selection.activeObject = newLevel;
         RebuildPreview();
+    }
+
+    // Deschide o scenă (single sau additive) și populează ea cu blocuri
+    private void OpenLevelInScene(bool singleMode = true)
+    {
+        if (_currentLevel == null)
+        {
+            // nu avem nivel încă selectat, dar tot putem crea o scenă goală
+            if (!EditorUtility.DisplayDialog("Open Editor Scene", "No Level selected. Open empty editor scene anyway?", "Yes", "No")) return;
+        }
+
+        // dacă deja e deschis, facem nothing
+        if (_editorSceneOpen) return;
+
+        // Creeăm/Deschidem scena în modul single (pentru a rula ca scena full editor)
+        _tempEditorScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+        _tempEditorScene.name = TempSceneName;
+
+        // Root container
+        _sceneRootGO = new GameObject("LevelEditorSceneRoot");
+        SceneManager.MoveGameObjectToScene(_sceneRootGO, _tempEditorScene);
+
+        // Populam scena cu date actuale
+        PopulateEditorScene();
+        _editorSceneOpen = true;
+
+        // focus în SceneView
+        Selection.activeGameObject = _sceneRootGO;
+     
+    }
+
+    // Populează scena editor cu prefab-urile reale, reflectând LevelData
+    private void PopulateEditorScene()
+    {
+        if (_sceneRootGO == null) return;
+        _suppressSceneSync = true; // prevenim sincronizarea în timp ce modificăm scena
+
+        // curățăm vechiul conținut
+        for (int i = _sceneRootGO.transform.childCount - 1; i >= 0; i--)
+            DestroyImmediate(_sceneRootGO.transform.GetChild(i).gameObject);
+
+        if (_currentLevel == null || _blockPrefab == null)
+        {
+            _suppressSceneSync = false;
+            return;
+        }
+
+        var blocks = _currentLevel.GetBlocks();
+        for (int i = 0; i < blocks.Count; i++)
+        {
+            var data = blocks[i];
+            GameObject inst = (GameObject)PrefabUtility.InstantiatePrefab(_blockPrefab);
+            inst.transform.SetParent(_sceneRootGO.transform);
+            inst.transform.position = (Vector3)data.position * _gridUnitSize;
+            inst.transform.rotation = GetStableLookRotation(data.direction) * data.randomVisualRotation;
+            // asigurăm collider pentru interacțiune
+            if (inst.GetComponentInChildren<Collider>(true) == null) inst.AddComponent<BoxCollider>();
+            // mark prefab instance saved to scene
+            EditorUtility.SetDirty(inst);
+        }
+
+        // cache snapshot
+        CacheSceneSnapshot();
+        _suppressSceneSync = false;
+    }
+
+    // Închide scena temporară
+    private void CloseEditorScene()
+    {
+        if (!_editorSceneOpen) return;
+        if (_sceneRootGO != null) DestroyImmediate(_sceneRootGO);
+        if (_tempEditorScene.IsValid())
+        {
+            EditorSceneManager.CloseScene(_tempEditorScene, true);
+        }
+        _editorSceneOpen = false;
+        _sceneRootGO = null;
+        _tempEditorScene = default;
+        _lastSceneSnapshot.Clear();
+    }
+
+    // Cache current scene content from _sceneRootGO into _lastSceneSnapshot
+    private void CacheSceneSnapshot()
+    {
+        _lastSceneSnapshot.Clear();
+        if (_sceneRootGO == null) return;
+        for (int i = 0; i < _sceneRootGO.transform.childCount; i++)
+        {
+            Transform t = _sceneRootGO.transform.GetChild(i);
+            Vector3Int gridPos = Vector3Int.RoundToInt(t.position / _gridUnitSize);
+            MoveDirection dir = GetDirectionFromForward(t.forward);
+            BlockData bd = new BlockData { position = gridPos, direction = dir, randomVisualRotation = Quaternion.identity };
+            _lastSceneSnapshot.Add(bd);
+        }
+    }
+
+    // Periodic update: detect changes in scene and write back to LevelData
+    private void EditorUpdate()
+    {
+        if (!_editorSceneOpen || _suppressSceneSync) return;
+        if (_sceneRootGO == null || _currentLevel == null) return;
+
+        // build snapshot from scene
+        var newSnapshot = new List<BlockData>();
+        for (int i = 0; i < _sceneRootGO.transform.childCount; i++)
+        {
+            Transform t = _sceneRootGO.transform.GetChild(i);
+            Vector3Int gridPos = Vector3Int.RoundToInt(t.position / _gridUnitSize);
+            MoveDirection dir = GetDirectionFromForward(t.forward);
+            newSnapshot.Add(new BlockData { position = gridPos, direction = dir, randomVisualRotation = Quaternion.identity });
+        }
+
+        // compare with last snapshot (simple equality)
+        if (!AreBlockListsEqual(_lastSceneSnapshot, newSnapshot))
+        {
+            // actualizăm LevelData (rescriem lista)
+            var blocksList = _currentLevel.GetBlocks();
+            blocksList.Clear();
+            foreach (var b in newSnapshot)
+            {
+                blocksList.Add(b);
+            }
+            // NU mai salvăm automat pe disc; marcam ca dirty și actualizăm preview
+            EditorUtility.SetDirty(_currentLevel);
+            _isDirty = true;
+
+            // actualizăm preview pentru a reflecta schimbările
+            RebuildPreview();
+
+            // cache noul snapshot
+            _lastSceneSnapshot = new List<BlockData>(newSnapshot);
+        }
+    }
+
+    private bool AreBlockListsEqual(List<BlockData> a, List<BlockData> b)
+    {
+        if (a == null && b == null) return true;
+        if (a == null || b == null) return false;
+        if (a.Count != b.Count) return false;
+        for (int i = 0; i < a.Count; i++)
+        {
+            if (a[i].position != b[i].position) return false;
+            if (a[i].direction != b[i].direction) return false;
+        }
+        return true;
+    }
+
+    private MoveDirection GetDirectionFromForward(Vector3 fwd)
+    {
+        Vector3 abs = new Vector3(Mathf.Abs(fwd.x), Mathf.Abs(fwd.y), Mathf.Abs(fwd.z));
+        if (abs.x >= abs.y && abs.x >= abs.z) return fwd.x >= 0 ? MoveDirection.Right : MoveDirection.Left;
+        if (abs.y >= abs.x && abs.y >= abs.z) return fwd.y >= 0 ? MoveDirection.Up : MoveDirection.Down;
+        return fwd.z >= 0 ? MoveDirection.Forward : MoveDirection.Back;
     }
 
     #endregion
