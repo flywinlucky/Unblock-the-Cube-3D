@@ -27,7 +27,7 @@ public class CameraControler : MonoBehaviour
     [Tooltip("Distanța maximă la care se poate depărta camera.")]
     public float maxDistance = 50f; // Am mărit valoarea maximă pentru a permite obiecte mari
     [Tooltip("Marginea lăsată în jurul obiectului la încadrare (ex: 1.2 = 20% buffer).")]
-    public float frameBuffer = 1.2f;
+    public float frameBuffer = 1.5f;
 
     // --- Variabile Private ---
     private Vector3 _centerPoint;
