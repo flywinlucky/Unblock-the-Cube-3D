@@ -102,10 +102,16 @@ public class LevelManager : MonoBehaviour
         smashCount = PlayerPrefs.GetInt(SmashKey, smashCount);
         if (uiManager != null) uiManager.UpdatePowerUpCounts(undoCount, smashCount);
 
+        // Asigurăm starea inițială a rotației camerei (dacă există)
+        if (cameraControler != null)
+        {
+            cameraControler.rotationEnabled = true;
+        }
+
         // Generăm nivelul curent (dacă există)
         GenerateLevel();
     }
-
+    
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -341,6 +347,7 @@ public class LevelManager : MonoBehaviour
         if (uiManager != null && uiManager.shop_panel != null)
         {
             uiManager.shop_panel.SetActive(true);
+            if (cameraControler != null) cameraControler.rotationEnabled = false;
         }
     }
 
@@ -360,6 +367,7 @@ public class LevelManager : MonoBehaviour
         if (uiManager != null && uiManager.shop_panel != null)
         {
             uiManager.shop_panel.SetActive(false);
+            if (cameraControler != null) cameraControler.rotationEnabled = true;
         }
     }
 

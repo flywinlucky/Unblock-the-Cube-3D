@@ -30,6 +30,9 @@ public class CameraControler : MonoBehaviour
     [Tooltip("Marginea lăsată în jurul obiectului la încadrare (ex: 1.2 = 20% buffer).")]
     public float frameBuffer = 1.5f;
 
+    [Tooltip("Permite rotația target-ului prin input. Dezactivează pentru UI modal (ex: shop).")]
+    public bool rotationEnabled = true;
+
     // --- Variabile Private ---
     private Vector3 _centerPoint;
     private float _currentDistance;
@@ -125,6 +128,9 @@ public class CameraControler : MonoBehaviour
     /// </summary>
     private void HandleRotation()
     {
+        // dacă rotația este dezactivată (de ex. shop deschis), nu procesa input-ul
+        if (!rotationEnabled) return;
+
         // Preluăm input-ul brut de la mouse doar dacă un buton este apăsat
         Vector2 rawInput = Vector2.zero;
         if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
