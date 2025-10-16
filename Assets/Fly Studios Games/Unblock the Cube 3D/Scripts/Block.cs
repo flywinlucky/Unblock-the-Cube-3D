@@ -63,7 +63,7 @@ public class Block : MonoBehaviour
         Vector3 targetPosition;
         bool shouldBeDestroyed = false;
 
-        if (Physics.Raycast(transform.position, direction, out hit, 100f))
+        if (Physics.Raycast(transform.position, direction, out hit, 1f))
         {
             targetPosition = hit.transform.position - direction * _gridUnitSize;
             if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
