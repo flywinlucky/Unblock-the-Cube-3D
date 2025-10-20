@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23837d9990ab88543a65be48b167f91b, type: 3}
   m_Name: Level_2
   m_EditorClassIdentifier: 
-  difficulty: 3
+  difficulty: 0
   customGridSize: 3
   seed: 1
   blocks:

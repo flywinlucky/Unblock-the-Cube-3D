@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 public enum MoveDirection { Forward, Back, Up, Down, Left, Right }
-public enum Difficulty { Easy, Normal, Hard, Custom }
+public enum Difficulty { Custom }
 
 [System.Serializable]
 public class BlockData
@@ -17,7 +17,7 @@ public class BlockData
 public class LevelData : ScriptableObject
 {
     [Header("Generation Settings")]
-    public Difficulty difficulty;
+    public Difficulty difficulty = Difficulty.Custom;
     public int customGridSize = 4;
     public int seed = 0;
 
@@ -28,14 +28,7 @@ public class LevelData : ScriptableObject
 
     public int GetGridSize()
     {
-        switch (difficulty)
-        {
-            case Difficulty.Easy: return 3;
-            case Difficulty.Normal: return 5;
-            case Difficulty.Hard: return 7;
-            case Difficulty.Custom: return Mathf.Max(2, customGridSize);
-            default: return 5;
-        }
+        return Mathf.Max(2, customGridSize);
     }
 
     public void Generate() { GenerateCubeShape(); }
