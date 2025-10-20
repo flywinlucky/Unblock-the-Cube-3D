@@ -54,10 +54,8 @@ public class SafeArea : MonoBehaviour
         // Setăm ancorele RectTransform-ului pentru a se potrivi exact cu zona sigură
         _panel.anchorMin = anchorMin;
         _panel.anchorMax = anchorMax;
-        
+
         // Actualizăm ultima zonă sigură cunoscută
         _lastSafeArea = safeArea;
-        
-        Debug.Log($"Safe Area Applied: Min({anchorMin.x:F2}, {anchorMin.y:F2}) Max({anchorMax.x:F2}, {anchorMax.y:F2})");
     }
 }
