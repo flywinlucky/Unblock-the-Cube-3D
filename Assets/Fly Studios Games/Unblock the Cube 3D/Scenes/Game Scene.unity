@@ -3180,7 +3180,6 @@ GameObject:
   - component: {fileID: 963194228}
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
-  - component: {fileID: 963194229}
   - component: {fileID: 963194230}
   m_Layer: 0
   m_Name: Main Camera
@@ -3255,18 +3254,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 17.374, y: 0, z: 0}
---- !u!114 &963194229
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 963194225}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f067cc2a45bab5e44a0b6ffc3efa5511, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &963194230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4412,7 +4399,7 @@ MonoBehaviour:
   audioManager: {fileID: 514135127}
   notificationManager: {fileID: 1843099098}
   shopManager: {fileID: 741568006}
-  cameraControler: {fileID: 0}
+  cameraControler: {fileID: 963194230}
   gridUnitSize: 0.5
   coinsPerLevel: 5
   maxUndo: 20
