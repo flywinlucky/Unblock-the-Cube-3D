@@ -21,8 +21,7 @@ public class LevelData : ScriptableObject
     public int customGridSize = 4;
     public int seed = 0;
 
-    [Header("Block Data")]
-    [SerializeField] private List<BlockData> blocks = new List<BlockData>();
+    private List<BlockData> blocks = new List<BlockData>();
 
     public List<BlockData> GetBlocks() => blocks;
 

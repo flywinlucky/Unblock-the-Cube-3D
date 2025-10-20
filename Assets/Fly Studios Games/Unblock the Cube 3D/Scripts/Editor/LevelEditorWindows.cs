@@ -102,7 +102,6 @@ public class LevelEditorWindow : EditorWindow
 			AssetDatabase.SaveAssets();
 			_currentLevel = null;
 			RefreshLevelList();
-			RebuildPreview();
 			Debug.Log("Level asset deleted.");
 		}
 		else
@@ -129,7 +128,6 @@ public class LevelEditorWindow : EditorWindow
 				// Cancel
 				return false;
 			}
-			// If "Don't Save" (choice == 1) fallthrough and change selection
 		}
 
 		_currentLevel = newLevel;
@@ -138,10 +136,6 @@ public class LevelEditorWindow : EditorWindow
 		if (_editorSceneOpen)
 		{
 			PopulateEditorScene();
-		}
-		else
-		{
-			RebuildPreview(); // menținem compatibilitatea (nu face preview offscreen acum)
 		}
 
 		_isDirty = false;
@@ -211,7 +205,7 @@ public class LevelEditorWindow : EditorWindow
 		DrawToolbar();
 		EditorGUILayout.BeginHorizontal();
 		DrawPropertiesPanel();
-		DrawPreviewPanel(); // acum afișează controale simple pentru scenă
+ 
 		EditorGUILayout.EndHorizontal();
 	}
 
@@ -221,30 +215,20 @@ public class LevelEditorWindow : EditorWindow
 		EditorGUILayout.BeginHorizontal(EditorStyles.toolbar);
 		if (GUILayout.Button("New Level", EditorStyles.toolbarButton)) CreateNewLevelAsset();
 		if (GUILayout.Button("Save Changes", EditorStyles.toolbarButton)) SaveChanges();
-		// Buton pentru deschiderea nivelului în Scene view (editor normal)
-		if (GUILayout.Button(_editorSceneOpen ? "Close Scene" : "Open In Scene", EditorStyles.toolbarButton))
-		{
-			if (!_editorSceneOpen) OpenLevelInScene(singleMode: true);
-			else CloseEditorScene();
-		}
+		if (GUILayout.Button("Refresh", EditorStyles.toolbarButton)) RefreshLevelList();
+
+
 		GUILayout.FlexibleSpace();
-		if (GUILayout.Button("Rebuild Preview", EditorStyles.toolbarButton))
-		{
-			if (_currentLevel != null) RebuildPreview();
-		}
 		EditorGUILayout.EndHorizontal();
 	}
 
 	private void DrawPropertiesPanel()
 	{
 		EditorGUILayout.BeginVertical(GUILayout.Width(300));
-
 		EditorGUILayout.LabelField("Levels", EditorStyles.boldLabel);
 
 		// Lista nivelelor din proiect (afișare mai curată)
 		EditorGUILayout.BeginHorizontal();
-		if (GUILayout.Button("Refresh", GUILayout.Width(80))) RefreshLevelList();
-		if (GUILayout.Button("New", GUILayout.Width(80))) CreateNewLevelAsset();
 		if (_currentLevel != null && GUILayout.Button("Delete", GUILayout.Width(80)))
 		{
 			if (EditorUtility.DisplayDialog("Delete Level", $"Delete {_currentLevel.name}?", "Yes", "No"))
@@ -282,7 +266,6 @@ public class LevelEditorWindow : EditorWindow
 		{
 			_blockPrefab = newPrefab;
 			EditorPrefs.SetString(_blockPrefabPathKey, _blockPrefab != null ? AssetDatabase.GetAssetPath(_blockPrefab) : "");
-			RebuildPreview();
 		}
 
 		EditorGUILayout.Space(15);
@@ -293,7 +276,6 @@ public class LevelEditorWindow : EditorWindow
 		if (newLevel != _currentLevel)
 		{
 			_currentLevel = newLevel;
-			RebuildPreview();
 			FocusCamera();
 		}
 
@@ -311,7 +293,6 @@ public class LevelEditorWindow : EditorWindow
 			if (GUILayout.Button("Generate New Level", GUILayout.Height(30)))
 			{
 				_currentLevel.Generate();
-				RebuildPreview();
 				SaveChanges();
 				FocusCamera();
 				Debug.Log("Level generated and preview updated!");
@@ -333,75 +314,11 @@ public class LevelEditorWindow : EditorWindow
 	}
 
 	// Înlocuim implementarea dibuirii panoului preview cu un UI simplificat
-	private void DrawPreviewPanel()
-	{
-		EditorGUILayout.BeginVertical(_previewBoxStyle, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
-
-		EditorGUILayout.LabelField("Scene Controls", EditorStyles.boldLabel);
-
-		EditorGUILayout.Space();
-
-		GUILayout.BeginHorizontal();
-		if (!_editorSceneOpen)
-		{
-			if (GUILayout.Button("Open Level Scene", GUILayout.Height(30)))
-			{
-				OpenLevelInScene(singleMode: true);
-			}
-		}
-		else
-		{
-			if (GUILayout.Button("Close Level Scene", GUILayout.Height(30)))
-			{
-				CloseEditorScene();
-			}
-		}
-		GUILayout.EndHorizontal();
-
-		EditorGUILayout.Space();
-
-		if (GUILayout.Button("Populate/Sync Scene", GUILayout.Height(26)))
-		{
-			if (_editorSceneOpen) PopulateEditorScene();
-			else EditorUtility.DisplayDialog("Info", "Open the Level Editor scene first to populate it.", "OK");
-		}
-
-		if (GUILayout.Button("Rebuild Level", GUILayout.Height(26)))
-		{
-			if (_currentLevel != null)
-			{
-				_currentLevel.Generate();
-				_isDirty = true;
-				SaveChanges();
-				RebuildPreview();
-			}
-		}
-
-		EditorGUILayout.Space();
-
-		if (GUILayout.Button("Focus Scene Root", GUILayout.Height(24)))
-		{
-			if (_sceneRootGO != null) Selection.activeGameObject = _sceneRootGO;
-			else EditorUtility.DisplayDialog("Info", "Scene root not found. Open Level Editor scene or populate it.", "OK");
-		}
-
-		EditorGUILayout.EndVertical();
-	}
+	
 
 	#endregion
 
 	#region Logică Tool
-
-	// RebuildPreview: acum în loc să construiască un preview offscreen, sincronizăm scena editor reală (dacă e deschisă)
-	private void RebuildPreview()
-	{
-		// nu mai construim preview intern; dacă scena editor e deschisă, actualizăm conținutul ei
-		if (_editorSceneOpen)
-		{
-			PopulateEditorScene();
-		}
-		Repaint();
-	}
 
 	private void SaveChanges()
 	{
@@ -426,7 +343,6 @@ public class LevelEditorWindow : EditorWindow
 		_currentLevel = newLevel;
 		EditorUtility.FocusProjectWindow();
 		Selection.activeObject = newLevel;
-		RebuildPreview();
 	}
 
 	// Deschide o scenă (single sau additive) și populează ea cu blocuri
@@ -579,9 +495,6 @@ public class LevelEditorWindow : EditorWindow
 			// NU mai salvăm automat pe disc; marcam ca dirty și actualizăm preview
 			EditorUtility.SetDirty(_currentLevel);
 			_isDirty = true;
-
-			// actualizăm preview pentru a reflecta schimbările
-			RebuildPreview();
 
 			// cache noul snapshot
 			_lastSceneSnapshot = new List<BlockData>(newSnapshot);

@@ -16,14 +16,8 @@ MonoBehaviour:
   customGridSize: 3
   seed: 18
   blocks:
-  - position: {x: -1, y: -1, z: -1}
-    direction: 1
-    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
   - position: {x: -1, y: -1, z: 0}
     direction: 2
-    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
-  - position: {x: -1, y: -1, z: 1}
-    direction: 1
     randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
   - position: {x: -1, y: 0, z: -1}
     direction: 0
@@ -34,14 +28,8 @@ MonoBehaviour:
   - position: {x: -1, y: 0, z: 1}
     direction: 1
     randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
-  - position: {x: -1, y: 1, z: -1}
-    direction: 1
-    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
   - position: {x: -1, y: 1, z: 0}
     direction: 2
-    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
-  - position: {x: -1, y: 1, z: 1}
-    direction: 0
     randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
   - position: {x: 0, y: -1, z: -1}
     direction: 3
