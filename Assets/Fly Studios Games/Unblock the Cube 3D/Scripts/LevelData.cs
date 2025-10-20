@@ -18,6 +18,7 @@ public class LevelData : ScriptableObject
 {
     [Header("Generation Settings")]
     private Difficulty difficulty = Difficulty.Custom;
+    [Range(2, 5)]
     public int customGridSize = 0;
     public int seed = 0;
 
