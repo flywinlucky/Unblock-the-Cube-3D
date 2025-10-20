@@ -39,6 +39,8 @@ public class LevelManager : MonoBehaviour
     public int coinsPerLevel = 5; // poți schimba în inspector
 
     private const string CoinsKey = "PlayerCoins";
+    private const string LevelNumberKey = "PlayerLevelNumber"; // persistence key for global level counter
+    private int _overallLevelNumber = 1; // persistent global level number shown to player
 
     // NOU: Undo stack - păstrează ultimele mov-uri / distrugeri
     private struct MoveRecord
@@ -69,6 +71,16 @@ public class LevelManager : MonoBehaviour
     private const string UndoKey = "PlayerUndo";
     private const string SmashKey = "PlayerSmash";
 
+    [Header("Random Cycle Settings")]
+    [Tooltip("Comma-separated list of level indices to IGNORE when doing random cycling (e.g. \"0,2,5\"). Indices out of range are ignored.")]
+    public string ignoredLevelIndicesCSV = "0"; // implicit ignorăm indexul 0 (opțional)
+    [Tooltip("When the sequential list ends, enable infinite random cycling through allowed levels.")]
+    public bool enableRandomCycleOnEnd = true;
+
+    // runtime cache
+    private HashSet<int> _ignoredIndices = new HashSet<int>();
+    private List<int> _allowedRandomIndices = new List<int>();
+
     // Helper: returnează LevelData curent sau null
     private LevelData GetCurrentLevelData()
     {
@@ -78,10 +90,10 @@ public class LevelManager : MonoBehaviour
         return levelList[currentLevelIndex];
     }
 
-    // Actualizează numărul afișat pentru nivel (folosim index+1)
+    // Actualizează numărul afișat pentru nivel (folosim contorul global)
     private void UpdateCurrentLevelNumber()
     {
-        _currentLevelNumber = currentLevelIndex + 1;
+        _currentLevelNumber = _overallLevelNumber;
         if (uiManager != null) uiManager.UpdateLevelDisplay(_currentLevelNumber);
     }
 
@@ -93,6 +105,9 @@ public class LevelManager : MonoBehaviour
             uiManager.UpdateGlobalCoinsDisplay(GetCoins());
             uiManager.UpdateWinCoinsDisplay(0); // resetează textul din panelul de win la start
         }
+
+        // Load overall level number from PlayerPrefs before updating display
+        _overallLevelNumber = PlayerPrefs.GetInt(LevelNumberKey, 1);
 
         // Actualizăm numărul curent de nivel (va apela și UpdateLevelDisplay)
         UpdateCurrentLevelNumber();
@@ -280,13 +295,32 @@ public class LevelManager : MonoBehaviour
         if (levelList != null && currentLevelIndex + 1 < levelList.Count)
         {
             currentLevelIndex++;
+            // incrementăm contorul global pentru a arăta progres continuu
+            AdvanceOverallLevelNumber();
             UpdateCurrentLevelNumber();
             GenerateLevel();
         }
         else
         {
-            Debug.Log("Ai terminat toate nivelele din listă!");
-            // Poți adăuga aici logică pentru restart / meniuri etc.
+            // Am ajuns la sfârșit secvențial.
+            if (enableRandomCycleOnEnd && levelList != null && levelList.Count > 0)
+            {
+                // Asigurăm că cache-ul de indici e actual (în caz că user a schimbat CSV în runtime)
+                ParseIgnoredIndicesAndBuildAllowed();
+
+                // incrementăm contorul global (fiecare trecere contează)
+                AdvanceOverallLevelNumber();
+
+                int nextIdx = GetRandomNextLevelIndex(excludeCurrent: true);
+                currentLevelIndex = nextIdx;
+                UpdateCurrentLevelNumber();
+                GenerateLevel();
+            }
+            else
+            {
+                Debug.Log("Ai terminat toate nivelele din listă!");
+                // Poți adăuga aici logică pentru restart / meniuri etc.
+            }
         }
 
         _isTransitioning = false;
@@ -329,13 +363,27 @@ public class LevelManager : MonoBehaviour
         if (levelList != null && currentLevelIndex + 1 < levelList.Count)
         {
             currentLevelIndex++;
+            AdvanceOverallLevelNumber();
             UpdateCurrentLevelNumber();
             GenerateLevel();
         }
         else
         {
-            Debug.Log("Nu există nivel următor. Ai terminat toate nivelele din listă!");
-            // Poți deschide shop sau afișa ecran final aici
+            // final secvență => random cycle if enabled
+            if (enableRandomCycleOnEnd && levelList != null && levelList.Count > 0)
+            {
+                ParseIgnoredIndicesAndBuildAllowed();
+                AdvanceOverallLevelNumber();
+                int nextIdx = GetRandomNextLevelIndex(excludeCurrent: true);
+                currentLevelIndex = nextIdx;
+                UpdateCurrentLevelNumber();
+                GenerateLevel();
+            }
+            else
+            {
+                Debug.Log("Nu există nivel următor. Ai terminat toate nivelele din listă!");
+                // Poți deschide shop sau afișa ecran final aici
+            }
         }
 
         _isTransitioning = false;
@@ -591,5 +639,91 @@ public class LevelManager : MonoBehaviour
     private float _GetGridDetectionDistance(Block b)
     {
         return gridUnitSize * 0.6f; // detectăm obstacol imediat din față
+    }
+
+    // Parse CSV în _ignoredIndices și construiește _allowedRandomIndices cu validări
+    private void ParseIgnoredIndicesAndBuildAllowed()
+    {
+        _ignoredIndices.Clear();
+        _allowedRandomIndices.Clear();
+
+        if (string.IsNullOrWhiteSpace(ignoredLevelIndicesCSV))
+        {
+            // nimic de ignorat
+        }
+        else
+        {
+            var parts = ignoredLevelIndicesCSV.Split(',');
+            foreach (var p in parts)
+            {
+                string t = p.Trim();
+                if (string.IsNullOrEmpty(t)) continue;
+                int val;
+                if (!int.TryParse(t, out val))
+                {
+                    Debug.LogWarning($"Ignored level index '{t}' is not a valid integer and will be ignored.");
+                    continue;
+                }
+                if (val < 0)
+                {
+                    Debug.LogWarning($"Ignored level index '{val}' is negative and will be ignored.");
+                    continue;
+                }
+                _ignoredIndices.Add(val);
+            }
+        }
+
+        // Construim lista de indici permisi pe baza levelList actual
+        if (levelList != null && levelList.Count > 0)
+        {
+            for (int i = 0; i < levelList.Count; i++)
+            {
+                if (!_ignoredIndices.Contains(i))
+                    _allowedRandomIndices.Add(i);
+            }
+        }
+
+        // Dacă nu avem indici permisi, fallback la toate indici validi (exceptare: păstrăm ignorările doar ca warning)
+        if ((_allowedRandomIndices == null || _allowedRandomIndices.Count == 0) && levelList != null && levelList.Count > 0)
+        {
+            Debug.LogWarning("No allowed random indices after parsing ignoredLevelIndicesCSV. Falling back to all level indices.");
+            _allowedRandomIndices = new List<int>();
+            for (int i = 0; i < levelList.Count; i++) _allowedRandomIndices.Add(i);
+        }
+    }
+
+    // Returnează un index ales aleator din allowed list. Dacă excludeCurrent=true încearcă să nu aleagă același index imediat (dacă e posibil).
+    private int GetRandomNextLevelIndex(bool excludeCurrent = true)
+    {
+        if (_allowedRandomIndices == null || _allowedRandomIndices.Count == 0)
+        {
+            // fallback: toate indici validi
+            if (levelList == null || levelList.Count == 0) return 0;
+            return Random.Range(0, levelList.Count);
+        }
+
+        // dacă există mai mult de un candidat și vrem să excludem curentul, filtrăm temporar
+        List<int> candidates = _allowedRandomIndices;
+        if (excludeCurrent && candidates.Count > 1)
+        {
+            candidates = candidates.FindAll(i => i != currentLevelIndex);
+            if (candidates.Count == 0)
+            {
+                // nu putem exclude curentul (doar el era permis)
+                candidates = new List<int>(_allowedRandomIndices);
+            }
+        }
+
+        int pick = candidates[Random.Range(0, candidates.Count)];
+        return Mathf.Clamp(pick, 0, Mathf.Max(0, levelList != null ? levelList.Count - 1 : 0));
+    }
+
+    // Increment global level counter, persist and update UI
+    private void AdvanceOverallLevelNumber()
+    {
+        _overallLevelNumber = Mathf.Max(1, _overallLevelNumber) + 1;
+        PlayerPrefs.SetInt(LevelNumberKey, _overallLevelNumber);
+        PlayerPrefs.Save();
+        UpdateCurrentLevelNumber();
     }
 }
