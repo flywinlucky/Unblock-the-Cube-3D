@@ -178,9 +178,6 @@ public class LevelEditorWindow : EditorWindow
 
 	private void OnDisable()
 	{
-		// _previewRenderUtility.Cleanup();
-		// _previewRenderUtility = null;
-		// unsubscribe update
 		EditorApplication.update -= EditorUpdate;
 
 		// Prompt save la închiderea ferestrei dacă avem modificări nesalvate
@@ -204,8 +201,7 @@ public class LevelEditorWindow : EditorWindow
 	{
 		DrawToolbar();
 		EditorGUILayout.BeginHorizontal();
-		DrawPropertiesPanel();
- 
+		DrawPropertiesPanel(); // Acum ocupă întreaga zonă a ferestrei
 		EditorGUILayout.EndHorizontal();
 	}
 
@@ -217,6 +213,43 @@ public class LevelEditorWindow : EditorWindow
 		if (GUILayout.Button("Save Changes", EditorStyles.toolbarButton)) SaveChanges();
 		if (GUILayout.Button("Refresh", EditorStyles.toolbarButton)) RefreshLevelList();
 
+		if (!_editorSceneOpen)
+		{
+			if (GUILayout.Button("Open Level Scene", EditorStyles.toolbarButton))
+			{
+				OpenLevelInScene(singleMode: true);
+			}
+		}
+		else
+		{
+			if (GUILayout.Button("Close Level Scene", EditorStyles.toolbarButton))
+			{
+				CloseEditorScene();
+			}
+		}
+
+		if (GUILayout.Button("Populate/Sync Scene", EditorStyles.toolbarButton))
+		{
+			if (_editorSceneOpen) PopulateEditorScene();
+			else EditorUtility.DisplayDialog("Info", "Open the Level Editor scene first to populate it.", "OK");
+		}
+
+		if (GUILayout.Button("Rebuild Level", EditorStyles.toolbarButton))
+		{
+			if (_currentLevel != null)
+			{
+				_currentLevel.Generate();
+				_isDirty = true;
+				SaveChanges();
+			}
+		}
+
+		if (GUILayout.Button("Focus Scene Root", EditorStyles.toolbarButton))
+		{
+			if (_sceneRootGO != null) Selection.activeGameObject = _sceneRootGO;
+			else EditorUtility.DisplayDialog("Info", "Scene root not found. Open Level Editor scene or populate it.", "OK");
+			FocusCamera();
+		}
 
 		GUILayout.FlexibleSpace();
 		EditorGUILayout.EndHorizontal();
@@ -224,7 +257,7 @@ public class LevelEditorWindow : EditorWindow
 
 	private void DrawPropertiesPanel()
 	{
-		EditorGUILayout.BeginVertical(GUILayout.Width(300));
+		EditorGUILayout.BeginVertical(GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true)); // Extindem panelul pe toată fereastra
 		EditorGUILayout.LabelField("Levels", EditorStyles.boldLabel);
 
 		// Lista nivelelor din proiect (afișare mai curată)
@@ -238,7 +271,7 @@ public class LevelEditorWindow : EditorWindow
 
 		EditorGUILayout.Space(5);
 
-		_levelsScroll = EditorGUILayout.BeginScrollView(_levelsScroll, GUILayout.Height(150));
+		_levelsScroll = EditorGUILayout.BeginScrollView(_levelsScroll, GUILayout.ExpandHeight(true));
 		foreach (var lvl in _allLevels)
 		{
 			if (lvl == null) continue;
@@ -312,9 +345,6 @@ public class LevelEditorWindow : EditorWindow
 
 		EditorGUILayout.EndVertical();
 	}
-
-	// Înlocuim implementarea dibuirii panoului preview cu un UI simplificat
-	
 
 	#endregion
 
