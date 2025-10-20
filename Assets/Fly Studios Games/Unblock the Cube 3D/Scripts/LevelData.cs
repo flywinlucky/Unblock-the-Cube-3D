@@ -17,43 +17,68 @@ public class BlockData
 public class LevelData : ScriptableObject
 {
     [Header("Generation Settings")]
-    public Difficulty difficulty = Difficulty.Custom;
-    public int customGridSize = 4;
+    private Difficulty difficulty = Difficulty.Custom;
+    public int customGridSize = 0;
     public int seed = 0;
 
     private List<BlockData> blocks = new List<BlockData>();
 
-    public List<BlockData> GetBlocks() => blocks;
+    private const int MinGridSize = 2;
+    private const int MaxGridSize = 40; // limităm pentru a evita operațiuni prea mari în editor/build
+
+    public List<BlockData> GetBlocks() => blocks ?? (blocks = new List<BlockData>());
 
     public int GetGridSize()
     {
-        return Mathf.Max(2, customGridSize);
+        // Asigurăm o valoare validă între MinGridSize și MaxGridSize
+        int gs = Mathf.Max(MinGridSize, customGridSize);
+        gs = Mathf.Min(gs, MaxGridSize);
+        return gs;
     }
 
-    public void Generate() { GenerateCubeShape(); }
+    public void Generate() 
+    { 
+        try
+        {
+            GenerateCubeShape();
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogWarning("LevelData.Generate failed: " + ex.Message);
+        }
+    }
 
     private void GenerateCubeShape()
     {
-        blocks.Clear();
+        blocks = new List<BlockData>();
         Random.InitState(seed);
         int gridSize = GetGridSize();
 
-        // ▼▼▼ MODIFICARE CHEIE AICI ▼▼▼
-        // Calculăm un offset pentru a centra cubul în jurul originii (0,0,0)
+        if (gridSize <= 0)
+        {
+            Debug.LogWarning("Invalid grid size for GenerateCubeShape.");
+            return;
+        }
+
         int offset = gridSize / 2;
 
         List<BlockData> generatedBlocks = new List<BlockData>();
 
-        // Modificăm buclele pentru a genera coordonate negative și pozitive
-        // Exemplu pentru gridSize = 3, offset = 1. Coordonatele vor fi -1, 0, 1
-        // Exemplu pentru gridSize = 4, offset = 2. Coordonatele vor fi -2, -1, 0, 1
+        // Defensive cap to avoid alocări uriașe
+        long totalCells = (long)gridSize * gridSize * gridSize;
+        if (totalCells > 2000000) // prag foarte mare
+        {
+            Debug.LogWarning($"Grid too large ({totalCells} cells). Generation aborted.");
+            return;
+        }
+
         for (int x = -offset; x < gridSize - offset; x++)
         {
             for (int y = -offset; y < gridSize - offset; y++)
             {
                 for (int z = -offset; z < gridSize - offset; z++)
                 {
-                    generatedBlocks.Add(new BlockData { position = new Vector3Int(x, y, z) });
+                    generatedBlocks.Add(new BlockData { position = new Vector3Int(x, y, z), randomVisualRotation = Quaternion.identity });
                 }
             }
         }
@@ -80,6 +105,7 @@ public class LevelData : ScriptableObject
             }
             if (!assignedOne && unassignedBlocks.Count > 0)
             {
+                // fallback: assignăm o direcție aleatoare
                 unassignedBlocks[0].direction = (MoveDirection)Random.Range(0, 6);
                 allPositions.Remove(unassignedBlocks[0].position);
                 unassignedBlocks.RemoveAt(0);
@@ -88,10 +114,11 @@ public class LevelData : ScriptableObject
 
         foreach (var block in generatedBlocks)
         {
+            // asigurăm rotație validă
             block.randomVisualRotation = Quaternion.Euler(
-                Random.Range(0, 4) * 90,
-                Random.Range(0, 4) * 90,
-                Random.Range(0, 4) * 90
+                Random.Range(0, 4) * 90f,
+                Random.Range(0, 4) * 90f,
+                Random.Range(0, 4) * 90f
             );
         }
 
@@ -100,6 +127,7 @@ public class LevelData : ScriptableObject
 
     private MoveDirection? FindClearPath(Vector3Int blockPos, HashSet<Vector3Int> occupied, int gridSize)
     {
+        if (occupied == null || gridSize <= 0) return null;
         var shuffledDirections = GetDirectionVectors().OrderBy(d => Random.value);
         foreach (var dir in shuffledDirections)
         {
@@ -127,6 +155,7 @@ public class LevelData : ScriptableObject
     // ▼▼▼ MODIFICARE CHEIE AICI ▼▼▼
     private bool IsInBounds(Vector3Int pos, int gridSize)
     {
+        if (gridSize <= 0) return false;
         // Recalculăm limitele pe baza aceluiași offset
         int offset = gridSize / 2;
         int min = -offset;

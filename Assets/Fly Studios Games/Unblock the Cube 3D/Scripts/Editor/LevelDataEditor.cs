@@ -6,7 +6,7 @@ public class LevelDataEditor : Editor
 {
     public override void OnInspectorGUI()
     {
-        // Desenăm toate proprietățile serializate, EXCEPȚIE "blocks" (blocurile sunt gestionate în LevelEditorWindow)
+        if (target == null) return;
         serializedObject.Update();
         SerializedProperty prop = serializedObject.GetIterator();
         bool enterChildren = true;
@@ -21,11 +21,13 @@ public class LevelDataEditor : Editor
         EditorGUILayout.Space();
 
         LevelData levelData = (LevelData)target;
+        if (levelData == null) return;
+
         if (GUILayout.Button("Generate Level", GUILayout.Height(40)))
         {
             levelData.Generate();
             EditorUtility.SetDirty(levelData);
-            Debug.Log("Level generated successfully with " + levelData.GetBlocks().Count + " blocks!");
+            Debug.Log("Level generated successfully with " + (levelData.GetBlocks()?.Count ?? 0) + " blocks!");
         }
     }
 }

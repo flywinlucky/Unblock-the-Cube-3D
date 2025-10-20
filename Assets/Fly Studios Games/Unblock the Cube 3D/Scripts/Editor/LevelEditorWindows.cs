@@ -157,10 +157,18 @@ public class LevelEditorWindow : EditorWindow
 		_previewBoxStyle = new GUIStyle("box");
 		_previewBoxStyle.padding = new RectOffset(2, 2, 2, 2);
 
-		string prefabPath = EditorPrefs.GetString(_blockPrefabPathKey, "");
-		if (!string.IsNullOrEmpty(prefabPath))
+		try
 		{
-			_blockPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
+			string prefabPath = EditorPrefs.GetString(_blockPrefabPathKey, "");
+			if (!string.IsNullOrEmpty(prefabPath))
+			{
+				_blockPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
+			}
+		}
+		catch (System.Exception ex)
+		{
+			Debug.LogWarning("Failed to load block prefab from EditorPrefs: " + ex.Message);
+			_blockPrefab = null;
 		}
 
 		RefreshLevelList();
@@ -172,7 +180,14 @@ public class LevelEditorWindow : EditorWindow
 		// Dacă cerem auto-open, deschidem scena editor (scene reală)
 		if (_autoOpenEditorScene)
 		{
-			OpenLevelInScene(singleMode: true);
+			try
+			{
+				OpenLevelInScene(singleMode: true);
+			}
+			catch (System.Exception ex)
+			{
+				Debug.LogWarning("OpenLevelInScene failed: " + ex.Message);
+			}
 		}
 	}
 
@@ -201,67 +216,29 @@ public class LevelEditorWindow : EditorWindow
 	{
 		DrawToolbar();
 		EditorGUILayout.BeginHorizontal();
-		DrawPropertiesPanel(); // Acum ocupă întreaga zonă a ferestrei
+		DrawLevelListPanel(); // Panel pentru lista nivelelor
+		DrawEditorSettingsPanel(); // Panel pentru setările editorului
 		EditorGUILayout.EndHorizontal();
 	}
 
-	#region Desenare UI
 	private void DrawToolbar()
 	{
 		EditorGUILayout.BeginHorizontal(EditorStyles.toolbar);
 		if (GUILayout.Button("New Level", EditorStyles.toolbarButton)) CreateNewLevelAsset();
 		if (GUILayout.Button("Save Changes", EditorStyles.toolbarButton)) SaveChanges();
 		if (GUILayout.Button("Refresh", EditorStyles.toolbarButton)) RefreshLevelList();
-
-		if (!_editorSceneOpen)
-		{
-			if (GUILayout.Button("Open Level Scene", EditorStyles.toolbarButton))
-			{
-				OpenLevelInScene(singleMode: true);
-			}
-		}
-		else
-		{
-			if (GUILayout.Button("Close Level Scene", EditorStyles.toolbarButton))
-			{
-				CloseEditorScene();
-			}
-		}
-
-		if (GUILayout.Button("Populate/Sync Scene", EditorStyles.toolbarButton))
-		{
-			if (_editorSceneOpen) PopulateEditorScene();
-			else EditorUtility.DisplayDialog("Info", "Open the Level Editor scene first to populate it.", "OK");
-		}
-
-		if (GUILayout.Button("Rebuild Level", EditorStyles.toolbarButton))
-		{
-			if (_currentLevel != null)
-			{
-				_currentLevel.Generate();
-				_isDirty = true;
-				SaveChanges();
-			}
-		}
-
-		if (GUILayout.Button("Focus Scene Root", EditorStyles.toolbarButton))
-		{
-			if (_sceneRootGO != null) Selection.activeGameObject = _sceneRootGO;
-			else EditorUtility.DisplayDialog("Info", "Scene root not found. Open Level Editor scene or populate it.", "OK");
-			FocusCamera();
-		}
-
 		GUILayout.FlexibleSpace();
 		EditorGUILayout.EndHorizontal();
 	}
 
-	private void DrawPropertiesPanel()
+	private void DrawLevelListPanel()
 	{
-		EditorGUILayout.BeginVertical(GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true)); // Extindem panelul pe toată fereastra
+		EditorGUILayout.BeginVertical(GUILayout.Width(250)); // Panel pentru lista nivelelor
 		EditorGUILayout.LabelField("Levels", EditorStyles.boldLabel);
 
-		// Lista nivelelor din proiect (afișare mai curată)
+		// Butoane pentru gestionarea nivelelor
 		EditorGUILayout.BeginHorizontal();
+		if (GUILayout.Button("New", GUILayout.Width(80))) CreateNewLevelAsset();
 		if (_currentLevel != null && GUILayout.Button("Delete", GUILayout.Width(80)))
 		{
 			if (EditorUtility.DisplayDialog("Delete Level", $"Delete {_currentLevel.name}?", "Yes", "No"))
@@ -271,6 +248,7 @@ public class LevelEditorWindow : EditorWindow
 
 		EditorGUILayout.Space(5);
 
+		// ScrollView pentru lista nivelelor
 		_levelsScroll = EditorGUILayout.BeginScrollView(_levelsScroll, GUILayout.ExpandHeight(true));
 		foreach (var lvl in _allLevels)
 		{
@@ -287,11 +265,17 @@ public class LevelEditorWindow : EditorWindow
 		}
 		EditorGUILayout.EndScrollView();
 
-		EditorGUILayout.Space(8);
+		EditorGUILayout.EndVertical();
+	}
 
+	private void DrawEditorSettingsPanel()
+	{
+		EditorGUILayout.BeginVertical(GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true)); // Panel pentru setările editorului
 		EditorGUILayout.LabelField("Editor Settings", EditorStyles.boldLabel);
 
-		// Permitem ajustarea unității grilei în editor
+		// Setări generale
+		EditorGUILayout.Space(5);
+		EditorGUILayout.LabelField("General Settings", EditorStyles.boldLabel);
 		_gridUnitSize = EditorGUILayout.FloatField("Grid Unit Size", _gridUnitSize);
 
 		GameObject newPrefab = (GameObject)EditorGUILayout.ObjectField("Block Prefab", _blockPrefab, typeof(GameObject), false);
@@ -301,10 +285,10 @@ public class LevelEditorWindow : EditorWindow
 			EditorPrefs.SetString(_blockPrefabPathKey, _blockPrefab != null ? AssetDatabase.GetAssetPath(_blockPrefab) : "");
 		}
 
-		EditorGUILayout.Space(15);
+		EditorGUILayout.Space(10);
 
+		// Setări pentru nivelul curent
 		EditorGUILayout.LabelField("Level Properties", EditorStyles.boldLabel);
-
 		LevelData newLevel = (LevelData)EditorGUILayout.ObjectField("Current Level", _currentLevel, typeof(LevelData), false);
 		if (newLevel != _currentLevel)
 		{
@@ -346,6 +330,7 @@ public class LevelEditorWindow : EditorWindow
 		EditorGUILayout.EndVertical();
 	}
 
+	#region Desenare UI
 	#endregion
 
 	#region Logică Tool
@@ -423,9 +408,20 @@ public class LevelEditorWindow : EditorWindow
 
 		_suppressSceneSync = true; // prevenim sincronizarea în timp ce modificăm scena
 
-		// curățăm vechiul conținut
-		for (int i = _sceneRootGO.transform.childCount - 1; i >= 0; i--)
-			DestroyImmediate(_sceneRootGO.transform.GetChild(i).gameObject);
+		// curățăm vechiul conținut (cu verificări)
+		try
+		{
+			for (int i = _sceneRootGO.transform.childCount - 1; i >= 0; i--)
+			{
+				var child = _sceneRootGO.transform.GetChild(i);
+				if (child != null && child.gameObject != null)
+					DestroyImmediate(child.gameObject);
+			}
+		}
+		catch (System.Exception ex)
+		{
+			Debug.LogWarning("Error while clearing scene root children: " + ex.Message);
+		}
 
 		if (_currentLevel == null || _blockPrefab == null)
 		{
@@ -434,16 +430,62 @@ public class LevelEditorWindow : EditorWindow
 		}
 
 		var blocks = _currentLevel.GetBlocks();
+		if (blocks == null)
+		{
+			_suppressSceneSync = false;
+			return;
+		}
+
+		// protecție la grid unit size (evită divide by zero etc.)
+		if (Mathf.Approximately(_gridUnitSize, 0f))
+			_gridUnitSize = 0.5f;
+
 		for (int i = 0; i < blocks.Count; i++)
 		{
 			var data = blocks[i];
-			GameObject inst = (GameObject)PrefabUtility.InstantiatePrefab(_blockPrefab);
-			inst.transform.SetParent(_sceneRootGO.transform);
-			inst.transform.position = (Vector3)data.position * _gridUnitSize;
-			inst.transform.rotation = GetStableLookRotation(data.direction) * data.randomVisualRotation;
-			// asigurăm collider pentru interacțiune
-			if (inst.GetComponentInChildren<Collider>(true) == null) inst.AddComponent<BoxCollider>();
-			EditorUtility.SetDirty(inst);
+			try
+			{
+				if (_blockPrefab == null)
+					continue;
+
+				Object prefabInstance = null;
+				// Instantiate prefab safely
+				try
+				{
+					prefabInstance = PrefabUtility.InstantiatePrefab(_blockPrefab);
+				}
+				catch
+				{
+					// fallback: try Object.Instantiate
+					GameObject go = Object.Instantiate(_blockPrefab);
+					if (go != null) prefabInstance = go;
+				}
+
+				GameObject inst = prefabInstance as GameObject;
+				if (inst == null)
+				{
+					Debug.LogWarning($"Failed to instantiate prefab for block #{i}");
+					continue;
+				}
+
+				inst.transform.SetParent(_sceneRootGO.transform);
+				inst.transform.position = (Vector3)data.position * _gridUnitSize;
+				inst.transform.rotation = GetStableLookRotation(data.direction) * (data.randomVisualRotation != null ? data.randomVisualRotation : Quaternion.identity);
+
+				// asigurăm collider pentru interacțiune (pe obiectul instanțiat)
+				Collider existing = inst.GetComponent<Collider>();
+				if (existing == null)
+				{
+					// adăugăm BoxCollider doar dacă nu există un collider deja
+					inst.AddComponent<BoxCollider>();
+				}
+
+				EditorUtility.SetDirty(inst);
+			}
+			catch (System.Exception ex)
+			{
+				Debug.LogWarning($"Exception while creating block instance #{i}: {ex.Message}");
+			}
 		}
 
 		CacheSceneSnapshot();
@@ -456,23 +498,38 @@ public class LevelEditorWindow : EditorWindow
 		if (!_editorSceneOpen) return;
 
 		// Salvăm scena editor dacă e dirty
-		if (EditorSceneManager.GetActiveScene().isDirty)
+		try
 		{
-			if (EditorUtility.DisplayDialog("Save Scene", "Save changes to the Level Editor scene?", "Save", "Don't Save"))
+			if (EditorSceneManager.GetActiveScene().isDirty)
 			{
-				EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene());
+				if (EditorUtility.DisplayDialog("Save Scene", "Save changes to the Level Editor scene?", "Save", "Don't Save"))
+				{
+					EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene());
+				}
 			}
+		}
+		catch (System.Exception ex)
+		{
+			Debug.LogWarning("Error while saving editor scene: " + ex.Message);
 		}
 
 		// Închidem scena editor curentă și deschidem scena de joc
-		if (System.IO.File.Exists(GameScenePath))
+		try
 		{
-			EditorSceneManager.OpenScene(GameScenePath, OpenSceneMode.Single);
+			if (System.IO.File.Exists(GameScenePath))
+			{
+				EditorSceneManager.OpenScene(GameScenePath, OpenSceneMode.Single);
+			}
+			else
+			{
+				Debug.LogWarning("Game scene not found at: " + GameScenePath);
+				// fallback: create empty scene
+				EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
+			}
 		}
-		else
+		catch (System.Exception ex)
 		{
-			Debug.LogWarning("Game scene not found at: " + GameScenePath);
-			// fallback: create empty scene
+			Debug.LogWarning("Failed to open game scene, creating empty scene instead: " + ex.Message);
 			EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
 		}
 
@@ -489,7 +546,8 @@ public class LevelEditorWindow : EditorWindow
 		for (int i = 0; i < _sceneRootGO.transform.childCount; i++)
 		{
 			Transform t = _sceneRootGO.transform.GetChild(i);
-			Vector3Int gridPos = Vector3Int.RoundToInt(t.position / _gridUnitSize);
+			if (t == null) continue;
+			Vector3Int gridPos = Vector3Int.RoundToInt(t.position / Mathf.Max(0.0001f, _gridUnitSize));
 			MoveDirection dir = GetDirectionFromForward(t.forward);
 			BlockData bd = new BlockData { position = gridPos, direction = dir, randomVisualRotation = Quaternion.identity };
 			_lastSceneSnapshot.Add(bd);
@@ -499,35 +557,48 @@ public class LevelEditorWindow : EditorWindow
 	// Periodic update: detect changes in scene and write back to LevelData
 	private void EditorUpdate()
 	{
-		if (!_editorSceneOpen || _suppressSceneSync) return;
-		if (_sceneRootGO == null || _currentLevel == null) return;
-
-		// build snapshot from scene
-		var newSnapshot = new List<BlockData>();
-		for (int i = 0; i < _sceneRootGO.transform.childCount; i++)
+		// protecție generală pentru a nu arunca excepții în update-ul editorului
+		try
 		{
-			Transform t = _sceneRootGO.transform.GetChild(i);
-			Vector3Int gridPos = Vector3Int.RoundToInt(t.position / _gridUnitSize);
-			MoveDirection dir = GetDirectionFromForward(t.forward);
-			newSnapshot.Add(new BlockData { position = gridPos, direction = dir, randomVisualRotation = Quaternion.identity });
-		}
+			if (!_editorSceneOpen || _suppressSceneSync) return;
+			if (_sceneRootGO == null || _currentLevel == null) return;
 
-		// compare with last snapshot (simple equality)
-		if (!AreBlockListsEqual(_lastSceneSnapshot, newSnapshot))
-		{
-			// actualizăm LevelData (rescriem lista)
-			var blocksList = _currentLevel.GetBlocks();
-			blocksList.Clear();
-			foreach (var b in newSnapshot)
+			// build snapshot from scene
+			var newSnapshot = new List<BlockData>();
+			for (int i = 0; i < _sceneRootGO.transform.childCount; i++)
 			{
-				blocksList.Add(b);
+				Transform t = _sceneRootGO.transform.GetChild(i);
+				if (t == null) continue;
+				Vector3Int gridPos = Vector3Int.RoundToInt(t.position / Mathf.Max(0.0001f, _gridUnitSize));
+				MoveDirection dir = GetDirectionFromForward(t.forward);
+				newSnapshot.Add(new BlockData { position = gridPos, direction = dir, randomVisualRotation = Quaternion.identity });
 			}
-			// NU mai salvăm automat pe disc; marcam ca dirty și actualizăm preview
-			EditorUtility.SetDirty(_currentLevel);
-			_isDirty = true;
 
-			// cache noul snapshot
-			_lastSceneSnapshot = new List<BlockData>(newSnapshot);
+			// compare with last snapshot (simple equality)
+			if (!AreBlockListsEqual(_lastSceneSnapshot, newSnapshot))
+			{
+				// actualizăm LevelData (rescriem lista)
+				var blocksList = _currentLevel.GetBlocks();
+				if (blocksList != null)
+				{
+					blocksList.Clear();
+					foreach (var b in newSnapshot)
+					{
+						blocksList.Add(b);
+					}
+					// NU mai salvăm automat pe disc; marcam ca dirty și actualizăm preview
+					EditorUtility.SetDirty(_currentLevel);
+					_isDirty = true;
+				}
+				// cache noul snapshot
+				_lastSceneSnapshot = new List<BlockData>(newSnapshot);
+			}
+		}
+		catch (System.Exception ex)
+		{
+			// pentru siguranță, supresăm sincronizarea temporar și raportăm eroarea
+			_suppressSceneSync = true;
+			Debug.LogWarning("EditorUpdate error: " + ex.Message);
 		}
 	}
 
