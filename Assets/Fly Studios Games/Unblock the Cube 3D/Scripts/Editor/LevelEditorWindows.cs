@@ -15,20 +15,7 @@ public class LevelEditorWindow : EditorWindow
 	// --- Variabile pentru Editare ---
 	private GameObject _selectedBlockInstance;
 	private int _selectedBlockIndex = -1;
-
-	// --- Variabile pentru Preview 3D ---
-	// Eliminăm PreviewRenderUtility și variabile conexe din clasa (le lăsăm comentate/unused)
-	 private PreviewRenderUtility _previewRenderUtility;
-	 private GameObject _previewRoot;
-	 private Vector2 _previewRotation = new Vector2(150, -30);
-	 private float _previewZoom = 10f;
-	 private Vector3 _previewPanOffset = Vector3.zero;
-	 private const float MIN_ZOOM = 2f;
- private const float MAX_ZOOM = 100f;
- private readonly List<Collider> _previewColliders = new List<Collider>();
-	private Ray _debugRay;
-	 private Vector2 _mousePosition; // NOU: Stocăm poziția mouse-ului pentru a o folosi în Repaint
-
+	
 	// --- Stocare persistentă ---
 	private static string _blockPrefabPathKey = "LevelEditor_BlockPrefabPath";
 
@@ -146,7 +133,6 @@ public class LevelEditorWindow : EditorWindow
 		}
 
 		_currentLevel = newLevel;
-		DeselectBlock();
 
 		// în loc de RebuildPreview (preview offscreen), sincronizăm scena editor reală
 		if (_editorSceneOpen)
@@ -173,23 +159,7 @@ public class LevelEditorWindow : EditorWindow
 
 	private void OnEnable()
 	{
-		// Setup lumini
-		Light mainLight = new GameObject("MainLight").AddComponent<Light>();
-		mainLight.type = LightType.Directional;
-		mainLight.intensity = 1.5f;
-		mainLight.transform.rotation = Quaternion.Euler(50, -30, 0);
-		// _previewRenderUtility.AddSingleGO(mainLight.gameObject);
-
-		Light fillLight = new GameObject("FillLight").AddComponent<Light>();
-		fillLight.type = LightType.Directional;
-		fillLight.intensity = 0.7f;
-		fillLight.color = Color.grey;
-		fillLight.transform.rotation = Quaternion.Euler(-30, 60, 0);
-		// _previewRenderUtility.AddSingleGO(fillLight.gameObject);
-
-		// _previewRoot = new GameObject("PreviewRoot");
-		// _previewRenderUtility.AddSingleGO(_previewRoot);
-
+		// NOTE: removed creation of preview lights and preview root (these were only for off-screen preview)
 		_previewBoxStyle = new GUIStyle("box");
 		_previewBoxStyle.padding = new RectOffset(2, 2, 2, 2);
 
@@ -315,7 +285,7 @@ public class LevelEditorWindow : EditorWindow
 		if (newLevel != _currentLevel)
 		{
 			_currentLevel = newLevel;
-			DeselectBlock();
+	
 			RebuildPreview();
 			FocusCamera();
 		}
@@ -334,7 +304,7 @@ public class LevelEditorWindow : EditorWindow
 			if (GUILayout.Button("Generate New Level", GUILayout.Height(30)))
 			{
 				_currentLevel.Generate();
-				DeselectBlock();
+
 				RebuildPreview();
 				SaveChanges();
 				FocusCamera();
@@ -427,199 +397,7 @@ public class LevelEditorWindow : EditorWindow
 
 	#region Logică Tool
 
-	// NOU: Funcție pentru a desena un grilaj
-	private void DrawGrid(Vector3 center)
-	{
-		// Desenăm un grilaj centrat pe nivel, cu spacing egal cu gridUnitSize
-		float spacing = Mathf.Max(0.0001f, _gridUnitSize);
-		Bounds b = CalculateBounds();
-		float extentX = Mathf.Max(2f, b.extents.x + 2f);
-		float extentZ = Mathf.Max(2f, b.extents.z + 2f);
-		int linesX = Mathf.CeilToInt((extentX * 2f) / spacing);
-		int linesZ = Mathf.CeilToInt((extentZ * 2f) / spacing);
-
-		float halfX = linesX * spacing * 0.5f;
-		float halfZ = linesZ * spacing * 0.5f;
-		float y = Mathf.Floor(center.y) - (_gridUnitSize * 0.5f);
-
-		Handles.color = new Color(1f, 1f, 1f, 0.08f);
-		for (int i = 0; i <= linesX; i++)
-		{
-			float x = -halfX + i * spacing;
-			Handles.DrawLine(new Vector3(x, y, -halfZ) + center, new Vector3(x, y, halfZ) + center);
-		}
-		for (int j = 0; j <= linesZ; j++)
-		{
-			float z = -halfZ + j * spacing;
-			Handles.DrawLine(new Vector3(-halfX, y, z) + center, new Vector3(halfX, y, z) + center);
-		}
-	}
-
-	private void DrawRaycastGizmo_3D()
-	{
-		if (_debugRay.direction == Vector3.zero) return;
-		Handles.color = Color.red;
-		Handles.DrawLine(_debugRay.origin, _debugRay.origin + _debugRay.direction * 200f);
-	}
-
-	private void DrawSelectionOutline_3D()
-	{
-		if (_selectedBlockInstance == null) return;
-
-		Renderer renderer = _selectedBlockInstance.GetComponentInChildren<Renderer>();
-		if (renderer != null)
-		{
-			Bounds bounds = renderer.bounds;
-			Handles.color = Color.yellow;
-			Handles.DrawWireCube(bounds.center, bounds.size * 1.05f);
-		}
-	}
-
-	private void DrawEditingButtons_GUI(Rect previewRect)
-	{
-		if (_selectedBlockInstance == null) return;
-
-		// Dacă nu avem preview camera, sărim, deoarece butoanele sunt specifice preview-ului
-		if (_previewRenderUtility == null || _previewRenderUtility.camera == null) return;
-
-		Renderer renderer = _selectedBlockInstance.GetComponentInChildren<Renderer>();
-		if (renderer != null)
-		{
-			Vector3 screenPos = _previewRenderUtility.camera.WorldToScreenPoint(renderer.bounds.center);
-
-			if (screenPos.z > 0)
-			{
-				screenPos.y = previewRect.height - screenPos.y;
-
-				float buttonSize = 25;
-				float spacing = 5;
-
-				if (GUI.Button(new Rect(screenPos.x - buttonSize / 2, screenPos.y - 45, buttonSize, buttonSize), "X"))
-				{
-					DeleteSelectedBlock();
-				}
-
-				if (GUI.Button(new Rect(screenPos.x + spacing, screenPos.y - buttonSize / 2, buttonSize, buttonSize), ">"))
-				{
-					RotateSelectedBlock(Vector3.up);
-				}
-				if (GUI.Button(new Rect(screenPos.x - buttonSize - spacing, screenPos.y - buttonSize / 2, buttonSize, buttonSize), "<"))
-				{
-					RotateSelectedBlock(Vector3.down);
-				}
-			}
-		}
-	}
-
-	private void HandleSelection()
-	{
-		GameObject closestColliderObject = null;
-		float closestDistance = float.MaxValue;
-
-		// Găsim collider-ul cel mai apropiat lovit de rază
-		foreach (Collider col in _previewColliders)
-		{
-			if (col == null) continue;
-			if (col.Raycast(_debugRay, out RaycastHit hit, 2000f))
-			{
-				if (hit.distance < closestDistance)
-				{
-					closestDistance = hit.distance;
-					closestColliderObject = col.gameObject;
-				}
-			}
-		}
-
-		if (closestColliderObject != null)
-		{
-			// Avem collider -> urcăm la copilul direct al _previewRoot (instanța blocului)
-			GameObject rootInstance = GetPreviewRootChildForObject(closestColliderObject);
-			if (rootInstance != null)
-			{
-				SelectBlock(rootInstance);
-			}
-			else
-			{
-				// fallback: dacă nu găsim root, deselectăm
-				DeselectBlock();
-			}
-		}
-		else
-		{
-			DeselectBlock();
-		}
-		Repaint();
-	}
-
-	// Helper: primește un GameObject (de obicei collider.gameObject) și urcă până la copilul direct al _previewRoot
-	private GameObject GetPreviewRootChildForObject(GameObject obj)
-	{
-		if (obj == null || _previewRoot == null) return null;
-		Transform t = obj.transform;
-		while (t != null && t.parent != null)
-		{
-			if (t.parent == _previewRoot.transform)
-				return t.gameObject;
-			t = t.parent;
-		}
-		return null;
-	}
-
-	private void SelectBlock(GameObject instance)
-	{
-		if (instance == null)
-		{
-			DeselectBlock();
-			return;
-		}
-
-		_selectedBlockInstance = instance;
-		_selectedBlockIndex = -1;
-
-		for (int i = 0; i < _previewRoot.transform.childCount; i++)
-		{
-			if (_previewRoot.transform.GetChild(i).gameObject == instance)
-			{
-				_selectedBlockIndex = i;
-				break;
-			}
-		}
-	}
-
-	private void DeselectBlock()
-	{
-		_selectedBlockInstance = null;
-		_selectedBlockIndex = -1;
-	}
-
-	private void RotateSelectedBlock(Vector3 axis)
-	{
-		if (_selectedBlockIndex == -1 || _currentLevel == null || _selectedBlockIndex >= _currentLevel.GetBlocks().Count) return;
-
-		BlockData data = _currentLevel.GetBlocks()[_selectedBlockIndex];
-
-		Quaternion currentRotation = GetStableLookRotation(data.direction);
-		Quaternion ninetyDegreesTurn = Quaternion.AngleAxis(90, axis);
-		Vector3 newDirectionVector = ninetyDegreesTurn * currentRotation * Vector3.forward;
-
-		data.direction = GetEnumFromVector(newDirectionVector.normalized);
-
-		SaveChanges();
-		RebuildPreview();
-	}
-
-	private void DeleteSelectedBlock()
-	{
-		if (_selectedBlockIndex == -1 || _currentLevel == null || _selectedBlockIndex >= _currentLevel.GetBlocks().Count) return;
-
-		_currentLevel.GetBlocks().RemoveAt(_selectedBlockIndex);
-
-		DeselectBlock();
-		SaveChanges();
-		RebuildPreview();
-	}
-
-	// RebuildPreview: acum în loc să construiască un preview offscreen, sincronizează scena editor reală (dacă e deschisă)
+	// RebuildPreview: acum în loc să construiască un preview offscreen, sincronizăm scena editor reală (dacă e deschisă)
 	private void RebuildPreview()
 	{
 		// nu mai construim preview intern; dacă scena editor e deschisă, actualizăm conținutul ei
@@ -844,63 +622,78 @@ public class LevelEditorWindow : EditorWindow
 	private Bounds CalculateLevelBounds()
 	{
 		// Prioritizăm scena reală (_sceneRootGO) dacă este deschisă
-		GameObject root = _sceneRootGO != null ? _sceneRootGO : _previewRoot;
-
-		if (root == null || root.transform.childCount == 0)
+		if (_sceneRootGO != null && _sceneRootGO.transform.childCount > 0)
 		{
-			return new Bounds(Vector3.zero, Vector3.one * 5);
-		}
-
-		var renderers = root.GetComponentsInChildren<Renderer>();
-		if (renderers == null || renderers.Length == 0)
-		{
-			// fallback: calculăm bounds din pozițiile copiilor dacă nu există renderer
-			var bounds = new Bounds(root.transform.GetChild(0).position, Vector3.zero);
-			for (int i = 0; i < root.transform.childCount; i++)
+			var renderers = _sceneRootGO.GetComponentsInChildren<Renderer>();
+			if (renderers != null && renderers.Length > 0)
 			{
-				bounds.Encapsulate(root.transform.GetChild(i).position);
+				var b = new Bounds(renderers[0].bounds.center, Vector3.zero);
+				foreach (var r in renderers)
+				{
+					if (r != null) b.Encapsulate(r.bounds);
+				}
+				return b;
 			}
-			return bounds;
+			else
+			{
+				// fallback: folosește pozițiile copiilor
+				var bounds = new Bounds(_sceneRootGO.transform.GetChild(0).position, Vector3.zero);
+				for (int i = 0; i < _sceneRootGO.transform.childCount; i++)
+					bounds.Encapsulate(_sceneRootGO.transform.GetChild(i).position);
+				return bounds;
+			}
 		}
 
-		var b = new Bounds(renderers[0].bounds.center, Vector3.zero);
-		foreach (var r in renderers)
+		// Daca scena nu e populata, încercăm să estimăm bounds din LevelData (dacă există)
+		if (_currentLevel != null)
 		{
-			if (r != null) b.Encapsulate(r.bounds);
+			var blocks = _currentLevel.GetBlocks();
+			if (blocks != null && blocks.Count > 0)
+			{
+				var firstWorld = (Vector3)blocks[0].position * _gridUnitSize;
+				var b = new Bounds(firstWorld, Vector3.zero);
+				foreach (var bl in blocks)
+				{
+					b.Encapsulate((Vector3)bl.position * _gridUnitSize);
+				}
+				return b;
+			}
 		}
-		return b;
+
+		// fallback generic
+		return new Bounds(Vector3.zero, Vector3.one * 5f);
 	}
 
-	// NOU: Funcție pentru a focaliza camera pe nivel
+	// NOU: Funcție pentru a focaliza camera pe nivel (folosește SceneView FOV când e disponibil)
 	private void FocusCamera()
 	{
 		Bounds bounds = CalculateLevelBounds();
-		_previewPanOffset = Vector3.zero;
 
-		// Determinăm un FOV sigur: preferăm preview camera, apoi SceneView, apoi un fallback
+		// Determinăm un FOV sigur: preferăm SceneView dacă există
 		float fov = 30f;
-		if (_previewRenderUtility != null && _previewRenderUtility.camera != null)
-		{
-			fov = _previewRenderUtility.camera.fieldOfView;
-		}
-		else
-		{
 #if UNITY_EDITOR
-			if (UnityEditor.SceneView.lastActiveSceneView != null && UnityEditor.SceneView.lastActiveSceneView.camera != null)
-			{
-				fov = UnityEditor.SceneView.lastActiveSceneView.camera.fieldOfView;
-			}
-#endif
+		if (UnityEditor.SceneView.lastActiveSceneView != null && UnityEditor.SceneView.lastActiveSceneView.camera != null)
+		{
+			fov = UnityEditor.SceneView.lastActiveSceneView.camera.fieldOfView;
 		}
-
+#endif
 		float objectSize = bounds.size.magnitude;
-		// Protecție contra divizare la zero (în caz de bounds foarte mici)
 		float denom = 2.0f * Mathf.Tan(0.5f * fov * Mathf.Deg2Rad);
 		if (denom <= 0.0001f) denom = 0.0001f;
-
 		float cameraDistance = objectSize / denom;
 
-		_previewZoom = Mathf.Clamp(cameraDistance, MIN_ZOOM, MAX_ZOOM);
+		// Dacă scena editor e deschisă, poziționăm SceneView camera pentru o focalizare rapidă
+#if UNITY_EDITOR
+		if (UnityEditor.SceneView.lastActiveSceneView != null)
+		{
+			var sv = UnityEditor.SceneView.lastActiveSceneView;
+			Vector3 center = bounds.center;
+			Vector3 dir = (sv.camera.transform.position - center).normalized;
+			sv.pivot = center;
+			sv.size = Mathf.Max(1f, objectSize * 0.5f);
+			sv.Repaint();
+		}
+#endif
 		Repaint();
 	}
 
@@ -952,4 +745,3 @@ public class CleanLevelDataEditor : Editor
 		DrawDefaultInspector();
 	}
 }
-
