@@ -8,6 +8,18 @@ public class AutoResolveCube : MonoBehaviour
 
     private bool _isResolving = false;
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            StartAutoResolve();
+        }
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            StopAutoResolve();
+        }
+    }
+
     /// <summary>
     /// Pornește procesul de rezolvare automată a cubului.
     /// </summary>
@@ -32,23 +44,25 @@ public class AutoResolveCube : MonoBehaviour
     {
         _isResolving = true;
 
-        // Iterăm prin fiecare copil al obiectului root
-        for (int i = 0; i < transform.childCount; i++)
+        while (transform.childCount > 0) // Continuăm până când nu mai există copii
         {
-            Transform child = transform.GetChild(i);
-            Block block = child.GetComponent<Block>();
-
-            if (block != null)
+            for (int i = 0; i < transform.childCount; i++)
             {
-                // Simulăm un click pe bloc pentru a forța mișcarea
-                block.SendMessage("OnMouseUpAsButton", SendMessageOptions.DontRequireReceiver);
-            }
+                Transform child = transform.GetChild(i);
+                Block block = child.GetComponent<Block>();
 
-            // Așteptăm intervalul specificat înainte de a trece la următorul bloc
-            yield return new WaitForSeconds(moveInterval);
+                if (block != null)
+                {
+                    // Simulăm un click pe bloc pentru a forța mișcarea
+                    block.SendMessage("OnMouseUpAsButton", SendMessageOptions.DontRequireReceiver);
+                }
+
+                // Așteptăm intervalul specificat înainte de a trece la următorul bloc
+                yield return new WaitForSeconds(moveInterval);
+            }
         }
 
         _isResolving = false;
-        Debug.Log("Auto-resolve complete!");
+        Debug.Log("Auto-resolve stopped: no more blocks.");
     }
 }
