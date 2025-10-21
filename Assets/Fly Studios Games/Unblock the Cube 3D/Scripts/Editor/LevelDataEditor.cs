@@ -13,19 +13,10 @@ public class LevelDataEditor : Editor
         while (prop.NextVisible(enterChildren))
         {
             enterChildren = false;
-            if (prop.name == "blocks") continue; // sărim lista raw de block-uri
+            if (prop.name == "blocks" || prop.name == "customGridLength" || prop.name == "customGridHeight" || prop.name == "seed") 
+                continue; // Sărim variabilele ascunse
             EditorGUILayout.PropertyField(prop, true);
         }
         serializedObject.ApplyModifiedProperties();
-
-        EditorGUILayout.Space();
-
-        LevelData levelData = (LevelData)target;
-        if (levelData == null) return;
-
-        // NOU: Afișăm dimensiunile personalizate ale grilei
-        EditorGUILayout.LabelField("Custom Grid Dimensions", EditorStyles.boldLabel);
-        levelData.customGridLength = EditorGUILayout.IntSlider("Grid Length", levelData.customGridLength, 2, 40);
-        levelData.customGridHeight = EditorGUILayout.IntSlider("Grid Height", levelData.customGridHeight, 2, 40);
     }
 }

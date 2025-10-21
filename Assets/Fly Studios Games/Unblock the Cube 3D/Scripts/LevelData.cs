@@ -17,14 +17,20 @@ public class BlockData
 public class LevelData : ScriptableObject
 {
     [Header("Generation Settings")]
+    [HideInInspector]
     [Range(2, 10)]
     public int customGridLength = 3; // Lungimea nivelului
+
+    [HideInInspector]
     [Range(2, 10)]
     public int customGridHeight = 3; // Înălțimea nivelului
+
+    [HideInInspector]
     public int seed = 0;
 
     // Make this field serialized so Unity stores it inside the asset
     [SerializeField]
+    [HideInInspector]
     private List<BlockData> blocks = new List<BlockData>();
 
     private const int MinGridSize = 2;
