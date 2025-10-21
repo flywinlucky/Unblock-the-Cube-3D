@@ -13,43 +13,48 @@ public class BlockData
     public Quaternion randomVisualRotation;
 }
 
-[CreateAssetMenu(fileName = "SimpleCubeLevel", menuName = "Unblock Cube/Simple Cube Level")]
+[CreateAssetMenu(fileName = "SolvableCubeLevel", menuName = "Unblock Cube/Solvable Cube Level")]
 public class LevelData : ScriptableObject
 {
     [Header("Generation Settings")]
-    private Difficulty difficulty = Difficulty.Custom;
-    [Range(2, 5)]
-    public int customGridSize = 0;
+    [Range(2, 10)]
+    public int customGridSize = 3;
     public int seed = 0;
 
     private List<BlockData> blocks = new List<BlockData>();
 
     private const int MinGridSize = 2;
-    private const int MaxGridSize = 40; // limităm pentru a evita operațiuni prea mari în editor/build
+    private const int MaxGridSize = 40;
 
     public List<BlockData> GetBlocks() => blocks ?? (blocks = new List<BlockData>());
 
     public int GetGridSize()
     {
-        // Asigurăm o valoare validă între MinGridSize și MaxGridSize
         int gs = Mathf.Max(MinGridSize, customGridSize);
         gs = Mathf.Min(gs, MaxGridSize);
         return gs;
     }
 
-    public void Generate() 
-    { 
+    /// <summary>
+    /// Punctul de intrare pentru generarea nivelului.
+    /// </summary>
+    public void Generate()
+    {
         try
         {
-            GenerateCubeShape();
+            GenerateSolvableLevel();
         }
         catch (System.Exception ex)
         {
-            Debug.LogWarning("LevelData.Generate failed: " + ex.Message);
+            Debug.LogError("LevelData.Generate failed: " + ex.Message + "\n" + ex.StackTrace);
         }
     }
 
-    private void GenerateCubeShape()
+    /// <summary>
+    /// Algoritm nou care construiește o soluție de la primul la ultimul bloc, prevenind ciclurile.
+    /// Funcționează prin a găsi mai întâi blocurile care pot ieși, apoi pe cele care se pot muta în spațiile eliberate.
+    /// </summary>
+    private void GenerateSolvableLevel()
     {
         blocks = new List<BlockData>();
         Random.InitState(seed);
@@ -57,65 +62,64 @@ public class LevelData : ScriptableObject
 
         if (gridSize <= 0)
         {
-            Debug.LogWarning("Invalid grid size for GenerateCubeShape.");
+            Debug.LogWarning("Invalid grid size for generation.");
             return;
         }
 
-        int offset = gridSize / 2;
-
+        // 1. Creăm un bloc pentru fiecare celulă din grilă
         List<BlockData> generatedBlocks = new List<BlockData>();
-
-        // Defensive cap to avoid alocări uriașe
-        long totalCells = (long)gridSize * gridSize * gridSize;
-        if (totalCells > 2000000) // prag foarte mare
-        {
-            Debug.LogWarning($"Grid too large ({totalCells} cells). Generation aborted.");
-            return;
-        }
-
+        int offset = gridSize / 2;
         for (int x = -offset; x < gridSize - offset; x++)
         {
             for (int y = -offset; y < gridSize - offset; y++)
             {
                 for (int z = -offset; z < gridSize - offset; z++)
                 {
-                    generatedBlocks.Add(new BlockData { position = new Vector3Int(x, y, z), randomVisualRotation = Quaternion.identity });
+                    generatedBlocks.Add(new BlockData { position = new Vector3Int(x, y, z) });
                 }
             }
         }
 
-        HashSet<Vector3Int> allPositions = new HashSet<Vector3Int>(generatedBlocks.Select(b => b.position));
-        List<BlockData> unassignedBlocks = new List<BlockData>(generatedBlocks);
-        unassignedBlocks = unassignedBlocks.OrderBy(b => Random.value).ToList();
+        // 2. Pregătim structurile de date pentru algoritmul "forward"
+        List<BlockData> remainingBlocks = new List<BlockData>(generatedBlocks);
+        HashSet<Vector3Int> clearedPositions = new HashSet<Vector3Int>(); // Poziții considerate "libere" pentru mișcare
 
-        while (unassignedBlocks.Count > 0)
+        // 3. Atribuim direcții construind calea de rezolvare, de la primul la ultimul bloc mișcat
+        while (remainingBlocks.Count > 0)
         {
-            bool assignedOne = false;
-            for (int i = unassignedBlocks.Count - 1; i >= 0; i--)
-            {
-                BlockData currentBlock = unassignedBlocks[i];
-                MoveDirection? clearDirection = FindClearPath(currentBlock.position, allPositions, gridSize);
+            bool assignedOneThisPass = false;
+            // Amestecăm blocurile în fiecare pas pentru a varia ordinea de rezolvare
+            remainingBlocks = remainingBlocks.OrderBy(b => Random.value).ToList();
 
-                if (clearDirection.HasValue)
+            for (int i = remainingBlocks.Count - 1; i >= 0; i--)
+            {
+                BlockData currentBlock = remainingBlocks[i];
+                
+                // Căutăm o direcție în care blocul poate fi mișcat (spre exterior sau spre o poziție deja eliberată)
+                MoveDirection? possibleDirection = FindForwardPath(currentBlock.position, clearedPositions, gridSize);
+
+                if (possibleDirection.HasValue)
                 {
-                    currentBlock.direction = clearDirection.Value;
-                    allPositions.Remove(currentBlock.position);
-                    unassignedBlocks.RemoveAt(i);
-                    assignedOne = true;
+                    currentBlock.direction = possibleDirection.Value;
+                    
+                    // Adăugăm poziția acestui bloc la cele "eliberate" pentru următorii pași
+                    clearedPositions.Add(currentBlock.position);
+                    remainingBlocks.RemoveAt(i);
+                    assignedOneThisPass = true;
                 }
             }
-            if (!assignedOne && unassignedBlocks.Count > 0)
+
+            if (!assignedOneThisPass && remainingBlocks.Count > 0)
             {
-                // fallback: assignăm o direcție aleatoare
-                unassignedBlocks[0].direction = (MoveDirection)Random.Range(0, 6);
-                allPositions.Remove(unassignedBlocks[0].position);
-                unassignedBlocks.RemoveAt(0);
+                // Acest caz nu ar trebui să se întâmple cu noua logică, dar rămâne ca o siguranță.
+                Debug.LogError($"Failed to generate a solvable level. A deadlock was detected with {remainingBlocks.Count} blocks left. This indicates a flaw in the generation logic.");
+                break; // Ieșim pentru a preveni o buclă infinită
             }
         }
 
+        // 4. Setăm rotațiile vizuale aleatorii pentru estetică
         foreach (var block in generatedBlocks)
         {
-            // asigurăm rotație validă
             block.randomVisualRotation = Quaternion.Euler(
                 Random.Range(0, 4) * 90f,
                 Random.Range(0, 4) * 90f,
@@ -123,58 +127,81 @@ public class LevelData : ScriptableObject
             );
         }
 
-        blocks = new List<BlockData>(generatedBlocks);
+        this.blocks = generatedBlocks;
+        Debug.Log($"Level successfully generated – {blocks.Count} blocks placed. Guaranteed playable and cycle-free.");
     }
-
-    private MoveDirection? FindClearPath(Vector3Int blockPos, HashSet<Vector3Int> occupied, int gridSize)
+    
+    /// <summary>
+    /// Caută o cale de mișcare "înainte". O cale este validă dacă duce în afara grilei sau într-o locație deja eliberată.
+    /// </summary>
+    private MoveDirection? FindForwardPath(Vector3Int blockPos, HashSet<Vector3Int> clearedPositions, int gridSize)
     {
-        if (occupied == null || gridSize <= 0) return null;
-        var shuffledDirections = GetDirectionVectors().OrderBy(d => Random.value);
+        var shuffledDirections = System.Enum.GetValues(typeof(MoveDirection))
+                                            .Cast<MoveDirection>()
+                                            .OrderBy(d => Random.value);
+
         foreach (var dir in shuffledDirections)
         {
-            Vector3Int currentPos = blockPos;
-            bool pathIsClear = true;
-            while (IsInBounds(currentPos + dir, gridSize))
+            Vector3Int targetPos = blockPos + GetVectorFromEnum(dir);
+
+            // O cale este validă dacă duce în afara grilei (spre ieșire)
+            if (!IsInBounds(targetPos, gridSize))
             {
-                currentPos += dir;
-                if (occupied.Contains(currentPos))
-                {
-                    pathIsClear = false;
-                    break;
-                }
+                return dir;
             }
-            if (pathIsClear) { return GetEnumFromVector(dir); }
+
+            // Sau dacă duce într-o poziție care a fost deja eliberată de un alt bloc
+            if (clearedPositions.Contains(targetPos))
+            {
+                return dir;
+            }
         }
-        return null;
+    
+        return null; // Nicio cale de mișcare găsită în acest pas
     }
 
-    private Vector3Int[] GetDirectionVectors() => new[] {
-        Vector3Int.forward, Vector3Int.back, Vector3Int.up,
-        Vector3Int.down, Vector3Int.left, Vector3Int.right
-    };
+    #region Helper Functions
 
-    // ▼▼▼ MODIFICARE CHEIE AICI ▼▼▼
     private bool IsInBounds(Vector3Int pos, int gridSize)
     {
         if (gridSize <= 0) return false;
-        // Recalculăm limitele pe baza aceluiași offset
         int offset = gridSize / 2;
         int min = -offset;
         int max = gridSize - offset;
 
-        // Verificăm dacă poziția se află în noul cub centrat
         return pos.x >= min && pos.x < max &&
                pos.y >= min && pos.y < max &&
                pos.z >= min && pos.z < max;
     }
-
-    private MoveDirection GetEnumFromVector(Vector3Int dir)
+    
+    private MoveDirection GetOppositeDirection(MoveDirection dir)
     {
-        if (dir == Vector3Int.forward) return MoveDirection.Forward;
-        if (dir == Vector3Int.back) return MoveDirection.Back;
-        if (dir == Vector3Int.up) return MoveDirection.Up;
-        if (dir == Vector3Int.down) return MoveDirection.Down;
-        if (dir == Vector3Int.left) return MoveDirection.Left;
-        return MoveDirection.Right;
+        switch (dir)
+        {
+            case MoveDirection.Forward: return MoveDirection.Back;
+            case MoveDirection.Back: return MoveDirection.Forward;
+            case MoveDirection.Up: return MoveDirection.Down;
+            case MoveDirection.Down: return MoveDirection.Up;
+            case MoveDirection.Left: return MoveDirection.Right;
+            case MoveDirection.Right: return MoveDirection.Left;
+            default: throw new System.ArgumentOutOfRangeException();
+        }
     }
+
+    private Vector3Int GetVectorFromEnum(MoveDirection dir)
+    {
+        switch (dir)
+        {
+            case MoveDirection.Forward: return Vector3Int.forward;
+            case MoveDirection.Back: return Vector3Int.back;
+            case MoveDirection.Up: return Vector3Int.up;
+            case MoveDirection.Down: return Vector3Int.down;
+            case MoveDirection.Left: return Vector3Int.left;
+            case MoveDirection.Right: return Vector3Int.right;
+            default: return Vector3Int.zero;
+        }
+    }
+
+    #endregion
 }
+

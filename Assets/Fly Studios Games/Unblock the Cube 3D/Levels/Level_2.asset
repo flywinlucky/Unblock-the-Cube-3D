@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Level_2
   m_EditorClassIdentifier: 
   customGridSize: 3
-  seed: 0
+  seed: 10

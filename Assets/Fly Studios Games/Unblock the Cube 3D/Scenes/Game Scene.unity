@@ -4392,6 +4392,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d9dc5816dd4da084b8acf3c3a5a510e2, type: 2}
   - {fileID: 11400000, guid: 09796cf480d2d0c4184854cd85ec5738, type: 2}
   - {fileID: 11400000, guid: 1a72c9f014f5ffe409fc037e2196b9fc, type: 2}
+  - {fileID: 11400000, guid: d1a4ca6927dac3c4497ed7c511dc079b, type: 2}
+  - {fileID: 11400000, guid: d329dbb6e94583c48a36e23fd985b42f, type: 2}
   currentLevelIndex: 0
   singleBlockPrefab: {fileID: 8118699957492744284, guid: 7e4aea03383933a4494280f2a26b9efa, type: 3}
   levelContainer: {fileID: 1540090167}
@@ -4407,6 +4409,8 @@ MonoBehaviour:
   smashCount: 0
   undoCost: 5
   smashCost: 10
+  ignoredLevelIndicesCSV: 0
+  enableRandomCycleOnEnd: 1
 --- !u!4 &1208760976
 Transform:
   m_ObjectHideFlags: 0
