@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23837d9990ab88543a65be48b167f91b, type: 3}
   m_Name: Level_5
   m_EditorClassIdentifier: 
-  customGridSize: 6
+  customGridLength: 6
+  customGridHeight: 6
   seed: 0
   blocks:
   - position: {x: -3, y: -3, z: -3}

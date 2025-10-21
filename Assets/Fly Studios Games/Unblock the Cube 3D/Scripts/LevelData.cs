@@ -18,7 +18,9 @@ public class LevelData : ScriptableObject
 {
     [Header("Generation Settings")]
     [Range(2, 10)]
-    public int customGridSize = 3;
+    public int customGridLength = 3; // Lungimea nivelului
+    [Range(2, 10)]
+    public int customGridHeight = 3; // Înălțimea nivelului
     public int seed = 0;
 
     // Make this field serialized so Unity stores it inside the asset
@@ -30,12 +32,8 @@ public class LevelData : ScriptableObject
 
     public List<BlockData> GetBlocks() => blocks ?? (blocks = new List<BlockData>());
 
-    public int GetGridSize()
-    {
-        int gs = Mathf.Max(MinGridSize, customGridSize);
-        gs = Mathf.Min(gs, MaxGridSize);
-        return gs;
-    }
+    public int GetGridLength() => Mathf.Clamp(customGridLength, MinGridSize, MaxGridSize);
+    public int GetGridHeight() => Mathf.Clamp(customGridHeight, MinGridSize, MaxGridSize);
 
     /// <summary>
     /// Punctul de intrare pentru generarea nivelului.
@@ -60,22 +58,24 @@ public class LevelData : ScriptableObject
     {
         blocks = new List<BlockData>();
         Random.InitState(seed);
-        int gridSize = GetGridSize();
+        int gridLength = GetGridLength();
+        int gridHeight = GetGridHeight();
 
-        if (gridSize <= 0)
+        if (gridLength <= 0 || gridHeight <= 0)
         {
-            Debug.LogWarning("Invalid grid size for generation.");
+            Debug.LogWarning("Invalid grid dimensions for generation.");
             return;
         }
 
         // 1. Creăm un bloc pentru fiecare celulă din grilă
         List<BlockData> generatedBlocks = new List<BlockData>();
-        int offset = gridSize / 2;
-        for (int x = -offset; x < gridSize - offset; x++)
+        int offsetLength = gridLength / 2;
+        int offsetHeight = gridHeight / 2;
+        for (int x = -offsetLength; x < gridLength - offsetLength; x++)
         {
-            for (int y = -offset; y < gridSize - offset; y++)
+            for (int y = -offsetHeight; y < gridHeight - offsetHeight; y++)
             {
-                for (int z = -offset; z < gridSize - offset; z++)
+                for (int z = -offsetLength; z < gridLength - offsetLength; z++)
                 {
                     generatedBlocks.Add(new BlockData { position = new Vector3Int(x, y, z) });
                 }
@@ -99,7 +99,7 @@ public class LevelData : ScriptableObject
             foreach (var currentBlock in remainingBlocks)
             {
                 // Căutăm o direcție în care blocul poate fi mișcat (spre exterior sau spre o poziție deja eliberată)
-                MoveDirection? possibleDirection = FindForwardPath(currentBlock.position, clearedPositions, gridSize);
+                MoveDirection? possibleDirection = FindForwardPath(currentBlock.position, clearedPositions, gridLength);
 
                 if (possibleDirection.HasValue)
                 {
@@ -138,7 +138,7 @@ public class LevelData : ScriptableObject
         }
 
         this.blocks = generatedBlocks;
-        Debug.Log($"Level successfully generated – {blocks.Count} blocks placed. Guaranteed playable and cycle-free.");
+        Debug.Log($"Level successfully generated – {blocks.Count} blocks placed. Dimensions: {gridLength}x{gridHeight}.");
     }
     
     /// <summary>

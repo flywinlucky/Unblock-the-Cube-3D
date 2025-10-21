@@ -22,5 +22,10 @@ public class LevelDataEditor : Editor
 
         LevelData levelData = (LevelData)target;
         if (levelData == null) return;
+
+        // NOU: Afișăm dimensiunile personalizate ale grilei
+        EditorGUILayout.LabelField("Custom Grid Dimensions", EditorStyles.boldLabel);
+        levelData.customGridLength = EditorGUILayout.IntSlider("Grid Length", levelData.customGridLength, 2, 40);
+        levelData.customGridHeight = EditorGUILayout.IntSlider("Grid Height", levelData.customGridHeight, 2, 40);
     }
 }
