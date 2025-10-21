@@ -103,10 +103,26 @@ public class LevelEditorWindow : EditorWindow
 			_currentLevel = null;
 			RefreshLevelList();
 			Debug.Log("Level asset deleted.");
+
+			// NOU: Curățăm toate cuburile din scena Level Editor
+			ClearEditorScene();
 		}
 		else
 		{
 			Debug.LogWarning("Failed to delete level asset: " + path);
+		}
+	}
+
+	// NOU: Funcție pentru a curăța toate cuburile din scena Level Editor
+	private void ClearEditorScene()
+	{
+		if (_sceneRootGO != null)
+		{
+			for (int i = _sceneRootGO.transform.childCount - 1; i >= 0; i--)
+			{
+				DestroyImmediate(_sceneRootGO.transform.GetChild(i).gameObject);
+			}
+			Debug.Log("All blocks cleared from the Level Editor scene.");
 		}
 	}
 
