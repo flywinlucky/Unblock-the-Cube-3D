@@ -221,12 +221,14 @@ public class LevelEditorWindow : EditorWindow
 		EditorGUILayout.EndHorizontal();
 	}
 
+
 	private void DrawToolbar()
 	{
 		EditorGUILayout.BeginHorizontal(EditorStyles.toolbar);
 		if (GUILayout.Button("New Level", EditorStyles.toolbarButton)) CreateNewLevelAsset();
 		if (GUILayout.Button("Save Changes", EditorStyles.toolbarButton)) SaveChanges();
 		if (GUILayout.Button("Refresh", EditorStyles.toolbarButton)) RefreshLevelList();
+
 		GUILayout.FlexibleSpace();
 		EditorGUILayout.EndHorizontal();
 	}
@@ -343,6 +345,7 @@ public class LevelEditorWindow : EditorWindow
 			AssetDatabase.SaveAssets();
 			_isDirty = false;
 			Debug.Log($"Saved Level {_currentLevel.name}");
+		    RefreshLevelList();
 		}
 	}
 

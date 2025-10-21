@@ -14,3 +14,373 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   customGridSize: 5
   seed: 10
+  blocks:
+  - position: {x: -2, y: -2, z: -2}
+    direction: 4
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -2, y: -2, z: -1}
+    direction: 3
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -2, y: -2, z: 0}
+    direction: 2
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -2, y: -2, z: 1}
+    direction: 3
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -2, y: -2, z: 2}
+    direction: 3
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -2, y: -1, z: -2}
+    direction: 4
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -2, y: -1, z: -1}
+    direction: 2
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -2, y: -1, z: 0}
+    direction: 4
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -2, y: -1, z: 1}
+    direction: 2
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -2, y: -1, z: 2}
+    direction: 0
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -2, y: 0, z: -2}
+    direction: 3
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -2, y: 0, z: -1}
+    direction: 3
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -2, y: 0, z: 0}
+    direction: 5
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -2, y: 0, z: 1}
+    direction: 0
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -2, y: 0, z: 2}
+    direction: 4
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -2, y: 1, z: -2}
+    direction: 5
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -2, y: 1, z: -1}
+    direction: 0
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -2, y: 1, z: 0}
+    direction: 2
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -2, y: 1, z: 1}
+    direction: 4
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -2, y: 1, z: 2}
+    direction: 3
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -2, y: 2, z: -2}
+    direction: 1
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -2, y: 2, z: -1}
+    direction: 1
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -2, y: 2, z: 0}
+    direction: 2
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -2, y: 2, z: 1}
+    direction: 0
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -2, y: 2, z: 2}
+    direction: 3
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -1, y: -2, z: -2}
+    direction: 3
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -1, y: -2, z: -1}
+    direction: 4
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -1, y: -2, z: 0}
+    direction: 1
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -1, y: -2, z: 1}
+    direction: 1
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -1, y: -2, z: 2}
+    direction: 5
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -1, y: -1, z: -2}
+    direction: 2
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -1, y: -1, z: -1}
+    direction: 0
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -1, y: -1, z: 0}
+    direction: 0
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -1, y: -1, z: 1}
+    direction: 1
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -1, y: -1, z: 2}
+    direction: 1
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -1, y: 0, z: -2}
+    direction: 1
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -1, y: 0, z: -1}
+    direction: 1
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -1, y: 0, z: 0}
+    direction: 4
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -1, y: 0, z: 1}
+    direction: 0
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -1, y: 0, z: 2}
+    direction: 2
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -1, y: 1, z: -2}
+    direction: 4
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -1, y: 1, z: -1}
+    direction: 2
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -1, y: 1, z: 0}
+    direction: 2
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -1, y: 1, z: 1}
+    direction: 2
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -1, y: 1, z: 2}
+    direction: 4
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -1, y: 2, z: -2}
+    direction: 0
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -1, y: 2, z: -1}
+    direction: 3
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -1, y: 2, z: 0}
+    direction: 4
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -1, y: 2, z: 1}
+    direction: 0
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: -1, y: 2, z: 2}
+    direction: 4
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 0, y: -2, z: -2}
+    direction: 0
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 0, y: -2, z: -1}
+    direction: 2
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 0, y: -2, z: 0}
+    direction: 5
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 0, y: -2, z: 1}
+    direction: 1
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 0, y: -2, z: 2}
+    direction: 3
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 0, y: -1, z: -2}
+    direction: 3
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 0, y: -1, z: -1}
+    direction: 2
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 0, y: -1, z: 0}
+    direction: 3
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 0, y: -1, z: 1}
+    direction: 0
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 0, y: -1, z: 2}
+    direction: 5
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 0, y: 0, z: -2}
+    direction: 4
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 0, y: 0, z: -1}
+    direction: 2
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 0, y: 0, z: 0}
+    direction: 2
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 0, y: 0, z: 1}
+    direction: 4
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 0, y: 0, z: 2}
+    direction: 5
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 0, y: 1, z: -2}
+    direction: 1
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 0, y: 1, z: -1}
+    direction: 5
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 0, y: 1, z: 0}
+    direction: 1
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 0, y: 1, z: 1}
+    direction: 0
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 0, y: 1, z: 2}
+    direction: 2
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 0, y: 2, z: -2}
+    direction: 0
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 0, y: 2, z: -1}
+    direction: 4
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 0, y: 2, z: 0}
+    direction: 3
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 0, y: 2, z: 1}
+    direction: 1
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 0, y: 2, z: 2}
+    direction: 3
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 1, y: -2, z: -2}
+    direction: 3
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 1, y: -2, z: -1}
+    direction: 0
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 1, y: -2, z: 0}
+    direction: 2
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 1, y: -2, z: 1}
+    direction: 0
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 1, y: -2, z: 2}
+    direction: 4
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 1, y: -1, z: -2}
+    direction: 3
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 1, y: -1, z: -1}
+    direction: 4
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 1, y: -1, z: 0}
+    direction: 5
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 1, y: -1, z: 1}
+    direction: 1
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 1, y: -1, z: 2}
+    direction: 3
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 1, y: 0, z: -2}
+    direction: 1
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 1, y: 0, z: -1}
+    direction: 4
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 1, y: 0, z: 0}
+    direction: 0
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 1, y: 0, z: 1}
+    direction: 4
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 1, y: 0, z: 2}
+    direction: 5
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 1, y: 1, z: -2}
+    direction: 0
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 1, y: 1, z: -1}
+    direction: 1
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 1, y: 1, z: 0}
+    direction: 1
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 1, y: 1, z: 1}
+    direction: 0
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 1, y: 1, z: 2}
+    direction: 3
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 1, y: 2, z: -2}
+    direction: 1
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 1, y: 2, z: -1}
+    direction: 0
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 1, y: 2, z: 0}
+    direction: 1
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 1, y: 2, z: 1}
+    direction: 4
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 1, y: 2, z: 2}
+    direction: 4
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 2, y: -2, z: -2}
+    direction: 4
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 2, y: -2, z: -1}
+    direction: 3
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 2, y: -2, z: 0}
+    direction: 3
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 2, y: -2, z: 1}
+    direction: 2
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 2, y: -2, z: 2}
+    direction: 1
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 2, y: -1, z: -2}
+    direction: 0
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 2, y: -1, z: -1}
+    direction: 3
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 2, y: -1, z: 0}
+    direction: 5
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 2, y: -1, z: 1}
+    direction: 2
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 2, y: -1, z: 2}
+    direction: 2
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 2, y: 0, z: -2}
+    direction: 2
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 2, y: 0, z: -1}
+    direction: 0
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 2, y: 0, z: 0}
+    direction: 0
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 2, y: 0, z: 1}
+    direction: 4
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 2, y: 0, z: 2}
+    direction: 3
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 2, y: 1, z: -2}
+    direction: 1
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 2, y: 1, z: -1}
+    direction: 2
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 2, y: 1, z: 0}
+    direction: 4
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 2, y: 1, z: 1}
+    direction: 1
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 2, y: 1, z: 2}
+    direction: 2
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 2, y: 2, z: 0}
+    direction: 2
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 2, y: 2, z: 1}
+    direction: 3
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
+  - position: {x: 2, y: 2, z: 2}
+    direction: 4
+    randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}

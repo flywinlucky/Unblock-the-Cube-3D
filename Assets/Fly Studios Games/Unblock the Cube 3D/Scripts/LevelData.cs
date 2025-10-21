@@ -21,6 +21,8 @@ public class LevelData : ScriptableObject
     public int customGridSize = 3;
     public int seed = 0;
 
+    // Make this field serialized so Unity stores it inside the asset
+    [SerializeField]
     private List<BlockData> blocks = new List<BlockData>();
 
     private const int MinGridSize = 2;
@@ -121,6 +123,7 @@ public class LevelData : ScriptableObject
                 clearedPositions.Add(block.position);
                 remainingBlocks.Remove(block);
             }
+            
         }
 
 
