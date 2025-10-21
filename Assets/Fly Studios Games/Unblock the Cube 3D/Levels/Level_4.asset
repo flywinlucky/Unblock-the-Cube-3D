@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23837d9990ab88543a65be48b167f91b, type: 3}
   m_Name: Level_4
   m_EditorClassIdentifier: 
-  customGridSize: 4
-  seed: 11
+  customGridSize: 5
+  seed: 10

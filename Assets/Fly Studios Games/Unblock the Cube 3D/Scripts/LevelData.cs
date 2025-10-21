@@ -84,38 +84,45 @@ public class LevelData : ScriptableObject
         List<BlockData> remainingBlocks = new List<BlockData>(generatedBlocks);
         HashSet<Vector3Int> clearedPositions = new HashSet<Vector3Int>(); // Poziții considerate "libere" pentru mișcare
 
-        // 3. Atribuim direcții construind calea de rezolvare, de la primul la ultimul bloc mișcat
+        // 3. Atribuim direcții în "pase", construind calea de rezolvare
+        // Acest lucru previne ciclurile, deoarece un bloc poate fi eliberat doar pe baza blocurilor eliberate în pasele ANTERIOARE.
         while (remainingBlocks.Count > 0)
         {
-            bool assignedOneThisPass = false;
-            // Amestecăm blocurile în fiecare pas pentru a varia ordinea de rezolvare
+            List<BlockData> blocksClearedThisPass = new List<BlockData>();
+            
+            // Amestecăm blocurile pentru a asigura că soluția nu este mereu aceeași
             remainingBlocks = remainingBlocks.OrderBy(b => Random.value).ToList();
 
-            for (int i = remainingBlocks.Count - 1; i >= 0; i--)
+            // Faza 1: Găsim TOATE blocurile care pot fi eliberate în acest pas, pe baza stării anterioare
+            foreach (var currentBlock in remainingBlocks)
             {
-                BlockData currentBlock = remainingBlocks[i];
-                
                 // Căutăm o direcție în care blocul poate fi mișcat (spre exterior sau spre o poziție deja eliberată)
                 MoveDirection? possibleDirection = FindForwardPath(currentBlock.position, clearedPositions, gridSize);
 
                 if (possibleDirection.HasValue)
                 {
+                    // Atribuim temporar direcția și adăugăm blocul la lista pentru acest pas
                     currentBlock.direction = possibleDirection.Value;
-                    
-                    // Adăugăm poziția acestui bloc la cele "eliberate" pentru următorii pași
-                    clearedPositions.Add(currentBlock.position);
-                    remainingBlocks.RemoveAt(i);
-                    assignedOneThisPass = true;
+                    blocksClearedThisPass.Add(currentBlock);
                 }
             }
 
-            if (!assignedOneThisPass && remainingBlocks.Count > 0)
+
+            if (blocksClearedThisPass.Count == 0 && remainingBlocks.Count > 0)
             {
                 // Acest caz nu ar trebui să se întâmple cu noua logică, dar rămâne ca o siguranță.
                 Debug.LogError($"Failed to generate a solvable level. A deadlock was detected with {remainingBlocks.Count} blocks left. This indicates a flaw in the generation logic.");
                 break; // Ieșim pentru a preveni o buclă infinită
             }
+            
+            // Faza 2: Validăm și actualizăm starea pentru toate blocurile găsite în acest pas
+            foreach (var block in blocksClearedThisPass)
+            {
+                clearedPositions.Add(block.position);
+                remainingBlocks.Remove(block);
+            }
         }
+
 
         // 4. Setăm rotațiile vizuale aleatorii pentru estetică
         foreach (var block in generatedBlocks)
