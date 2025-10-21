@@ -22,12 +22,5 @@ public class LevelDataEditor : Editor
 
         LevelData levelData = (LevelData)target;
         if (levelData == null) return;
-
-        if (GUILayout.Button("Generate Level", GUILayout.Height(40)))
-        {
-            levelData.Generate();
-            EditorUtility.SetDirty(levelData);
-            Debug.Log("Level generated successfully with " + (levelData.GetBlocks()?.Count ?? 0) + " blocks!");
-        }
     }
 }
