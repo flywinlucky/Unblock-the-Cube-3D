@@ -4815,9 +4815,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d1a4ca6927dac3c4497ed7c511dc079b, type: 2}
   - {fileID: 11400000, guid: d329dbb6e94583c48a36e23fd985b42f, type: 2}
   - {fileID: 11400000, guid: 2c0a7811f2213224eb59a07ae07193f2, type: 2}
-  - {fileID: 11400000, guid: 16a99723765d80346bdac924ef62f2bc, type: 2}
-  - {fileID: 11400000, guid: 72967a157f5f0b84fa23dcbff4629533, type: 2}
-  - {fileID: 11400000, guid: d6ae80013897ae8448ae12715004792a, type: 2}
   currentLevelIndex: 0
   singleBlockPrefab: {fileID: 8118699957492744284, guid: 7e4aea03383933a4494280f2a26b9efa, type: 3}
   levelContainer: {fileID: 1540090167}
@@ -4870,6 +4867,7 @@ MonoBehaviour:
   currentLevelText: {fileID: 1221926798}
   levelWin_panel: {fileID: 1247697624}
   shop_panel: {fileID: 1008209896}
+  safeAreaUI: {fileID: 1002683987}
   globalCoinsText: {fileID: 1805288914}
   winCoinsText: {fileID: 4164212186989389864}
   undoCountText: {fileID: 112968191}
