@@ -30,7 +30,7 @@ public class LevelManager : MonoBehaviour
 
     // NOU: flag pentru modul "remove" (următorul click va distruge block-ul selectat)
     private bool _awaitingRemoveSelection = false;
-    
+
     // Flag pentru a evita multiple tranziții simultane
     private bool _isTransitioning = false;
 
@@ -126,7 +126,7 @@ public class LevelManager : MonoBehaviour
         // Generăm nivelul curent (dacă există)
         GenerateLevel();
     }
-    
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -224,7 +224,7 @@ public class LevelManager : MonoBehaviour
             Debug.LogWarning("CameraControler is not assigned; cannot frame target.", this);
         }
     }
-    
+
     // Așteaptă finalul frame-ului și apoi centrează camera (avoid incorrect bounds)
     private IEnumerator FrameCameraNextFrame()
     {
@@ -273,8 +273,15 @@ public class LevelManager : MonoBehaviour
                 // Activăm panelul de level win din UI (dacă e setat)
                 if (uiManager != null && uiManager.levelWin_panel != null)
                 {
-                    uiManager.levelWin_panel.SetActive(true);
                     _isTransitioning = true; // blocăm alte acțiuni până la alegerea jucătorului
+                    
+                    StartCoroutine(levelWinDelay());
+
+                    IEnumerator levelWinDelay()
+                    {
+                        yield return new WaitForSeconds(0.6f);
+                        uiManager.levelWin_panel.SetActive(true);
+                    }
                 }
                 else
                 {
