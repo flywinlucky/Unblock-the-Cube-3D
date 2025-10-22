@@ -1,12 +1,24 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class AutoResolveCube : MonoBehaviour
 {
+    public Transform levelTarget;
+    public Button playAutoLevelResolve_Button;
+    public Button stopAutoLevelResolve_Button;
+
     [Tooltip("Intervalul de timp (în secunde) între mișcările fiecărui bloc.")]
     public float moveInterval = 1.0f;
 
     private bool _isResolving = false;
+
+    void Start()
+    {
+        // Legăm butoanele la funcțiile corespunzătoare
+        playAutoLevelResolve_Button.onClick.AddListener(StartAutoResolve);
+        stopAutoLevelResolve_Button.onClick.AddListener(StopAutoResolve);
+    }
 
     void Update()
     {
@@ -44,11 +56,11 @@ public class AutoResolveCube : MonoBehaviour
     {
         _isResolving = true;
 
-        while (transform.childCount > 0) // Continuăm până când nu mai există copii
+        while (levelTarget.childCount > 0) // Continuăm până când nu mai există copii în levelTarget
         {
-            for (int i = 0; i < transform.childCount; i++)
+            for (int i = 0; i < levelTarget.childCount; i++)
             {
-                Transform child = transform.GetChild(i);
+                Transform child = levelTarget.GetChild(i);
                 Block block = child.GetComponent<Block>();
 
                 if (block != null)
