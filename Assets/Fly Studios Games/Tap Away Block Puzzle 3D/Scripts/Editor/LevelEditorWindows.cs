@@ -34,8 +34,8 @@ public class LevelEditorWindow : EditorWindow
 	private const string TempSceneName = "LevelEditor_TempScene";
 
 	// ADĂUGAT: Căi către scenele proiectului (asigură că path-urile corespund proiectului tău)
-	private const string LevelEditorScenePath = "Assets/Fly Studios Games/Unblock the Cube 3D/Scenes/Level Editor.unity";
-	private const string GameScenePath = "Assets/Fly Studios Games/Unblock the Cube 3D/Scenes/Game Scene.unity";
+	private const string LevelEditorScenePath = "Assets/Fly Studios Games/Tap Away Block Puzzle 3D/Scenes/Level Editor.unity";
+	private const string GameScenePath = "Assets/Fly Studios Games/Tap Away Block Puzzle 3D/Scenes/Game Scene.unity";
 
 	// snapshot pentru detectarea modificărilor din scena editor
 	private List<BlockData> _lastSceneSnapshot = new List<BlockData>();
@@ -159,7 +159,7 @@ public class LevelEditorWindow : EditorWindow
 		return true;
 	}
 
-	[MenuItem("Tools/Unblock Cube/Level Editor")]
+	[MenuItem("Tools/Tap Away Block Puzzle 3D/Level Editor")]
 	public static void ShowWindow()
 	{
 		GetWindow<LevelEditorWindow>("Level Editor");
