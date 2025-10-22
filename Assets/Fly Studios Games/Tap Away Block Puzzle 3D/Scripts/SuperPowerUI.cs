@@ -20,12 +20,7 @@ public class SuperPowerUI : MonoBehaviour
     {
         // Legăm butonul la funcția de toggle
         openBuyPowerPanel_button.onClick.AddListener(ToggleBuyPowerPanel);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        BuyPowerPanel.SetActive(isPanelOpen);
     }
 
     private void ToggleBuyPowerPanel()
