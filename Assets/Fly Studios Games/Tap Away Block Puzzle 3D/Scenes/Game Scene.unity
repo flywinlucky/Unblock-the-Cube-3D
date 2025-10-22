@@ -1065,8 +1065,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 265224574}
+  - component: {fileID: 265224575}
   m_Layer: 5
-  m_Name: GameObject
+  m_Name: Remover Power
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1095,6 +1096,25 @@ RectTransform:
   m_AnchoredPosition: {x: -80, y: 0}
   m_SizeDelta: {x: 126.57007, y: 108.8}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &265224575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 265224573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f318b3b7bd759cb4ea8c436fc653603f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openBuyPowerPanel_button: {fileID: 956264564}
+  openBuyPowerPanel_button_image: {fileID: 613361074}
+  close_icon: {fileID: 21300000, guid: abfea431ec52dd649829991e81b653f3, type: 3}
+  plus_icon: {fileID: 21300000, guid: 8aa16460d2faaa24a829eb660f2b5232, type: 3}
+  open_color: {r: 0.4627451, g: 0.9254902, b: 0.29803923, a: 1}
+  close_color: {r: 0.9254902, g: 0.3019608, b: 0.3019608, a: 1}
+  BuyPowerPanel: {fileID: 1290835043}
 --- !u!1 &265943797
 GameObject:
   m_ObjectHideFlags: 0
@@ -1753,19 +1773,19 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410900106}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.70710677}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.93590516, y: 0.93590516, z: 0.93590516}
+  m_LocalScale: {x: 1.2468679, y: 1.2468679, z: 1.2468679}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 294621512}
   - {fileID: 1259102856}
   m_Father: {fileID: 1290835044}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 53.308, y: 1.669}
+  m_AnchoredPosition: {x: 50.2, y: 0.42557}
   m_SizeDelta: {x: 119.0731, y: 117.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &410900108
@@ -1781,7 +1801,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.29803923, g: 0.43529415, b: 0.92549026, a: 1}
+  m_Color: {r: 0.29803926, g: 0.7270003, b: 0.9254902, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3435,7 +3455,7 @@ GameObject:
   - component: {fileID: 956264562}
   - component: {fileID: 956264564}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Open Buy Power Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5677,7 +5697,7 @@ GameObject:
   - component: {fileID: 1290835046}
   - component: {fileID: 1290835045}
   m_Layer: 5
-  m_Name: Settings Panel
+  m_Name: Buy Power Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5690,18 +5710,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1290835043}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0.70710677, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.090172, y: 1.090172, z: 1.090172}
+  m_LocalScale: {x: 0.79147583, y: 0.79147583, z: 0.79147583}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 410900107}
   m_Father: {fileID: 265224574}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -93.3, y: -0.0000030994}
+  m_AnchoredPosition: {x: 2.1, y: 110.1}
   m_SizeDelta: {x: 262.7667, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1290835045
