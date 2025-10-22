@@ -13,7 +13,6 @@ public class BlockData
     public Quaternion randomVisualRotation;
 }
 
-[CreateAssetMenu(fileName = "SolvableCubeLevel", menuName = "Unblock Cube/Solvable Cube Level")]
 public class LevelData : ScriptableObject
 {
     [Header("Generation Settings")]
@@ -34,7 +33,7 @@ public class LevelData : ScriptableObject
     private List<BlockData> blocks = new List<BlockData>();
 
     private const int MinGridSize = 2;
-    private const int MaxGridSize = 40;
+    private const int MaxGridSize = 10;
 
     public List<BlockData> GetBlocks() => blocks ?? (blocks = new List<BlockData>());
 

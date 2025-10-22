@@ -326,8 +326,8 @@ public class LevelEditorWindow : EditorWindow
 
 			// Afișăm și edităm variabilele ascunse din LevelData
 			EditorGUILayout.LabelField("Level Generation Settings", EditorStyles.boldLabel);
-			_currentLevel.customGridLength = EditorGUILayout.IntSlider("Grid Length", _currentLevel.customGridLength, 2, 40);
-			_currentLevel.customGridHeight = EditorGUILayout.IntSlider("Grid Height", _currentLevel.customGridHeight, 2, 40);
+			_currentLevel.customGridLength = EditorGUILayout.IntSlider("Grid Length", _currentLevel.customGridLength, 2, 10);
+			_currentLevel.customGridHeight = EditorGUILayout.IntSlider("Grid Height", _currentLevel.customGridHeight, 2, 10);
 			_currentLevel.seed = EditorGUILayout.IntField("Seed", _currentLevel.seed);
 
 			EditorGUILayout.Space(10);
