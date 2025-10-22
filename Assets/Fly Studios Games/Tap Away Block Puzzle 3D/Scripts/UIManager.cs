@@ -10,6 +10,7 @@ public class UIManager : MonoBehaviour
 
     public GameObject levelWin_panel;
     public GameObject shop_panel;
+    public GameObject safeAreaUI;
 
     // NOU: Text pentru soldul global de coins și pentru suma afișată în panelul de win
     [Tooltip("Text care arată soldul global de coins.")]

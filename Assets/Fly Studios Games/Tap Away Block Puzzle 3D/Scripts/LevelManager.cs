@@ -223,6 +223,8 @@ public class LevelManager : MonoBehaviour
         {
             Debug.LogWarning("CameraControler is not assigned; cannot frame target.", this);
         }
+
+       uiManager.safeAreaUI.SetActive(true);
     }
 
     // Așteaptă finalul frame-ului și apoi centrează camera (avoid incorrect bounds)
@@ -280,6 +282,8 @@ public class LevelManager : MonoBehaviour
                     IEnumerator levelWinDelay()
                     {
                         yield return new WaitForSeconds(0.6f);
+                        
+                        uiManager.safeAreaUI.SetActive(false);
                         uiManager.levelWin_panel.SetActive(true);
                     }
                 }
