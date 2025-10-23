@@ -33,6 +33,12 @@ public class CameraControler : MonoBehaviour
     [Tooltip("Permite rotația target-ului prin input. Dezactivează pentru UI modal (ex: shop).")]
     public bool rotationEnabled = true;
 
+    [Header("Touch Settings")]
+    [Tooltip("Factor de ajustare pentru sensibilitatea rotației pe mobil.")]
+    public float touchRotationSensitivity = 0.5f;
+    [Tooltip("Factor de ajustare pentru sensibilitatea zoom-ului pe mobil.")]
+    public float touchZoomSensitivity = 0.1f;
+
     // --- Variabile Private ---
     private Vector3 _centerPoint;
     private float _currentDistance;
@@ -68,12 +74,11 @@ public class CameraControler : MonoBehaviour
         {
             HandleRotation();
             HandleZoom();
+            HandleTouchInput(); // Adăugăm controlul pentru touch
 
             // La final, ne asigurăm că, indiferent de zoom, camera se uită mereu la centru
             transform.LookAt(_centerPoint);
         }
-
-        
     }
 
     /// <summary>
@@ -166,6 +171,67 @@ public class CameraControler : MonoBehaviour
 
         Vector3 directionFromCenter = (transform.position - _centerPoint).normalized;
         if (directionFromCenter == Vector3.zero) directionFromCenter = -transform.forward;
+        transform.position = _centerPoint + directionFromCenter * _currentDistance;
+    }
+
+    private int activeTouchId = -1; // ID-ul primului deget activ pentru rotație
+    private Vector2 lastTouchPosition; // Ultima poziție a degetului activ
+    private float lastTouchDistance; // Ultima distanță între două degete pentru zoom
+
+    private void HandleTouchInput()
+    {
+        if (Input.touchCount == 1) // Rotație cu un singur deget
+        {
+            Touch touch = Input.GetTouch(0);
+
+            if (activeTouchId == -1) // Înregistrăm primul deget activ
+            {
+                activeTouchId = touch.fingerId;
+                lastTouchPosition = touch.position;
+            }
+
+            if (touch.fingerId == activeTouchId) // Verificăm dacă este degetul activ
+            {
+                if (touch.phase == TouchPhase.Moved)
+                {
+                    Vector2 delta = touch.deltaPosition * touchRotationSensitivity;
+                    target.RotateAround(_centerPoint, Vector3.up, -delta.x * rotationSpeed * Time.deltaTime);
+                    target.RotateAround(_centerPoint, transform.right, delta.y * rotationSpeed * Time.deltaTime);
+                }
+                else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
+                {
+                    activeTouchId = -1; // Resetăm degetul activ
+                }
+            }
+        }
+        else if (Input.touchCount == 2) // Zoom cu două degete
+        {
+            Touch touch0 = Input.GetTouch(0);
+            Touch touch1 = Input.GetTouch(1);
+
+            // Calculăm distanța curentă între cele două degete
+            float currentTouchDistance = Vector2.Distance(touch0.position, touch1.position);
+
+            if (touch0.phase == TouchPhase.Began || touch1.phase == TouchPhase.Began)
+            {
+                lastTouchDistance = currentTouchDistance; // Inițializăm distanța
+            }
+
+            // Calculăm diferența de distanță pentru zoom
+            float distanceDelta = currentTouchDistance - lastTouchDistance;
+            _desiredDistance -= distanceDelta * touchZoomSensitivity;
+            _desiredDistance = Mathf.Clamp(_desiredDistance, minDistance, maxDistance);
+
+            lastTouchDistance = currentTouchDistance; // Actualizăm distanța pentru următorul frame
+        }
+        else
+        {
+            activeTouchId = -1; // Resetăm degetul activ dacă nu există touch-uri
+        }
+
+        // Aplicăm zoom-ul lin
+        _currentDistance = Mathf.Lerp(_currentDistance, _desiredDistance, zoomDamping);
+        Vector3 directionFromCenter = (transform.position - _centerPoint).normalized;
         transform.position = _centerPoint + directionFromCenter * _currentDistance;
     }
 }
