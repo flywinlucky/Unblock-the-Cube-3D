@@ -171,6 +171,8 @@ public class LevelManager : MonoBehaviour
 
     public void GenerateLevel()
     {
+        levelContainer.rotation = Quaternion.Euler(0f, 0f, 0f);
+        
         LevelData currentLevelData = GetCurrentLevelData();
         if (currentLevelData == null || singleBlockPrefab == null)
         {
@@ -212,8 +214,6 @@ public class LevelManager : MonoBehaviour
             _activeBlocks.Add(blockScript);
         }
 
-        // Centrare cameră pe noul nivel (dacă CameraControler este setat)
-        // apelăm FrameTarget la finalul frame-ului pentru a ne asigura
         // că Renderer.bounds sunt actualizate după instanțiere.
         if (cameraControler != null)
         {
@@ -224,7 +224,8 @@ public class LevelManager : MonoBehaviour
             Debug.LogWarning("CameraControler is not assigned; cannot frame target.", this);
         }
 
-       uiManager.safeAreaUI.SetActive(true);
+        uiManager.safeAreaUI.SetActive(true);
+        levelContainer.rotation = Quaternion.Euler(-5f, -45f, 5f);
     }
 
     // Așteaptă finalul frame-ului și apoi centrează camera (avoid incorrect bounds)
