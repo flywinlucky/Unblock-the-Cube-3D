@@ -2898,7 +2898,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2108862336}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: RewardedAdManager, Assembly-CSharp
         m_MethodName: ShowRewardedAd
         m_Mode: 1
@@ -8471,13 +8471,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2062332812}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.29803923, g: 0.43529415, b: 0.92549026, a: 1}
+  m_Color: {r: 0.29803923, g: 0.43529415, b: 0.92549026, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -8591,7 +8591,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2108862335}
-  - component: {fileID: 2108862336}
   - component: {fileID: 2108862337}
   m_Layer: 0
   m_Name: Reward Ad Manager
@@ -8616,35 +8615,6 @@ Transform:
   m_Father: {fileID: 1208760976}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2108862336
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2108862334}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7901e5c6a0385d94fb204272f6abee20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rewardAmount: 20
-  adReady: 1
-  autoSimulate: 1
-  simulateSuccess: 1
-  simulateDelay: 1
-  rewardSimulatorPanel: {fileID: 920712862}
-  levelManager: {fileID: 1208760975}
-  notificationManager: {fileID: 1843099098}
-  onAdStarted:
-    m_PersistentCalls:
-      m_Calls: []
-  onAdCompleted:
-    m_PersistentCalls:
-      m_Calls: []
-  onAdFailed:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &2108862337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8657,6 +8627,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c7058852244ecb4087ad74ab35f9444, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rewardAmount: 15
+  levelManager: {fileID: 1208760975}
+  notificationManager: {fileID: 1843099098}
 --- !u!1 &2115314463
 GameObject:
   m_ObjectHideFlags: 0
