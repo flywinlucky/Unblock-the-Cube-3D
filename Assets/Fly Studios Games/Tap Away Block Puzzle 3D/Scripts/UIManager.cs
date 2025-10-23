@@ -148,6 +148,7 @@ public class UIManager : MonoBehaviour
         // sincronizare cu LevelManager (opțional)
         if (levelManager != null) levelManager.OpenShop();
         safeAreaUI.SetActive(false);
+        levelManager.levelContainer.gameObject.SetActive(false);
     }
 
     // NOU: închide shop panel-ul
@@ -156,6 +157,7 @@ public class UIManager : MonoBehaviour
         if (shop_panel != null) shop_panel.SetActive(false);
         // sincronizare cu LevelManager (opțional)
         if (levelManager != null) levelManager.CloseShop();
-    safeAreaUI.SetActive(true);
+        safeAreaUI.SetActive(true);
+        levelManager.levelContainer.gameObject.SetActive(true);
     }
 }

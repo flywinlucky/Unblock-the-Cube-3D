@@ -3646,8 +3646,8 @@ MonoBehaviour:
   maxDistance: 10
   frameBuffer: 1.5
   rotationEnabled: 1
-  touchRotationSensitivity: 0.8
-  touchZoomSensitivity: 0.1
+  touchRotationSensitivity: 0.6
+  touchZoomSensitivity: 0.07
 --- !u!1 &977771152
 GameObject:
   m_ObjectHideFlags: 0
