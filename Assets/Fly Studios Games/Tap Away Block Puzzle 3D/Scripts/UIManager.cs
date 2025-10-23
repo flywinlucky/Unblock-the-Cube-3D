@@ -78,8 +78,9 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        safeAreaUI.SetActive(false);
-        
+        shop_panel.SetActive(false);
+        safeAreaUI.SetActive(true);
+
         // Legăm butoanele shop la funcțiile din LevelManager (dacă sunt setate)
         if (buyUndoButton != null && levelManager != null)
         {
