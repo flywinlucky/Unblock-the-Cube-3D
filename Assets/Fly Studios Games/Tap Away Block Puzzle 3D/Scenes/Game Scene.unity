@@ -4880,6 +4880,7 @@ MonoBehaviour:
   currentLevelIndex: 0
   singleBlockPrefab: {fileID: 8118699957492744284, guid: 7e4aea03383933a4494280f2a26b9efa, type: 3}
   levelContainer: {fileID: 1540090167}
+  rotationLevelContainer: {x: -5, y: -45, z: 5}
   uiManager: {fileID: 1208760977}
   audioManager: {fileID: 514135127}
   notificationManager: {fileID: 1843099098}

@@ -16,6 +16,7 @@ public class LevelManager : MonoBehaviour
     [Header("Object References")]
     public GameObject singleBlockPrefab;
     public Transform levelContainer;
+    public Vector3 rotationLevelContainer;
     public UIManager uiManager; // Referință către UIManager
     public AudioManager audioManager; // NOU: referință la AudioManager (lege în inspector)
     [Tooltip("Referință la NotificationManager pentru mesaje către jucător")]
@@ -225,7 +226,7 @@ public class LevelManager : MonoBehaviour
         }
 
         uiManager.safeAreaUI.SetActive(true);
-        levelContainer.rotation = Quaternion.Euler(-5f, -45f, 5f);
+        levelContainer.rotation = Quaternion.Euler(rotationLevelContainer);
     }
 
     // Așteaptă finalul frame-ului și apoi centrează camera (avoid incorrect bounds)
