@@ -1,5 +1,4 @@
-﻿// UIManager.cs
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -79,6 +78,8 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
+        safeAreaUI.SetActive(false);
+        
         // Legăm butoanele shop la funcțiile din LevelManager (dacă sunt setate)
         if (buyUndoButton != null && levelManager != null)
         {
@@ -145,6 +146,7 @@ public class UIManager : MonoBehaviour
         if (shop_panel != null) shop_panel.SetActive(true);
         // sincronizare cu LevelManager (opțional)
         if (levelManager != null) levelManager.OpenShop();
+        safeAreaUI.SetActive(false);
     }
 
     // NOU: închide shop panel-ul
@@ -153,5 +155,6 @@ public class UIManager : MonoBehaviour
         if (shop_panel != null) shop_panel.SetActive(false);
         // sincronizare cu LevelManager (opțional)
         if (levelManager != null) levelManager.CloseShop();
+    safeAreaUI.SetActive(true);
     }
 }
