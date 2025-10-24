@@ -170,8 +170,7 @@ public class LevelEditorWindow : EditorWindow
 	private void OnEnable()
 	{
 		// NOTE: removed creation of preview lights and preview root (these were only for off-screen preview)
-		_previewBoxStyle = new GUIStyle("box");
-		_previewBoxStyle.padding = new RectOffset(2, 2, 2, 2);
+		_previewBoxStyle = null;
 
 		try
 		{
@@ -230,6 +229,15 @@ public class LevelEditorWindow : EditorWindow
 
 	private void OnGUI()
 	{
+		// Asigurăm inițializarea stilurilor GUI
+		if (_previewBoxStyle == null)
+		{
+			_previewBoxStyle = new GUIStyle("box")
+			{
+				padding = new RectOffset(2, 2, 2, 2)
+			};
+		};
+
 		DrawToolbar();
 		EditorGUILayout.BeginHorizontal();
 		DrawLevelListPanel(); // Panel pentru lista nivelelor
@@ -550,14 +558,12 @@ public class LevelEditorWindow : EditorWindow
 			else
 			{
 				Debug.LogWarning("Game scene not found at: " + GameScenePath);
-				// fallback: create empty scene
-				EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
+				// Eliminăm fallback-ul pentru NewScene, deoarece nu este permis în timpul reîncărcării asamblării
 			}
 		}
 		catch (System.Exception ex)
 		{
-			Debug.LogWarning("Failed to open game scene, creating empty scene instead: " + ex.Message);
-			EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
+			Debug.LogWarning("Failed to open game scene: " + ex.Message);
 		}
 
 		_editorSceneOpen = false;
