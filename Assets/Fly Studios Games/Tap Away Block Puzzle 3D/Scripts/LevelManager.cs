@@ -282,6 +282,12 @@ public class LevelManager : MonoBehaviour
         {
             Debug.Log($"Felicitări! Ai câștigat nivelul {_currentLevelNumber}!");
 
+            if (isLevelEditorManager)
+            {
+                Debug.Log("Level Editor Mode: Nivel finalizat. Nu se salvează progresul și nu se trece automat la următorul nivel.");
+                return; // Ieșim fără a salva progresul sau a trece la alt nivel
+            }
+
             // Acordăm coins o singură dată și apoi afișăm panelul de win
             if (!_isTransitioning)
             {
@@ -328,6 +334,12 @@ public class LevelManager : MonoBehaviour
 
     private IEnumerator ProceedToNextLevelCoroutine()
     {
+        if (isLevelEditorManager)
+        {
+            Debug.Log("Level Editor Mode: Nu se trece automat la următorul nivel.");
+            yield break; // Ieșim fără a trece la următorul nivel
+        }
+
         _isTransitioning = true;
         // așteptăm 1 secundă înainte de a trece nivelul
         yield return new WaitForSeconds(1f);
