@@ -78,6 +78,9 @@ public class LevelManager : MonoBehaviour
     [Tooltip("When the sequential list ends, enable infinite random cycling through allowed levels.")]
     public bool enableRandomCycleOnEnd = true;
 
+    [Header("Level Manager For Editor")]
+    public bool isLevelEditorManager;
+    public LevelData runCurrentLevel;
     // runtime cache
     private HashSet<int> _ignoredIndices = new HashSet<int>();
     private List<int> _allowedRandomIndices = new List<int>();
@@ -100,6 +103,20 @@ public class LevelManager : MonoBehaviour
 
     void Start()
     {
+        // Dacă este Level Editor Manager, ignorăm lista de nivele și folosim doar runCurrentLevel
+        if (isLevelEditorManager)
+        {
+            levelList.Clear(); // Curățăm lista de nivele
+            if (runCurrentLevel != null)
+            {
+                levelList.Add(runCurrentLevel); // Adăugăm doar nivelul curent pentru consistență
+            }
+            else
+            {
+                Debug.LogWarning("runCurrentLevel nu este setat! Asigurați-vă că ați atribuit un LevelData.");
+            }
+        }
+
         // Initializăm UI-ul de coins și afișajul nivelului la start
         if (uiManager != null)
         {

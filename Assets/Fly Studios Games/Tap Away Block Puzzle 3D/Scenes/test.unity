@@ -602,9 +602,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 192c7e46c1f60ca4d9516801124902e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelList:
-  - {fileID: 11400000, guid: d9dc5816dd4da084b8acf3c3a5a510e2, type: 2}
-  - {fileID: 11400000, guid: d329dbb6e94583c48a36e23fd985b42f, type: 2}
+  levelList: []
   currentLevelIndex: 0
   singleBlockPrefab: {fileID: 8118699957492744284, guid: 7e4aea03383933a4494280f2a26b9efa, type: 3}
   levelContainer: {fileID: 1540090167}
@@ -623,6 +621,8 @@ MonoBehaviour:
   smashCost: 10
   ignoredLevelIndicesCSV: 0
   enableRandomCycleOnEnd: 1
+  isLevelEditorManager: 1
+  runCurrentLevel: {fileID: 11400000, guid: d9dc5816dd4da084b8acf3c3a5a510e2, type: 2}
 --- !u!4 &1208760976
 Transform:
   m_ObjectHideFlags: 0
