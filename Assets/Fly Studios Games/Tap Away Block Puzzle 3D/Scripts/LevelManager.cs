@@ -225,7 +225,11 @@ public class LevelManager : MonoBehaviour
             Debug.LogWarning("CameraControler is not assigned; cannot frame target.", this);
         }
 
-        uiManager.safeAreaUI.SetActive(true);
+        if (uiManager)
+        {
+         uiManager.safeAreaUI.SetActive(true);
+            
+        }
         levelContainer.rotation = Quaternion.Euler(rotationLevelContainer);
     }
 
@@ -284,9 +288,16 @@ public class LevelManager : MonoBehaviour
                     IEnumerator levelWinDelay()
                     {
                         yield return new WaitForSeconds(0.6f);
-                        
-                        uiManager.safeAreaUI.SetActive(false);
-                        uiManager.levelWin_panel.SetActive(true);
+                        if (uiManager)
+                        {
+                            uiManager.safeAreaUI.SetActive(false);
+                        }
+
+                        if (uiManager)
+                        {
+                             uiManager.levelWin_panel.SetActive(true);
+                        }
+                       
                     }
                 }
                 else
