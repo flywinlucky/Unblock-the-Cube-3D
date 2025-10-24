@@ -522,6 +522,16 @@ public class LevelEditorWindow : EditorWindow
 			Debug.LogWarning("Error while saving editor scene: " + ex.Message);
 		}
 
+		// Resetăm root-ul LevelEditorSceneRoot
+		if (_sceneRootGO != null)
+		{
+			for (int i = _sceneRootGO.transform.childCount - 1; i >= 0; i--)
+			{
+				DestroyImmediate(_sceneRootGO.transform.GetChild(i).gameObject);
+			}
+			Debug.Log("All children of LevelEditorSceneRoot have been cleared.");
+		}
+
 		// Închidem scena editor curentă și deschidem scena de joc
 		try
 		{
