@@ -259,6 +259,7 @@ public class LevelEditorWindow : EditorWindow
 
 	#endregion
 
+
 	private void OnGUI()
 	{
 		// Asigurăm inițializarea stilurilor GUI
@@ -268,13 +269,25 @@ public class LevelEditorWindow : EditorWindow
 			{
 				padding = new RectOffset(2, 2, 2, 2)
 			};
-		};
+		}
+
+		// Disable interactivity in Play Mode
+		bool isInPlayMode = EditorApplication.isPlayingOrWillChangePlaymode;
+		GUI.enabled = !isInPlayMode;
+
+		if (isInPlayMode)
+		{
+			EditorGUILayout.HelpBox("Editing is disabled in Play Mode. Exit Play Mode to edit levels.", MessageType.Warning);
+		}
 
 		DrawToolbar();
 		EditorGUILayout.BeginHorizontal();
 		DrawLevelListPanel(); // Panel pentru lista nivelelor
 		DrawEditorSettingsPanel(); // Panel pentru setările editorului
 		EditorGUILayout.EndHorizontal();
+
+		// Re-enable interactivity after the UI
+		GUI.enabled = true;
 	}
 
 
