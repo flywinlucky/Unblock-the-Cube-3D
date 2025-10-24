@@ -201,7 +201,7 @@ public class LevelEditorWindow : EditorWindow
 			}
 			catch (System.Exception ex)
 			{
-				Debug.LogWarning("OpenLevelInScene failed: " + ex.Message);
+				//Debug.LogWarning("OpenLevelInScene failed: " + ex.Message);
 			}
 		}
 	}
@@ -443,63 +443,39 @@ public class LevelEditorWindow : EditorWindow
 
 		_suppressSceneSync = true; // prevenim sincronizarea în timp ce modificăm scena
 
-		// curățăm vechiul conținut (cu verificări)
-		try
+		// Curățăm vechiul conținut
+		for (int i = _sceneRootGO.transform.childCount - 1; i >= 0; i--)
 		{
-			for (int i = _sceneRootGO.transform.childCount - 1; i >= 0; i--)
-			{
-				var child = _sceneRootGO.transform.GetChild(i);
-				if (child != null && child.gameObject != null)
-					DestroyImmediate(child.gameObject);
-			}
-		}
-		catch (System.Exception ex)
-		{
-			Debug.LogWarning("Error while clearing scene root children: " + ex.Message);
+			DestroyImmediate(_sceneRootGO.transform.GetChild(i).gameObject);
 		}
 
 		if (_currentLevel == null || _blockPrefab == null)
 		{
+			Debug.LogWarning("Current level or block prefab is not set. Cannot populate the scene.");
 			_suppressSceneSync = false;
 			return;
 		}
 
 		var blocks = _currentLevel.GetBlocks();
-		if (blocks == null)
+		if (blocks == null || blocks.Count == 0)
 		{
+			Debug.LogWarning("No blocks found in the current level data.");
 			_suppressSceneSync = false;
 			return;
 		}
 
-		// protecție la grid unit size (evită divide by zero etc.)
+		// Protecție la grid unit size (evită divide by zero etc.)
 		if (Mathf.Approximately(_gridUnitSize, 0f))
 			_gridUnitSize = 0.5f;
 
-		for (int i = 0; i < blocks.Count; i++)
+		foreach (var data in blocks)
 		{
-			var data = blocks[i];
 			try
 			{
-				if (_blockPrefab == null)
-					continue;
-
-				Object prefabInstance = null;
-				// Instantiate prefab safely
-				try
-				{
-					prefabInstance = PrefabUtility.InstantiatePrefab(_blockPrefab);
-				}
-				catch
-				{
-					// fallback: try Object.Instantiate
-					GameObject go = Object.Instantiate(_blockPrefab);
-					if (go != null) prefabInstance = go;
-				}
-
-				GameObject inst = prefabInstance as GameObject;
+				GameObject inst = PrefabUtility.InstantiatePrefab(_blockPrefab) as GameObject;
 				if (inst == null)
 				{
-					Debug.LogWarning($"Failed to instantiate prefab for block #{i}");
+					Debug.LogError("Failed to instantiate block prefab.");
 					continue;
 				}
 
@@ -507,11 +483,9 @@ public class LevelEditorWindow : EditorWindow
 				inst.transform.position = (Vector3)data.position * _gridUnitSize;
 				inst.transform.rotation = GetStableLookRotation(data.direction) * (data.randomVisualRotation != null ? data.randomVisualRotation : Quaternion.identity);
 
-				// asigurăm collider pentru interacțiune (pe obiectul instanțiat)
-				Collider existing = inst.GetComponent<Collider>();
-				if (existing == null)
+				// Asigurăm că există un collider pentru interacțiune
+				if (inst.GetComponent<Collider>() == null)
 				{
-					// adăugăm BoxCollider doar dacă nu există un collider deja
 					inst.AddComponent<BoxCollider>();
 				}
 
@@ -519,7 +493,7 @@ public class LevelEditorWindow : EditorWindow
 			}
 			catch (System.Exception ex)
 			{
-				Debug.LogWarning($"Exception while creating block instance #{i}: {ex.Message}");
+				Debug.LogError($"Error while creating block instance: {ex.Message}");
 			}
 		}
 
@@ -557,13 +531,13 @@ public class LevelEditorWindow : EditorWindow
 			}
 			else
 			{
-				Debug.LogWarning("Game scene not found at: " + GameScenePath);
+				//Debug.LogWarning("Game scene not found at: " + GameScenePath);
 				// Eliminăm fallback-ul pentru NewScene, deoarece nu este permis în timpul reîncărcării asamblării
 			}
 		}
 		catch (System.Exception ex)
 		{
-			Debug.LogWarning("Failed to open game scene: " + ex.Message);
+			//Debug.LogWarning("Failed to open game scene: " + ex.Message);
 		}
 
 		_editorSceneOpen = false;
