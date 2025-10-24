@@ -333,7 +333,7 @@ public class LevelEditorWindow : EditorWindow
 			EditorGUILayout.Space(10);
 
 			EditorGUI.BeginDisabledGroup(_blockPrefab == null);
-			if (GUILayout.Button("Generate New Level", GUILayout.Height(30)))
+			if (GUILayout.Button("Generate Level", GUILayout.Height(30)))
 			{
 				_currentLevel.Generate();
 				SaveChanges();
