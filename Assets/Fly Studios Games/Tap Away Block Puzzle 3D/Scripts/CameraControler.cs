@@ -190,9 +190,11 @@ public class CameraControler : MonoBehaviour
                     if (touch.phase == TouchPhase.Moved)
                     {
                         Vector2 delta = touch.deltaPosition * touchRotationSensitivity;
-                        // Aplicăm rotația direct, cum era în scriptul original
-                        target.RotateAround(_centerPoint, Vector3.up, -delta.x * rotationSpeed * Time.deltaTime);
-                        target.RotateAround(_centerPoint, transform.right, delta.y * rotationSpeed * Time.deltaTime);
+                        
+                        // MODIFICAT: Am inversat semnele pentru o rotație naturală pe mobil (drag)
+                        // Acum swipe stânga rotește stânga, swipe sus rotește sus.
+                        target.RotateAround(_centerPoint, Vector3.up, delta.x * rotationSpeed * Time.deltaTime); // Am scos minusul
+                        target.RotateAround(_centerPoint, transform.right, -delta.y * rotationSpeed * Time.deltaTime); // Am adăugat minus
                     }
                     else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
                     {
@@ -219,7 +221,7 @@ public class CameraControler : MonoBehaviour
                 // Netezim input-ul folosind SmoothDamp pentru o mișcare fluidă
                 _rotationInput = Vector2.SmoothDamp(_rotationInput, rawInput, ref _smoothVelocity, rotationDamping);
 
-                // Aplicăm rotația pe target în jurul centrului calculat
+                // Aplicăm rotația pe target în jurul centrului calculat (stil orbit)
                 if (_rotationInput.magnitude > 0.001f)
                 {
                     target.RotateAround(_centerPoint, Vector3.up, -_rotationInput.x * rotationSpeed);
