@@ -49,6 +49,10 @@ public class CameraControler : MonoBehaviour
     private Vector2 _rotationInput;
     private Vector2 _smoothVelocity;
 
+    // NOU: Variabile pentru rotație lină (touch)
+    private Vector2 _touchRotationInput;
+    private Vector2 _touchSmoothVelocity;
+
     // Variabile pentru gesturi (touch)
     private int activeTouchId = -1; // ID-ul primului deget activ pentru rotație
     private float lastTouchDistance; // Ultima distanță între două degete pentru zoom
@@ -152,6 +156,9 @@ public class CameraControler : MonoBehaviour
                 activeTouchId = -1;
                 _rotationInput = Vector2.zero; // Oprim și inerția de la mouse
                 _smoothVelocity = Vector2.zero;
+                _touchRotationInput = Vector2.zero; // Oprim și inerția de la touch
+                _touchSmoothVelocity = Vector2.zero;
+
 
                 Touch touch0 = Input.GetTouch(0);
                 Touch touch1 = Input.GetTouch(1);
@@ -179,6 +186,7 @@ public class CameraControler : MonoBehaviour
                 if (!rotationEnabled) return;
 
                 Touch touch = Input.GetTouch(0);
+                Vector2 rawTouchInput = Vector2.zero; // NOU: Stocăm input-ul brut aici
 
                 if (activeTouchId == -1) // Înregistrăm primul deget activ
                 {
@@ -189,24 +197,34 @@ public class CameraControler : MonoBehaviour
                 {
                     if (touch.phase == TouchPhase.Moved)
                     {
-                        Vector2 delta = touch.deltaPosition * touchRotationSensitivity;
-                        
-                        // MODIFICAT: Am inversat semnele pentru o rotație naturală pe mobil (drag)
-                        // Acum swipe stânga rotește stânga, swipe sus rotește sus.
-                        target.RotateAround(_centerPoint, Vector3.up, delta.x * rotationSpeed * Time.deltaTime); // Am scos minusul
-                        target.RotateAround(_centerPoint, transform.right, -delta.y * rotationSpeed * Time.deltaTime); // Am adăugat minus
+                        // NOU: Stocăm delta-ul ca input brut în loc să-l aplicăm direct
+                        rawTouchInput = touch.deltaPosition * touchRotationSensitivity;
                     }
                     else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
                     {
                         activeTouchId = -1; // Resetăm degetul activ
                     }
                 }
+
+                // NOU: Aplicăm SmoothDamp la input-ul de la touch
+                // Când degetul se oprește, rawTouchInput este (0,0), așa că _touchRotationInput va scădea lin spre 0
+                _touchRotationInput = Vector2.SmoothDamp(_touchRotationInput, rawTouchInput, ref _touchSmoothVelocity, rotationDamping);
+
+                // Aplicăm rotația folosind valoarea netezită
+                if (_touchRotationInput.magnitude > 0.001f)
+                {
+                    // Folosim logica de rotație inversată pentru mobil (drag)
+                    // Înmulțim cu Time.deltaTime aici, deoarece input-ul (deltaPosition) este per-frame
+                    target.RotateAround(_centerPoint, Vector3.up, _touchRotationInput.x * rotationSpeed * Time.deltaTime); 
+                    target.RotateAround(_centerPoint, transform.right, -_touchRotationInput.y * rotationSpeed * Time.deltaTime);
+                }
             }
         }
         else // --- INPUT MOUSE (dacă nu există touch) ---
         {
-            // Resetăm degetul activ dacă nu mai sunt degete pe ecran
+            // Resetăm degetul activ și inerția de la touch
             activeTouchId = -1; 
+            _touchRotationInput = Vector2.SmoothDamp(_touchRotationInput, Vector2.zero, ref _touchSmoothVelocity, rotationDamping);
             
             // 1. Rotație Mouse (logica din vechiul HandleRotation)
             if (rotationEnabled)
