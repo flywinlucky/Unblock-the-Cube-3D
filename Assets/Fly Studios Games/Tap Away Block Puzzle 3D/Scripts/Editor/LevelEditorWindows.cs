@@ -148,6 +148,9 @@ public class LevelEditorWindow : EditorWindow
 
 		_currentLevel = newLevel;
 
+		// Sincronizăm LevelManager cu nivelul curent
+		SyncLevelManager();
+
 		// în loc de RebuildPreview (preview offscreen), sincronizăm scena editor reală
 		if (_editorSceneOpen)
 		{
@@ -157,6 +160,21 @@ public class LevelEditorWindow : EditorWindow
 		_isDirty = false;
 		FocusCamera();
 		return true;
+	}
+
+	private void SyncLevelManager()
+	{
+		// Căutăm componenta LevelManager în scenă
+		LevelManager levelManager = FindObjectOfType<LevelManager>();
+		if (levelManager != null)
+		{
+			levelManager.runCurrentLevel = _currentLevel;
+			Debug.Log($"LevelManager synchronized with current level: {_currentLevel?.name ?? "None"}");
+		}
+		else
+		{
+			Debug.LogWarning("LevelManager not found in the scene. Synchronization skipped.");
+		}
 	}
 
 	[MenuItem("Tools/Tap Away Block Puzzle 3D/Level Editor")]
@@ -204,11 +222,14 @@ public class LevelEditorWindow : EditorWindow
 				//Debug.LogWarning("OpenLevelInScene failed: " + ex.Message);
 			}
 		}
+
+		EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
 	}
 
 	private void OnDisable()
 	{
 		EditorApplication.update -= EditorUpdate;
+		EditorApplication.playModeStateChanged -= OnPlayModeStateChanged;
 
 		// Prompt save la închiderea ferestrei dacă avem modificări nesalvate
 		if (_isDirty && _currentLevel != null)
@@ -223,6 +244,17 @@ public class LevelEditorWindow : EditorWindow
 
 		// Dacă scena editor e deschisă, închidem și revenim la scena de joc
 		if (_editorSceneOpen) CloseEditorScene();
+	}
+
+	private void OnPlayModeStateChanged(PlayModeStateChange state)
+	{
+		if (state == PlayModeStateChange.EnteredEditMode)
+		{
+			// Close and reopen the Level Editor window to ensure full reinitialization
+			Debug.Log("Reinitializing Level Editor window after exiting Play Mode.");
+			Close();
+			EditorApplication.delayCall += ShowWindow; // Reopen the window on the next editor update
+		}
 	}
 
 	#endregion
