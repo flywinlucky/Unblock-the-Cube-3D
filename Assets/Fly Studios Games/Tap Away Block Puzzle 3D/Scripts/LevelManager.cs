@@ -217,6 +217,7 @@ public class LevelManager : MonoBehaviour
             smashCount++;
             PlayerPrefs.SetInt(SmashKey, smashCount);
             if (uiManager != null) uiManager.UpdatePowerUpCounts(undoCount, smashCount);
+            if (notificationManager != null) notificationManager.ShowNotification("Remover Buyed + 1", 2f);
             return true;
         }
         if (notificationManager != null) notificationManager.ShowNotification("Not enough coins", 2f);
