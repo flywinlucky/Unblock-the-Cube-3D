@@ -25,6 +25,8 @@ public class LevelManager : MonoBehaviour
     public CameraControler cameraControler;
     public SuperPowerUI removePowerUI;
 
+    public BackgroundImageManager backgroundImageManager; 
+
     [Header("Grid Settings")]
     public float gridUnitSize = 0.5f;
 
@@ -151,6 +153,12 @@ public class LevelManager : MonoBehaviour
         if (cameraControler != null)
         {
             cameraControler.rotationEnabled = true;
+        }
+
+        // Actualizăm fundalul pentru nivelul curent
+        if (backgroundImageManager != null)
+        {
+            backgroundImageManager.UpdateBackground(_overallLevelNumber);
         }
 
         // Generăm nivelul curent (dacă există)
@@ -389,8 +397,14 @@ public class LevelManager : MonoBehaviour
         {
             currentLevelIndex++;
             SaveCurrentLevelIndex(); // Salvăm nivelul curent
-            // incrementăm contorul global pentru a arăta progres continuu
             AdvanceOverallLevelNumber();
+
+            // Actualizăm fundalul pentru următorul nivel
+            if (backgroundImageManager != null)
+            {
+                backgroundImageManager.UpdateBackground(_overallLevelNumber);
+            }
+
             UpdateCurrentLevelNumber();
             GenerateLevel();
         }
@@ -459,6 +473,13 @@ public class LevelManager : MonoBehaviour
             currentLevelIndex++;
             SaveCurrentLevelIndex(); // Salvăm nivelul curent
             AdvanceOverallLevelNumber();
+
+            // Actualizăm fundalul pentru următorul nivel
+            if (backgroundImageManager != null)
+            {
+                backgroundImageManager.UpdateBackground(_overallLevelNumber);
+            }
+
             UpdateCurrentLevelNumber();
             GenerateLevel();
         }
