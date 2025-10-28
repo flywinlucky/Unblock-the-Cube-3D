@@ -7,6 +7,7 @@ public class Block : MonoBehaviour
 {
     [Header("Animation Settings")]
     [Tooltip("Durata animației de dispariție (scale out) în secunde.")]
+    [HideInInspector]
     public float dissolveDuration = 0.2f;
 
     private MoveDirection _moveDirection;
@@ -16,8 +17,11 @@ public class Block : MonoBehaviour
     private float _gridUnitSize;
     private bool _isShaking = false;
 
+    [HideInInspector]
     public bool _isInteractible;
     public Color arrowCollor;
+
+    public MeshRenderer[] cubeArows;
 
     // NOU: Eveniment declanșat când blocul este activat
     public static event Action<Block> OnBlockActivated;

@@ -198,6 +198,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dissolveDuration: 0.2
+  _isInteractible: 0
+  arrowCollor: {r: 0, g: 0, b: 0, a: 0}
+  cubeArows:
+  - {fileID: 7773683802693696306}
+  - {fileID: 3365106268206736664}
+  - {fileID: 8146416362718214348}
+  - {fileID: 4598032980502387886}
 --- !u!1 &8295898342912904088
 GameObject:
   m_ObjectHideFlags: 0
