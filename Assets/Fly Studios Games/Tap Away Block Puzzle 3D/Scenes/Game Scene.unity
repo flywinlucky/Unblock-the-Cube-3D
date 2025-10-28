@@ -3282,45 +3282,10 @@ MonoBehaviour:
   shopSkinElementPrefab: {fileID: 2558462740212966278, guid: 3042b048c03f0654984d66123fa70de2, type: 3}
   contentRoot: {fileID: 1638096278}
   skins:
-  - displayName: Carbon
-    price: 30
-    icon: {fileID: 21300000, guid: 274ef3138b33495469cb24448e9ab7a2, type: 3}
-    material: {fileID: 2100000, guid: 3affd333d4ffa754baf786b19c7f8d7e, type: 2}
-  - displayName: Brick
-    price: 30
-    icon: {fileID: 21300000, guid: 5b88bd40e8b6ac34b930197742fc51df, type: 3}
-    material: {fileID: 2100000, guid: dd9104c92416abf4983332fbe5330db0, type: 2}
-  - displayName: Dark Wood
-    price: 30
-    icon: {fileID: 21300000, guid: 1a4c4705a57f11149bffbf112b28d93c, type: 3}
-    material: {fileID: 2100000, guid: c79e04793b0340a4aae48892c695aae6, type: 2}
-  - displayName: Concrete
-    price: 30
-    icon: {fileID: 21300000, guid: 4ba49b8c008b1094f9a91a544926005e, type: 3}
-    material: {fileID: 2100000, guid: b61c8bab6da10704c9c8275cba81dadb, type: 2}
-  - displayName: Paper
-    price: 30
-    icon: {fileID: 21300000, guid: f4e211a379ed42b4583d2ff35aad6a50, type: 3}
-    material: {fileID: 2100000, guid: b6367b2941b9e224ab3fc5457dcc99ce, type: 2}
-  - displayName: Leather
-    price: 30
-    icon: {fileID: 21300000, guid: 0418934be03949b48ba981c015e70c75, type: 3}
-    material: {fileID: 2100000, guid: 991978a11e190d240a90cf160ab9339b, type: 2}
-  - displayName: Sand
-    price: 30
-    icon: {fileID: 21300000, guid: c8b01af5a9763ed489d6b3722dda69ee, type: 3}
-    material: {fileID: 2100000, guid: 20fb6ce9193a25942b5a9ed7e4d38991, type: 2}
-  - displayName: Wood Plank
-    price: 30
-    icon: {fileID: 21300000, guid: 1e1750f66459a0d4785eb18b2775835a, type: 3}
-    material: {fileID: 2100000, guid: d6aabae2a978028499fb73c0cdf99abb, type: 2}
-  - displayName: Grass
-    price: 30
-    icon: {fileID: 21300000, guid: 9eee871eede8371438752eefeef2f3b4, type: 3}
-    material: {fileID: 2100000, guid: 109ef985278a5ab4f9993f993811f4d1, type: 2}
+  - {fileID: 11400000, guid: 57ddec28d3ef1af46bda0cc18240e917, type: 2}
+  - {fileID: 11400000, guid: a08f74472c22b7c428525d8e6c5f9b69, type: 2}
   levelManager: {fileID: 1208760975}
-  selectedSkinId: 
-  selectedMaterial: {fileID: 0}
+  selectedSkin: {fileID: 0}
 --- !u!1 &806504270
 GameObject:
   m_ObjectHideFlags: 0

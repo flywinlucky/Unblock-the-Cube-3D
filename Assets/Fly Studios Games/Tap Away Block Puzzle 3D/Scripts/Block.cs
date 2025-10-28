@@ -15,8 +15,9 @@ public class Block : MonoBehaviour
     private BoxCollider _collider;
     private float _gridUnitSize;
     private bool _isShaking = false;
-    
+
     public bool _isInteractible;
+    public Color arrowCollor;
 
     // NOU: Eveniment declanșat când blocul este activat
     public static event Action<Block> OnBlockActivated;
@@ -208,27 +209,29 @@ public class Block : MonoBehaviour
     // NOU: Aplică materialul skin-ului pe renderer-ul de pe GameObject-ul curent (nu pe copii)
     public void ApplySkin(Material mat)
     {
-        if (mat == null) return;
-
-        // Aplicăm doar pe Renderer-ul de pe același GameObject care are componenta Block
-        Renderer rend = GetComponent<Renderer>();
-        if (rend != null)
+        if (mat != null)
         {
-            rend.material = mat;
-            return;
+            Renderer rend = GetComponent<Renderer>();
+            if (rend != null)
+            {
+                rend.material = mat;
+            }
         }
 
-        // Fallback minimal: încercăm MeshRenderer dacă e prezent sub un alt tip
-        MeshRenderer meshRend = GetComponent<MeshRenderer>();
-        if (meshRend != null)
+        // Aplicăm culoarea săgeții dacă este setată
+        if (arrowCollor != null)
         {
-            meshRend.material = mat;
-            return;
+            // Exemplu: actualizăm o componentă vizuală specifică săgeții
+            Transform arrow = transform.Find("Arrow");
+            if (arrow != null)
+            {
+                Renderer arrowRenderer = arrow.GetComponent<Renderer>();
+                if (arrowRenderer != null)
+                {
+                    arrowRenderer.material.color = arrowCollor;
+                }
+            }
         }
-
-        // Dacă nu există renderer pe root, nu aplicăm pe copii (cerința ta).
-        // Poți debuga aici dacă e nevoie:
-        // Debug.LogWarning("ApplySkin: no Renderer found on root GameObject to apply skin.", this);
     }
 
     // --- Restul scriptului rămâne neschimbat ---
