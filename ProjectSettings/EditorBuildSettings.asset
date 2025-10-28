@@ -11,7 +11,4 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Fly Studios Games/Tap Away Block Puzzle 3D/Scenes/Level Editor.unity
     guid: 0799047da9533d8488b5cb7b5b8427e8
-  - enabled: 0
-    path: Assets/Fly Studios Games/Tap Away Block Puzzle 3D/Scenes/test.unity
-    guid: 4bf9bbd83148552429def72809a4e386
   m_configObjects: {}
