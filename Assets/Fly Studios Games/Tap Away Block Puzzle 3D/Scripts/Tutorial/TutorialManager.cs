@@ -71,10 +71,6 @@ public class TutorialManager : MonoBehaviour
                 }
             }
         }
-        else
-        {
-            Debug.LogWarning($"Tutorial step {step} is out of range or null.");
-        }
     }
 
     // NOU: Corutină pentru delay înainte de ApplyDisableExcept
@@ -193,7 +189,6 @@ public class TutorialManager : MonoBehaviour
             }
 
             block._isInteractible = true;
-            Debug.Log($"Child at index {i} - _isInteractible set to TRUE.");
         }
     }
 

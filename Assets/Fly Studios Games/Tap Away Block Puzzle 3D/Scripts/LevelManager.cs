@@ -134,7 +134,11 @@ public class LevelManager : MonoBehaviour
         // Load overall level number from PlayerPrefs before updating display
         _overallLevelNumber = PlayerPrefs.GetInt(LevelNumberKey, 1);
 
-        // Actualizăm numărul curent de nivel (va apela și UpdateLevelDisplay)
+        // Încărcăm nivelul curent salvat
+        currentLevelIndex = PlayerPrefs.GetInt(CurrentLevelIndexKey, 0);
+        currentLevelIndex = Mathf.Clamp(currentLevelIndex, 0, levelList.Count - 1); // Asigurăm că indexul este valid
+
+        // Actualizăm numărul curent de nivel
         UpdateCurrentLevelNumber();
 
         // NOU: încărcăm powerup-urile persistente la start și actualizăm UI
@@ -383,6 +387,7 @@ public class LevelManager : MonoBehaviour
         if (levelList != null && currentLevelIndex + 1 < levelList.Count)
         {
             currentLevelIndex++;
+            SaveCurrentLevelIndex(); // Salvăm nivelul curent
             // incrementăm contorul global pentru a arăta progres continuu
             AdvanceOverallLevelNumber();
             UpdateCurrentLevelNumber();
@@ -451,6 +456,7 @@ public class LevelManager : MonoBehaviour
         if (levelList != null && currentLevelIndex + 1 < levelList.Count)
         {
             currentLevelIndex++;
+            SaveCurrentLevelIndex(); // Salvăm nivelul curent
             AdvanceOverallLevelNumber();
             UpdateCurrentLevelNumber();
             GenerateLevel();
@@ -815,5 +821,13 @@ public class LevelManager : MonoBehaviour
         PlayerPrefs.SetInt(LevelNumberKey, _overallLevelNumber);
         PlayerPrefs.Save();
         UpdateCurrentLevelNumber();
+    }
+
+    private const string CurrentLevelIndexKey = "CurrentLevelIndex"; // Cheie pentru salvarea nivelului curent
+
+    private void SaveCurrentLevelIndex()
+    {
+        PlayerPrefs.SetInt(CurrentLevelIndexKey, currentLevelIndex);
+        PlayerPrefs.Save();
     }
 }

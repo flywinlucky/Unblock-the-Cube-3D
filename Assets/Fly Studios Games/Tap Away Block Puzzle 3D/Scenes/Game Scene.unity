@@ -2194,6 +2194,7 @@ MonoBehaviour:
   - {fileID: 1309792896}
   levelTarget: {fileID: 1540090167}
   ignoreIndex: 2
+  cameraControler: {fileID: 963194230}
 --- !u!1 &620606403
 GameObject:
   m_ObjectHideFlags: 0

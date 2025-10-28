@@ -93,7 +93,6 @@ public class CameraControler : MonoBehaviour
             {
                 _hasRotated = true;
                 OnObjectRotated?.Invoke();
-                Debug.Log("Rotated Cpmpleted");
             }
         }
     }
