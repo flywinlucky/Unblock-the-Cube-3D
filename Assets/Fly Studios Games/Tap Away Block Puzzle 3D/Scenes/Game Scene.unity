@@ -2189,6 +2189,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ad1afb8805b9fa489d290e84c4b1c7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tutorialSteps:
+  - {fileID: 961413085}
+  - {fileID: 1309792896}
+  levelTarget: {fileID: 1540090167}
+  ignoreIndex: 2
 --- !u!1 &620606403
 GameObject:
   m_ObjectHideFlags: 0
@@ -3638,7 +3643,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &961413086
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5767,7 +5772,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1309792897
 RectTransform:
   m_ObjectHideFlags: 0

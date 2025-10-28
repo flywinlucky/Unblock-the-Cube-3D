@@ -1,5 +1,6 @@
 ﻿// Block.cs
 using UnityEngine;
+using System;
 using System.Collections;
 
 public class Block : MonoBehaviour
@@ -13,8 +14,12 @@ public class Block : MonoBehaviour
     private bool _isMoving = false;
     private BoxCollider _collider;
     private float _gridUnitSize;
-
     private bool _isShaking = false;
+    
+    public bool _isInteractible;
+
+    // NOU: Eveniment declanșat când blocul este activat
+    public static event Action<Block> OnBlockActivated;
 
     // NOU: păstrează poziția pe grid pentru refacere la undo
     private Vector3Int _gridPosition;
@@ -22,6 +27,7 @@ public class Block : MonoBehaviour
     private void Awake()
     {
         _collider = GetComponent<BoxCollider>();
+        _isInteractible = true;
     }
 
     public void Initialize(MoveDirection dir, LevelManager manager, float gridUnitSize, Vector3Int gridPosition)
@@ -41,6 +47,10 @@ public class Block : MonoBehaviour
     private void OnMouseUpAsButton()
     {
         if (_isMoving) return;
+        if (!_isInteractible) return;
+
+        // Declanșăm evenimentul când blocul este activat
+        OnBlockActivated?.Invoke(this);
 
         // DACA suntem in Remove-mode, confirmam remove pentru acest block si iesim
         if (_levelManager != null && _levelManager.IsAwaitingRemove())
