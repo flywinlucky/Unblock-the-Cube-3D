@@ -21,8 +21,7 @@ public class Block : MonoBehaviour
     public bool _isInteractible;
 
     [Header("Default Data")]
-    public Material defaultSkinMaterial;
-    public Color defaultArowColor;
+    public ShopSkinData defaultSkin; // Citim datele implicite din ShopSkinData
     [HideInInspector]
     public Color arrowCollor;
 
@@ -54,10 +53,10 @@ public class Block : MonoBehaviour
             ApplySkin(currentSkin.material);
             arrowCollor = currentSkin.arrowColor; // Setăm culoarea săgeții din skin
         }
-        else
+        else if (defaultSkin != null)
         {
-            ApplySkin(defaultSkinMaterial); // Aplicăm materialul implicit
-            arrowCollor = defaultArowColor; // Setăm culoarea săgeții implicită
+            ApplySkin(defaultSkin.material); // Aplicăm materialul implicit din ShopSkinData
+            arrowCollor = defaultSkin.arrowColor; // Setăm culoarea săgeții implicită din ShopSkinData
         }
 
         ApplyArrowColor(); // Aplicăm culoarea în shader

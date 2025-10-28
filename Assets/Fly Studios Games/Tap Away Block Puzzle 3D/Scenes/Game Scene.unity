@@ -3282,9 +3282,14 @@ MonoBehaviour:
   shopSkinElementPrefab: {fileID: 2558462740212966278, guid: 3042b048c03f0654984d66123fa70de2, type: 3}
   contentRoot: {fileID: 1638096278}
   skins:
-  - {fileID: 11400000, guid: 57ddec28d3ef1af46bda0cc18240e917, type: 2}
-  - {fileID: 11400000, guid: a08f74472c22b7c428525d8e6c5f9b69, type: 2}
-  - {fileID: 11400000, guid: ba0ea5a0b567c2b48948236d9e0ffd3b, type: 2}
+  - {fileID: 11400000, guid: 34ff6842b36de134fb080efe5e37b37a, type: 2}
+  - {fileID: 11400000, guid: 0d32116166de2b640b2920c8fd981ab3, type: 2}
+  - {fileID: 11400000, guid: c41c0346c21e1204ab6807af137c8e07, type: 2}
+  - {fileID: 11400000, guid: f70bd106de0a5f74d804cecbfd01d335, type: 2}
+  - {fileID: 11400000, guid: 4ab13ff329d83314380f54c713e31f9a, type: 2}
+  - {fileID: 11400000, guid: abf4a64cb16e2f949a24bf6b4410b34f, type: 2}
+  - {fileID: 11400000, guid: bf6e332452c915f4ebef1e79121f54c8, type: 2}
+  - {fileID: 11400000, guid: 93ef09ad675faf941b79dbfd3a69072f, type: 2}
   levelManager: {fileID: 1208760975}
   selectedSkin: {fileID: 0}
 --- !u!1 &806504270

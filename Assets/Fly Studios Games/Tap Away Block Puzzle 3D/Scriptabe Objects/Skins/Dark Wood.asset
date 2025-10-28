@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a8c3b44b42606944ea3ab99021504459, type: 3}
-  m_Name: NewShopSkin 2
+  m_Name: Dark Wood
   m_EditorClassIdentifier: 
-  id: fr
-  displayName: wfe
+  id: 4
+  displayName: Dark Wood
   price: 5
   icon: {fileID: 21300000, guid: 1a4c4705a57f11149bffbf112b28d93c, type: 3}
   material: {fileID: 2100000, guid: c79e04793b0340a4aae48892c695aae6, type: 2}
-  arrowColor: {r: 0.9241657, g: 0, b: 1, a: 1}
+  arrowColor: {r: 1, g: 1, b: 1, a: 1}
