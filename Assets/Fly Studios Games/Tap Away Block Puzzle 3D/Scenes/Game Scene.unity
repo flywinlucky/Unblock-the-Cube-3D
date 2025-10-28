@@ -4941,6 +4941,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d1a4ca6927dac3c4497ed7c511dc079b, type: 2}
   - {fileID: 11400000, guid: d329dbb6e94583c48a36e23fd985b42f, type: 2}
   - {fileID: 11400000, guid: 2c0a7811f2213224eb59a07ae07193f2, type: 2}
+  - {fileID: 11400000, guid: 0c7efd9fe53cebe449338d4e279f1f2d, type: 2}
+  - {fileID: 11400000, guid: 48809497e0a0b5d41b9b57a80291b03b, type: 2}
+  - {fileID: 11400000, guid: f61cfb919fa3693469ed9bc0ad74fb81, type: 2}
+  - {fileID: 11400000, guid: 9dbbabab4a466c547a1d1d780140fb53, type: 2}
+  - {fileID: 11400000, guid: 82c64343b744bd445a33d734539c0c96, type: 2}
+  - {fileID: 11400000, guid: 56d7dc32d553c834cb6939c0e0e90cad, type: 2}
   currentLevelIndex: 0
   singleBlockPrefab: {fileID: 8118699957492744284, guid: 7e4aea03383933a4494280f2a26b9efa, type: 3}
   levelContainer: {fileID: 1540090167}
