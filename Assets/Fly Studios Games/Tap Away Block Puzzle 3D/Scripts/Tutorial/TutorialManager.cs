@@ -9,6 +9,8 @@ public class TutorialManager : MonoBehaviour
     public Transform levelTarget;
     public int ignoreIndex; // Indexul copilului care va fi sărit
 
+    public CameraControler cameraControler;
+
     private const string TutorialStateKey = "TutorialState"; // Cheie pentru salvarea progresului în PlayerPrefs
     private int _currentStep = 0;
 
@@ -22,6 +24,11 @@ public class TutorialManager : MonoBehaviour
 
         // Conectăm evenimentul OnBlockActivated
         Block.OnBlockActivated += OnBlockActivated;
+    }
+
+    private void InitializeCamera()
+    {
+        cameraControler.rotationEnabled = false;
     }
 
     private void OnDestroy()
@@ -47,6 +54,7 @@ public class TutorialManager : MonoBehaviour
             // NOU: Apelăm ApplyDisableExcept cu un delay de 1 secundă dacă este pasul 1
             if (step == 0)
             {
+                InitializeCamera();
                 StartCoroutine(DelayedApplyDisableExcept());
             }
         }
