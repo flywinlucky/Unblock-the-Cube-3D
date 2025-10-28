@@ -18,7 +18,10 @@ public class RewardAdCoins : MonoBehaviour
 
     private void Start()
     {
-        rewardAmount_Text.text = rewardAmount.ToString();   
+        if (rewardAmount_Text)
+        {
+            rewardAmount_Text.text = "+" + rewardAmount.ToString();
+        }
     }
 
     public void ShowRewarded_GetCoins()
@@ -34,7 +37,11 @@ public class RewardAdCoins : MonoBehaviour
 
     private void AwardReward()
     {
-        levelManager.AddCoins(rewardAmount);
+        if (levelManager)
+        {
+            levelManager.AddCoins(rewardAmount);   
+        }
+        
         if (levelManager.uiManager != null) levelManager.uiManager.UpdateGlobalCoinsDisplay(levelManager.GetCoins());
         if (notificationManager != null) notificationManager.ShowNotification($"+{rewardAmount} coins", 2f);
 
