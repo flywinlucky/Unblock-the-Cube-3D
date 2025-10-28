@@ -199,6 +199,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dissolveDuration: 0.2
   _isInteractible: 0
+  defaultSkinMaterial: {fileID: 2100000, guid: 1ac89fbd5d778ff4ab76a81572e4a848, type: 2}
+  defaultArowColor: {r: 0.73333335, g: 0.39215687, b: 0.25882354, a: 1}
   arrowCollor: {r: 0, g: 0, b: 0, a: 1}
   cubeArows:
   - {fileID: 7773683802693696306}

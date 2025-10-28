@@ -19,6 +19,11 @@ public class Block : MonoBehaviour
 
     [HideInInspector]
     public bool _isInteractible;
+
+    [Header("Default Data")]
+    public Material defaultSkinMaterial;
+    public Color defaultArowColor;
+    [HideInInspector]
     public Color arrowCollor;
 
     public MeshRenderer[] cubeArows;
@@ -42,14 +47,20 @@ public class Block : MonoBehaviour
         _gridUnitSize = gridUnitSize;
         _gridPosition = gridPosition;
 
-        // Aplicăm skin-ul curent și culoarea săgeții dacă există
+        // Aplicăm skin-ul curent sau valorile implicite dacă nu există skin selectat
         if (_levelManager != null && _levelManager.shopManager != null && _levelManager.shopManager.selectedSkin != null)
         {
             ShopSkinData currentSkin = _levelManager.shopManager.selectedSkin;
             ApplySkin(currentSkin.material);
             arrowCollor = currentSkin.arrowColor; // Setăm culoarea săgeții din skin
-            ApplyArrowColor(); // Aplicăm culoarea în shader
         }
+        else
+        {
+            ApplySkin(defaultSkinMaterial); // Aplicăm materialul implicit
+            arrowCollor = defaultArowColor; // Setăm culoarea săgeții implicită
+        }
+
+        ApplyArrowColor(); // Aplicăm culoarea în shader
     }
 
     private void OnMouseUpAsButton()
@@ -213,7 +224,6 @@ public class Block : MonoBehaviour
         transform.localScale = originalScale;
     }
 
-    // NOU: Aplică materialul skin-ului pe renderer-ul de pe GameObject-ul curent (nu pe copii)
     public void ApplySkin(Material mat)
     {
         if (mat != null)
