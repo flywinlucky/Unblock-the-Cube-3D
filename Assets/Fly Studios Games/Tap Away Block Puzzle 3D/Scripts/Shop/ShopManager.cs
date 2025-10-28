@@ -121,6 +121,7 @@ public class ShopManager : MonoBehaviour
                 {
                     block.ApplySkin(skin.material);
                     block.arrowCollor = skin.arrowColor; // Transmitem culoarea săgeții
+                    block.ApplyArrowColor(); // Aplicăm culoarea în shader-ul custom
                 }
             }
         }

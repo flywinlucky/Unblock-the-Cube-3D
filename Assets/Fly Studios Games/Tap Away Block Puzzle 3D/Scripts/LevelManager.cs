@@ -854,4 +854,41 @@ public class LevelManager : MonoBehaviour
         PlayerPrefs.SetInt(CurrentLevelIndexKey, currentLevelIndex);
         PlayerPrefs.Save();
     }
+
+    // NOU: Resetare nivel (apelată din UI sau alte scripturi)
+    public void ResetLevel()
+    {
+        // Dacă este Level Editor Manager, nu facem resetare automată
+        if (isLevelEditorManager)
+        {
+            Debug.Log("Level Editor Mode: Reset level not performed.");
+            return;
+        }
+
+        // Curățăm nivelul curent (blocuri, efecte, etc.)
+        foreach (Transform child in levelContainer) { Destroy(child.gameObject); }
+        _activeBlocks.Clear();
+
+        // Reaplicăm skin-ul și culoarea săgeții la toate blocurile
+        if (shopManager != null && shopManager.selectedSkin != null)
+        {
+            foreach (var block in _activeBlocks)
+            {
+                if (block != null)
+                {
+                    block.ApplySkin(shopManager.selectedSkin.material);
+                    block.arrowCollor = shopManager.selectedSkin.arrowColor;
+                    block.ApplyArrowColor();
+                }
+            }
+        }
+
+        // Resetăm progresul UI
+        if (uiManager != null)
+        {
+            uiManager.UpdateProgressByCounts(_initialBlockCount, 0);
+        }
+
+        Debug.Log("Nivel resetat cu succes.");
+    }
 }

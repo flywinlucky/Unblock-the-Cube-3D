@@ -42,10 +42,13 @@ public class Block : MonoBehaviour
         _gridUnitSize = gridUnitSize;
         _gridPosition = gridPosition;
 
-        // NOU: aplicăm skin-ul curent dacă există (asigurăm compatibilitate când blocul e creat din undo/generare)
-        if (_levelManager != null && _levelManager.shopManager != null && _levelManager.shopManager.selectedMaterial != null)
+        // Aplicăm skin-ul curent și culoarea săgeții dacă există
+        if (_levelManager != null && _levelManager.shopManager != null && _levelManager.shopManager.selectedSkin != null)
         {
-            ApplySkin(_levelManager.shopManager.selectedMaterial);
+            ShopSkinData currentSkin = _levelManager.shopManager.selectedSkin;
+            ApplySkin(currentSkin.material);
+            arrowCollor = currentSkin.arrowColor; // Setăm culoarea săgeții din skin
+            ApplyArrowColor(); // Aplicăm culoarea în shader
         }
     }
 
@@ -218,21 +221,30 @@ public class Block : MonoBehaviour
             Renderer rend = GetComponent<Renderer>();
             if (rend != null)
             {
-                rend.material = mat;
+                rend.material = new Material(mat); // Creăm o instanță nouă a materialului pentru a evita conflictele globale
             }
         }
 
-        // Aplicăm culoarea săgeții dacă este setată
-        if (arrowCollor != null)
+        // Aplicăm culoarea săgeții
+        ApplyArrowColor();
+    }
+
+    public void ApplyArrowColor()
+    {
+        if (cubeArows != null && cubeArows.Length > 0)
         {
-            // Exemplu: actualizăm o componentă vizuală specifică săgeții
-            Transform arrow = transform.Find("Arrow");
-            if (arrow != null)
+            foreach (var arrowRenderer in cubeArows)
             {
-                Renderer arrowRenderer = arrow.GetComponent<Renderer>();
                 if (arrowRenderer != null)
                 {
-                    arrowRenderer.material.color = arrowCollor;
+                    if (arrowRenderer.material == null)
+                    {
+                        Debug.LogWarning("Arrow material is missing. Creating a new material instance.");
+                        arrowRenderer.material = new Material(Shader.Find("Custom/UnlitTransparentColor")); // Asigurăm că materialul există
+                    }
+
+                    arrowRenderer.material.SetColor("_Color", arrowCollor); // Setăm culoarea în shader-ul custom
+                    arrowRenderer.material.SetFloat("_Alpha", 1f); // Asigurăm că alfa este complet vizibil
                 }
             }
         }
