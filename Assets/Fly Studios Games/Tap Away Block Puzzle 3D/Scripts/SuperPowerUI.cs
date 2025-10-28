@@ -23,7 +23,7 @@ public class SuperPowerUI : MonoBehaviour
         BuyPowerPanel.SetActive(isPanelOpen);
     }
 
-    private void ToggleBuyPowerPanel()
+    public void ToggleBuyPowerPanel()
     {
         isPanelOpen = !isPanelOpen; // Inversăm starea panoului
         BuyPowerPanel.SetActive(isPanelOpen); // Activăm sau dezactivăm panoul

@@ -23,6 +23,7 @@ public class LevelManager : MonoBehaviour
     public NotificationManager notificationManager;
     public ShopManager shopManager; // NOU: legi în inspector
     public CameraControler cameraControler;
+    public SuperPowerUI removePowerUI;
 
     [Header("Grid Settings")]
     public float gridUnitSize = 0.5f;
@@ -686,6 +687,7 @@ public class LevelManager : MonoBehaviour
         if (smashCount <= 0)
         {
             if (notificationManager != null) notificationManager.ShowNotification("No smash items available", 2f);
+            removePowerUI.ToggleBuyPowerPanel();
             return;
         }
 
