@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewShopSkin", menuName = "Shop/Skin")]
+[CreateAssetMenu(fileName = "NewShopSkin", menuName = "Tap Away Block Puzzle 3D/Skin")]
 public class ShopSkinData : ScriptableObject
 {
     public string id; // ID unic pentru skin

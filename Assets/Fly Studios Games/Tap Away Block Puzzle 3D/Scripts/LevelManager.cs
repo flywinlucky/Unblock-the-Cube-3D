@@ -512,7 +512,6 @@ public class LevelManager : MonoBehaviour
         if (uiManager != null && uiManager.shop_panel != null)
         {
             uiManager.shop_panel.SetActive(true);
-            if (cameraControler != null) cameraControler.rotationEnabled = false;
         }
     }
 
@@ -532,7 +531,6 @@ public class LevelManager : MonoBehaviour
         if (uiManager != null && uiManager.shop_panel != null)
         {
             uiManager.shop_panel.SetActive(false);
-            if (cameraControler != null) cameraControler.rotationEnabled = true;
         }
     }
 
