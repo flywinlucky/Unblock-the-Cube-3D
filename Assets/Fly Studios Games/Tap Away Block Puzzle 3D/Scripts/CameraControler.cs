@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -86,6 +87,14 @@ public class CameraControler : MonoBehaviour
             HandleInput(); // Gestionează TOATE input-urile (touch și mouse)
             ApplyZoom();   // Aplică zoom-ul lin în fiecare frame
             transform.LookAt(_centerPoint); // Asigură că mereu privim spre centru
+
+            // NOU: Detectăm rotația și declanșăm evenimentul
+            if (!_hasRotated && DetectRotation())
+            {
+                _hasRotated = true;
+                OnObjectRotated?.Invoke();
+                Debug.Log("Rotated Cpmpleted");
+            }
         }
     }
 
@@ -269,5 +278,21 @@ public class CameraControler : MonoBehaviour
         Vector3 directionFromCenter = (transform.position - _centerPoint).normalized;
         if (directionFromCenter == Vector3.zero) directionFromCenter = -transform.forward; // fallback
         transform.position = _centerPoint + directionFromCenter * _currentDistance;
+    }
+
+    // NOU: Eveniment declanșat când obiectul este rotit
+    public static event Action OnObjectRotated;
+
+    private bool _hasRotated = false; // Flag pentru a evita multiple semnale
+
+    // NOU: Funcție pentru a detecta dacă obiectul a fost rotit
+    private bool DetectRotation()
+    {
+        return Mathf.Abs(_rotationInput.x) > 0.01f || Mathf.Abs(_rotationInput.y) > 0.01f || Mathf.Abs(_touchRotationInput.x) > 0.01f || Mathf.Abs(_touchRotationInput.y) > 0.01f;
+    }
+
+    public void ResetRotationFlag()
+    {
+        _hasRotated = false; // Resetează flag-ul pentru a permite detectarea rotației din nou
     }
 }

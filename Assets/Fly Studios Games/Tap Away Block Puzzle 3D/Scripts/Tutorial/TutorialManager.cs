@@ -24,17 +24,18 @@ public class TutorialManager : MonoBehaviour
 
         // Conectăm evenimentul OnBlockActivated
         Block.OnBlockActivated += OnBlockActivated;
-    }
 
-    private void InitializeCamera()
-    {
-        cameraControler.rotationEnabled = false;
+        // NOU: Conectăm evenimentul OnObjectRotated
+        CameraControler.OnObjectRotated += OnObjectRotated;
     }
 
     private void OnDestroy()
     {
         // Deconectăm evenimentul pentru a evita erorile
         Block.OnBlockActivated -= OnBlockActivated;
+
+        // NOU: Deconectăm evenimentul OnObjectRotated
+        CameraControler.OnObjectRotated -= OnObjectRotated;
     }
 
     private void ActivateStep(int step)
@@ -51,11 +52,23 @@ public class TutorialManager : MonoBehaviour
             tutorialSteps[step].SetActive(true);
             Debug.Log($"Tutorial step {step} activated.");
 
-            // NOU: Apelăm ApplyDisableExcept cu un delay de 1 secundă dacă este pasul 1
             if (step == 0)
             {
-                InitializeCamera();
                 StartCoroutine(DelayedApplyDisableExcept());
+            }
+            else if (step == 1)
+            {
+                if (cameraControler != null)
+                {
+                    cameraControler.rotationEnabled = true;
+                }
+            }
+            else if (step == 2)
+            {
+                if (cameraControler != null)
+                {
+                    cameraControler.ResetRotationFlag(); // Resetăm flag-ul pentru rotație
+                }
             }
         }
         else
@@ -68,15 +81,27 @@ public class TutorialManager : MonoBehaviour
     private IEnumerator DelayedApplyDisableExcept()
     {
         yield return new WaitForSeconds(0.1f);
+        cameraControler.rotationEnabled = false;
         ApplyDisableExcept();
     }
 
-    public void CompleteCurrentStep()
+    private void CompleteCurrentStep()
     {
         // Marcăm pasul curent ca finalizat și trecem la următorul
         _currentStep++;
         PlayerPrefs.SetInt(TutorialStateKey, _currentStep);
         PlayerPrefs.Save();
+
+        // Dacă am terminat toate pașii, dezactivăm tutorialele
+        if (_currentStep >= tutorialSteps.Count)
+        {
+            Debug.Log("All tutorial steps completed. Disabling tutorials.");
+            foreach (var stepObject in tutorialSteps)
+            {
+                if (stepObject != null) stepObject.SetActive(false);
+            }
+            return;
+        }
 
         // Activăm următorul pas
         ActivateStep(_currentStep);
@@ -119,12 +144,10 @@ public class TutorialManager : MonoBehaviour
             if (i == ignoreIndex)
             {
                 block._isInteractible = true;
-                Debug.Log($"Child at index {i} (ignored) - _isInteractible set to TRUE.");
             }
             else
             {
                 block._isInteractible = false;
-                Debug.Log($"Child at index {i} - _isInteractible set to FALSE.");
             }
         }
     }
@@ -135,11 +158,11 @@ public class TutorialManager : MonoBehaviour
         int childIndex = block.transform.GetSiblingIndex();
         if (childIndex == ignoreIndex)
         {
-            Debug.Log($"Block at index {ignoreIndex} activated. Moving to next tutorial step.");
             CompleteCurrentStep();
-
             // NOU: Activăm toți copiii după ce blocul ignorat este activat
             EnableAllBlocks();
+
+            cameraControler.rotationEnabled = true;
         }
     }
 
@@ -171,6 +194,16 @@ public class TutorialManager : MonoBehaviour
 
             block._isInteractible = true;
             Debug.Log($"Child at index {i} - _isInteractible set to TRUE.");
+        }
+    }
+
+    // NOU: Avansăm la pasul 2 când obiectul este rotit
+    private void OnObjectRotated()
+    {
+        if (_currentStep == 1)
+        {
+            Debug.Log("Object rotated slightly. Moving to tutorial step 2.");
+            CompleteCurrentStep();
         }
     }
 }
