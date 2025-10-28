@@ -6,6 +6,7 @@ public class UIManager : MonoBehaviour
     [Header("UI Components")]
     [Tooltip("Textul care afișează numărul nivelului curent.")]
     public Text currentLevelText; // Schimbat din TextMeshProUGUI în Text
+    public Slider currentProgresSlider;
 
     public GameObject levelWin_panel;
     public GameObject shop_panel;
@@ -46,6 +47,10 @@ public class UIManager : MonoBehaviour
     public Button openShopButton;
     [Tooltip("Buton care închide shop panel-ul.")]
     public Button closeShopButton;
+
+    // Smooth progress animation
+    private Coroutine _progressCoroutine;
+    private float _progressAnimDuration = 0.25f; // secunde
 
     /// <summary>
     /// Actualizează textele pentru nivelul curent.
@@ -159,5 +164,61 @@ public class UIManager : MonoBehaviour
         if (levelManager != null) levelManager.CloseShop();
         safeAreaUI.SetActive(true);
         levelManager.levelContainer.gameObject.SetActive(true);
+    }
+
+    // NOU: initializează progresul la startul nivelului
+    public void InitProgress(int maxBlocks)
+    {
+        if (currentProgresSlider == null) return;
+        currentProgresSlider.wholeNumbers = false;
+        currentProgresSlider.maxValue = Mathf.Max(1, maxBlocks); // evităm zero ca max
+        currentProgresSlider.value = 0;
+        // opțional: afișare inițială sau text asociat
+    }
+
+    // NOU: actualizează progresul pe baza numerelor (mai robust decât increment local)
+    // totalBlocks = numărul inițial de blocuri din nivel
+    // remainingBlocks = câte blocuri mai sunt active în scenă
+    public void UpdateProgressByCounts(int totalBlocks, int remainingBlocks)
+    {
+        if (currentProgresSlider == null) return;
+
+        int safeTotal = Mathf.Max(1, totalBlocks);
+        // calculează valoarea pe slider (câte blocuri au fost eliminate)
+        float target = Mathf.Clamp(safeTotal - remainingBlocks, 0f, safeTotal);
+
+        // asigurăm maxValue corect (în caz că nu a fost apelat InitProgress)
+        currentProgresSlider.maxValue = safeTotal;
+
+        StartProgressAnimation(target);
+    }
+
+    // NOU: setează instant valoarea slider-ului (fără animație)
+    public void SetProgressImmediate(float value)
+    {
+        if (currentProgresSlider == null) return;
+        if (_progressCoroutine != null) StopCoroutine(_progressCoroutine);
+        currentProgresSlider.value = Mathf.Clamp(value, 0f, currentProgresSlider.maxValue);
+    }
+
+    private void StartProgressAnimation(float targetValue)
+    {
+        if (currentProgresSlider == null) return;
+        if (_progressCoroutine != null) StopCoroutine(_progressCoroutine);
+        _progressCoroutine = StartCoroutine(AnimateSlider(currentProgresSlider.value, targetValue, _progressAnimDuration));
+    }
+
+    private System.Collections.IEnumerator AnimateSlider(float from, float to, float duration)
+    {
+        float t = 0f;
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            float v = Mathf.Lerp(from, to, Mathf.SmoothStep(0f, 1f, t / duration));
+            currentProgresSlider.value = v;
+            yield return null;
+        }
+        currentProgresSlider.value = to;
+        _progressCoroutine = null;
     }
 }

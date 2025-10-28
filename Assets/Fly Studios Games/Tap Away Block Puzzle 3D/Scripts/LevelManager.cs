@@ -85,6 +85,13 @@ public class LevelManager : MonoBehaviour
     private HashSet<int> _ignoredIndices = new HashSet<int>();
     private List<int> _allowedRandomIndices = new List<int>();
 
+    // NOU: numărul inițial de blocuri din nivel (folosit pentru progres)
+    private int _initialBlockCount = 0;
+
+    // NOU: verificare periodică a progresului (corectează discrepanțele)
+    private float _progressCheckInterval = 0.5f;
+    private float _progressCheckTimer = 0f;
+
     // Helper: returnează LevelData curent sau null
     private LevelData GetCurrentLevelData()
     {
@@ -157,6 +164,22 @@ public class LevelManager : MonoBehaviour
         {
             cameraControler.FrameTarget();
         }
+
+        // Adăugăm verificare periodică a progresului pentru a corecta discrepanțele rare
+        _progressCheckTimer += Time.deltaTime;
+        if (_progressCheckTimer >= _progressCheckInterval)
+        {
+            _progressCheckTimer = 0f;
+            if (uiManager != null && uiManager.currentProgresSlider != null)
+            {
+                float expected = Mathf.Clamp(_initialBlockCount - (_activeBlocks != null ? _activeBlocks.Count : 0), 0, Mathf.Max(1, _initialBlockCount));
+                float current = uiManager.currentProgresSlider.value;
+                if (Mathf.Abs(current - expected) > 0.01f)
+                {
+                    uiManager.UpdateProgressByCounts(_initialBlockCount, _activeBlocks != null ? _activeBlocks.Count : 0);
+                }
+            }
+        }
     }
 
     // NOU: cumpărare power-ups din shop
@@ -208,28 +231,36 @@ public class LevelManager : MonoBehaviour
         // Obținem lista de blocuri
         List<BlockData> blocksToGenerate = currentLevelData.GetBlocks();
 
-        // --- Integrare UI: afișăm doar nivelul curent dacă avem UI ---
-        UpdateCurrentLevelNumber();
-        // --------------------
-
-        foreach (BlockData data in blocksToGenerate)
+        // --- Populăm scena cu blocuri ---
+        if (blocksToGenerate != null)
         {
-            Vector3 worldPosition = (Vector3)data.position * gridUnitSize;
-            Quaternion finalRotation = GetStableLookRotation(data.direction);
-
-            GameObject newBlockObj = Instantiate(singleBlockPrefab, worldPosition, finalRotation, levelContainer);
-            Block blockScript = newBlockObj.GetComponent<Block>();
-            // calculăm poziția pe grid pe baza poziției world
-            Vector3Int gridPos = Vector3Int.RoundToInt(worldPosition / gridUnitSize);
-            blockScript.Initialize(data.direction, this, gridUnitSize, gridPos);
-
-            // Aplicăm skin-ul curent dacă există (dacă ShopManager este setat)
-            if (shopManager != null && shopManager.selectedMaterial != null)
+            foreach (BlockData data in blocksToGenerate)
             {
-                blockScript.ApplySkin(shopManager.selectedMaterial);
-            }
+                Vector3 worldPosition = (Vector3)data.position * gridUnitSize;
+                Quaternion finalRotation = GetStableLookRotation(data.direction);
 
-            _activeBlocks.Add(blockScript);
+                GameObject newBlockObj = Instantiate(singleBlockPrefab, worldPosition, finalRotation, levelContainer);
+                Block blockScript = newBlockObj.GetComponent<Block>();
+                // calculăm poziția pe grid pe baza poziției world
+                Vector3Int gridPos = Vector3Int.RoundToInt(worldPosition / gridUnitSize);
+                blockScript.Initialize(data.direction, this, gridUnitSize, gridPos);
+
+                // Aplicăm skin-ul curent dacă există (dacă ShopManager este setat)
+                if (shopManager != null && shopManager.selectedMaterial != null)
+                {
+                    blockScript.ApplySkin(shopManager.selectedMaterial);
+                }
+
+                _activeBlocks.Add(blockScript);
+            }
+        }
+
+        // setăm numărul inițial de blocuri și inițializăm UI-ul de progres
+        _initialBlockCount = _activeBlocks != null ? _activeBlocks.Count : 0;
+        if (uiManager != null)
+        {
+            uiManager.InitProgress(_initialBlockCount);
+            uiManager.UpdateProgressByCounts(_initialBlockCount, _activeBlocks.Count); // va seta 0 inițial
         }
 
         // că Renderer.bounds sunt actualizate după instanțiere.
@@ -244,8 +275,7 @@ public class LevelManager : MonoBehaviour
 
         if (uiManager)
         {
-         uiManager.safeAreaUI.SetActive(true);
-            
+            uiManager.safeAreaUI.SetActive(true);
         }
         levelContainer.rotation = Quaternion.Euler(rotationLevelContainer);
     }
@@ -271,7 +301,12 @@ public class LevelManager : MonoBehaviour
     {
         if (_activeBlocks.Remove(block))
         {
-            // Am eliminat actualizările către progress bar (componentă ștearsă).
+            // NOU: actualizăm progress UI pe baza numerelor totale/ramase
+            if (uiManager != null)
+            {
+                uiManager.UpdateProgressByCounts(_initialBlockCount, _activeBlocks.Count);
+            }
+
             CheckWinCondition();
         }
     }
@@ -557,19 +592,21 @@ public class LevelManager : MonoBehaviour
 
         if (rec.wasDestroyed)
         {
-            // recreăm block ca copil al levelContainer și setăm poziția/rotația locală direct
+            // reacrea block (există deja în cod)
             GameObject newBlockObj = Instantiate(singleBlockPrefab, levelContainer);
             newBlockObj.transform.localPosition = localPos;
-
-            // FOLOSIM rotația locală salvată (rec.rotation este localRotation acum)
             newBlockObj.transform.localRotation = rec.rotation;
-
-            // aplicăm scala salvată
             newBlockObj.transform.localScale = rec.scale;
 
             Block blockScript = newBlockObj.GetComponent<Block>();
             blockScript.Initialize(rec.direction, this, gridUnitSize, rec.gridPos);
             _activeBlocks.Add(blockScript);
+
+            // NOU: la refacere prin undo actualizăm progresul UI corect
+            if (uiManager != null)
+            {
+                uiManager.UpdateProgressByCounts(_initialBlockCount, _activeBlocks.Count);
+            }
         }
         else
         {
