@@ -47,7 +47,7 @@ MonoBehaviour:
     direction: 5
     randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
   - position: {x: -1, y: 0, z: -1}
-    direction: 0
+    direction: 3
     randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
   - position: {x: -1, y: 0, z: 0}
     direction: 4
@@ -83,7 +83,7 @@ MonoBehaviour:
     direction: 2
     randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
   - position: {x: 0, y: -1, z: -1}
-    direction: 1
+    direction: 3
     randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
   - position: {x: 0, y: -1, z: 0}
     direction: 5
@@ -98,10 +98,10 @@ MonoBehaviour:
     direction: 0
     randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
   - position: {x: 0, y: 0, z: -1}
-    direction: 3
+    direction: 0
     randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
   - position: {x: 0, y: 0, z: 0}
-    direction: 2
+    direction: 0
     randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
   - position: {x: 0, y: 0, z: 1}
     direction: 2
@@ -113,7 +113,7 @@ MonoBehaviour:
     direction: 0
     randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
   - position: {x: 0, y: 1, z: -1}
-    direction: 5
+    direction: 0
     randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
   - position: {x: 0, y: 1, z: 0}
     direction: 0
@@ -179,7 +179,7 @@ MonoBehaviour:
     direction: 2
     randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
   - position: {x: 2, y: 0, z: 0}
-    direction: 2
+    direction: 0
     randomVisualRotation: {x: 0, y: 0, z: 0, w: 1}
   - position: {x: 2, y: 0, z: 1}
     direction: 2
