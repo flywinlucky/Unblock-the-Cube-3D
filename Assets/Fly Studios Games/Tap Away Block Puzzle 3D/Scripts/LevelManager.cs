@@ -896,6 +896,9 @@ public class LevelManager : MonoBehaviour
 
     public void CheckForAvailableMoves()
     {
+        // Ensure there are at least two blocks in the level
+        if (_activeBlocks == null || _activeBlocks.Count < 2) return;
+
         foreach (var block in _activeBlocks)
         {
             if (block == null) continue;
@@ -911,7 +914,7 @@ public class LevelManager : MonoBehaviour
         // No moves available, show notification
         if (notificationManager != null)
         {
-            notificationManager.ShowNotification("No Moves! Use Remover or Restart!", 5f);
+            notificationManager.ShowNotification("No Moves! Use Remover or Restart!", 4f);
         }
     }
 }
