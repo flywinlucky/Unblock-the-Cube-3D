@@ -24,7 +24,7 @@ public class LevelManager : MonoBehaviour
     public ShopManager shopManager; // NOU: legi în inspector
     public CameraControler cameraControler;
     public SuperPowerUI removePowerUI;
-
+    public RemoverPowerSimpleStepTutorialHand removerPowerSimpleStepTutorialHand;
     public BackgroundImageManager backgroundImageManager; 
 
     [Header("Grid Settings")]
@@ -915,6 +915,7 @@ public class LevelManager : MonoBehaviour
         if (notificationManager != null)
         {
             notificationManager.ShowNotification("No Moves! Use Remover or Restart!", 4f);
+            removerPowerSimpleStepTutorialHand.ShowHand();
         }
     }
 }
