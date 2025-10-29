@@ -248,12 +248,16 @@ public class LevelManager : MonoBehaviour
         // --- Populăm scena cu blocuri ---
         if (blocksToGenerate != null)
         {
+            int blockIndex = 0; // Contor pentru redenumirea cuburilor
             foreach (BlockData data in blocksToGenerate)
             {
                 Vector3 worldPosition = (Vector3)data.position * gridUnitSize;
                 Quaternion finalRotation = GetStableLookRotation(data.direction);
 
                 GameObject newBlockObj = Instantiate(singleBlockPrefab, worldPosition, finalRotation, levelContainer);
+                newBlockObj.name = $"Block_{blockIndex}"; // Redenumim cubul
+                blockIndex++;
+
                 Block blockScript = newBlockObj.GetComponent<Block>();
                 // calculăm poziția pe grid pe baza poziției world
                 Vector3Int gridPos = Vector3Int.RoundToInt(worldPosition / gridUnitSize);

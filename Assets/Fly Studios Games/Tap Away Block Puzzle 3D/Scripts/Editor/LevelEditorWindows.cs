@@ -513,6 +513,7 @@ public class LevelEditorWindow : EditorWindow
 		if (Mathf.Approximately(_gridUnitSize, 0f))
 			_gridUnitSize = 0.5f;
 
+		int blockIndex = 0; // Contor pentru redenumirea cuburilor
 		foreach (var data in blocks)
 		{
 			try
@@ -527,6 +528,8 @@ public class LevelEditorWindow : EditorWindow
 				inst.transform.SetParent(_sceneRootGO.transform);
 				inst.transform.position = (Vector3)data.position * _gridUnitSize;
 				inst.transform.rotation = GetStableLookRotation(data.direction) * (data.randomVisualRotation != null ? data.randomVisualRotation : Quaternion.identity);
+				inst.name = $"Block_{blockIndex}"; // Redenumim cubul
+                blockIndex++;
 
 				// Asigurăm că există un collider pentru interacțiune
 				if (inst.GetComponent<Collider>() == null)
