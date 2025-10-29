@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 4
   displayName: Dark Wood
-  price: 5
+  price: 20
   icon: {fileID: 21300000, guid: 1a4c4705a57f11149bffbf112b28d93c, type: 3}
   material: {fileID: 2100000, guid: c79e04793b0340a4aae48892c695aae6, type: 2}
   arrowColor: {r: 1, g: 1, b: 1, a: 1}

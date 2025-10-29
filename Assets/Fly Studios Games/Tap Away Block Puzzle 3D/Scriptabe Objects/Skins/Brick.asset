@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 1
   displayName: Brick
-  price: 5
+  price: 20
   icon: {fileID: 21300000, guid: 5b88bd40e8b6ac34b930197742fc51df, type: 3}
   material: {fileID: 2100000, guid: dd9104c92416abf4983332fbe5330db0, type: 2}
   arrowColor: {r: 1, g: 1, b: 1, a: 1}

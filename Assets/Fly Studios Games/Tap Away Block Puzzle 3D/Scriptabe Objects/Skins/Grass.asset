@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 5
   displayName: Grass
-  price: 5
+  price: 20
   icon: {fileID: 21300000, guid: 9eee871eede8371438752eefeef2f3b4, type: 3}
   material: {fileID: 2100000, guid: 109ef985278a5ab4f9993f993811f4d1, type: 2}
   arrowColor: {r: 1, g: 1, b: 1, a: 1}

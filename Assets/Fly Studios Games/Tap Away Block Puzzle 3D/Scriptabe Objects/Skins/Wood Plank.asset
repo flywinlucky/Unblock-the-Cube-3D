@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 9
   displayName: Wood Plank
-  price: 5
+  price: 20
   icon: {fileID: 21300000, guid: 1e1750f66459a0d4785eb18b2775835a, type: 3}
   material: {fileID: 2100000, guid: d6aabae2a978028499fb73c0cdf99abb, type: 2}
   arrowColor: {r: 1, g: 1, b: 1, a: 1}

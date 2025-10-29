@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 8
   displayName: Sand
-  price: 5
+  price: 20
   icon: {fileID: 21300000, guid: c8b01af5a9763ed489d6b3722dda69ee, type: 3}
   material: {fileID: 2100000, guid: 20fb6ce9193a25942b5a9ed7e4d38991, type: 2}
   arrowColor: {r: 1, g: 1, b: 1, a: 1}
