@@ -64,8 +64,7 @@ public class Block : MonoBehaviour
 
     private void OnMouseUpAsButton()
     {
-        if (_isMoving) return;
-        if (!_isInteractible) return;
+        if (_isMoving || !_isInteractible) return;
 
         // Declanșăm evenimentul când blocul este activat
         OnBlockActivated?.Invoke(this);
@@ -83,33 +82,33 @@ public class Block : MonoBehaviour
             _levelManager.audioManager.PlayBlockClick();
         }
 
-        // Înregistrăm mișcarea (start) — vom actualiza/destina ulterior în RegisterMove
         Vector3 startPos = transform.position;
-
         Vector3 direction = transform.forward;
-        RaycastHit hit;
-        Vector3 targetPosition;
+        Vector3 targetPosition = startPos;
         bool shouldBeDestroyed = false;
 
-        if (Physics.Raycast(transform.position, direction, out hit, 1f))
+        // Calculate the furthest valid position in the grid
+        while (true)
         {
-            targetPosition = hit.transform.position - direction * _gridUnitSize;
-            if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
+            Vector3 nextPosition = targetPosition + direction * _gridUnitSize;
+            if (Physics.Raycast(targetPosition, direction, out RaycastHit hit, _gridUnitSize))
             {
-                StartCoroutine(ShakeScale());
-                return;
+                // Stop at the obstacle
+                break;
+            }
+
+            targetPosition = nextPosition;
+
+            // Check if the next position is out of bounds (optional, based on your grid limits)
+            if (Vector3.Distance(startPos, targetPosition) > 10f) // Example: limit to 10 grid units
+            {
+                shouldBeDestroyed = true;
+                break;
             }
         }
-        else
-        {
-            targetPosition = transform.position + direction * 10f;
-            shouldBeDestroyed = true;
-        }
 
-        // Înregistrăm mișcarea completă (copiem datele) înainte de a porni animația
         if (_levelManager != null)
         {
-            // trimitem rotația locală pentru a păstra orientarea relativă la root
             _levelManager.RegisterMove(this, startPos, targetPosition, shouldBeDestroyed, _gridPosition, _moveDirection, transform.localRotation, transform.localScale);
         }
 
