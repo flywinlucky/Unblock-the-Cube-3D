@@ -126,6 +126,9 @@ public class Block : MonoBehaviour
         {
             StartCoroutine(ShakeScale());
         }
+
+        // Check for available moves after the block finishes moving
+        _levelManager.CheckForAvailableMoves();
     }
 
     // ▼▼▼ MODIFICARE CHEIE AICI ▼▼▼

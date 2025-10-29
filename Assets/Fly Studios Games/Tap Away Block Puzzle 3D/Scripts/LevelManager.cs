@@ -893,4 +893,25 @@ public class LevelManager : MonoBehaviour
 
         Debug.Log("Nivel resetat cu succes.");
     }
+
+    public void CheckForAvailableMoves()
+    {
+        foreach (var block in _activeBlocks)
+        {
+            if (block == null) continue;
+
+            Vector3 direction = block.transform.forward;
+            if (!Physics.Raycast(block.transform.position, direction, _GetGridDetectionDistance(block)))
+            {
+                // At least one block has a valid move
+                return;
+            }
+        }
+
+        // No moves available, show notification
+        if (notificationManager != null)
+        {
+            notificationManager.ShowNotification("No Moves! Use Remover or Restart!", 5f);
+        }
+    }
 }
