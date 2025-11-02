@@ -39,6 +39,9 @@ public class LevelManager : MonoBehaviour
             player_2_IncreaseScore_Button_KeyCode.ToString(),
             player_2_Done_Button_KeyCode.ToString()
         );
+
+        uiManager.UpdateGameMessage("Try to count the boxes.");
+        uiManager.StartCountdown(3, OnCountdownComplete);
     }
 
     private void Update()
@@ -75,17 +78,35 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    private void OnCountdownComplete()
+    {
+        uiManager.UpdateGameMessage("How many boxes were there?");
+        EnablePlayerInteraction();
+    }
+
+    private void EnablePlayerInteraction()
+    {
+        // Logica pentru activarea interacțiunii cu butoanele
+        player_1_Done = false;
+        player_2_Done = false;
+    }
+
     private void CheckBothPlayersDone()
     {
         if (player_1_Done && player_2_Done)
         {
-            StartCoroutine(ShowFinalResultsAfterDelay());
+            uiManager.StartCountUp(totalCountInScene, 0.5f, OnCountUpComplete);
         }
+    }
+
+    private void OnCountUpComplete()
+    {
+        StartCoroutine(ShowFinalResultsAfterDelay());
     }
 
     private IEnumerator ShowFinalResultsAfterDelay()
     {
-        yield return new WaitForSeconds(0.5f); // Așteaptă 1 secundă
+        yield return new WaitForSeconds(0.4f); // Așteaptă 1 secundă
 
         player_1_UI.ActivateResultIcon(); // Activăm iconița pentru Player 1
         player_2_UI.ActivateResultIcon(); // Activăm iconița pentru Player 2
