@@ -24,9 +24,18 @@ public class PlayerUI : MonoBehaviour
     public Sprite player_trueFlag_icon_sprite;
     public Sprite player_falseFlag_icon_sprite;
 
+    public Animator player_countCell_1_Animator;
+    public Animator player_countCell_2_Animator;
+
+    private Dictionary<Transform, Coroutine> activeAnimations = new Dictionary<Transform, Coroutine>();
+
+    private Vector3 initialScale_Cell1;
+    private Vector3 initialScale_Cell2;
+
     private void Start()
     {
-     
+        initialScale_Cell1 = player_countCell_1_Text.transform.localScale;
+        initialScale_Cell2 = player_countCell_2_Text.transform.localScale;
     }
 
     public void UpdateScore(int score)
@@ -36,6 +45,49 @@ public class PlayerUI : MonoBehaviour
 
         player_countCell_1_Text.text = cell1.ToString();
         player_countCell_2_Text.text = cell2.ToString(); // Afișează 0 dacă nu are valoare
+
+        AnimateBouncingScale(cell1 > 0 ? player_countCell_1_Text.transform : player_countCell_2_Text.transform);
+    }
+
+    private void AnimateBouncingScale(Transform target)
+    {
+        if (activeAnimations.ContainsKey(target) && activeAnimations[target] != null)
+        {
+            StopCoroutine(activeAnimations[target]);
+        }
+
+        activeAnimations[target] = StartCoroutine(BouncingScaleRoutine(target));
+    }
+
+    private IEnumerator BouncingScaleRoutine(Transform target)
+    {
+        Vector3 originalScale = target == player_countCell_1_Text.transform ? initialScale_Cell1 : initialScale_Cell2;
+        Vector3 enlargedScale = originalScale * 1.2f;
+
+        // Resetează scara la valoarea inițială înainte de animație
+        target.localScale = originalScale;
+
+        // Scale up
+        float elapsedTime = 0f;
+        float duration = 0.1f;
+        while (elapsedTime < duration)
+        {
+            target.localScale = Vector3.Lerp(originalScale, enlargedScale, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Scale down
+        elapsedTime = 0f;
+        while (elapsedTime < duration)
+        {
+            target.localScale = Vector3.Lerp(enlargedScale, originalScale, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        target.localScale = originalScale; // Asigură-te că scara este resetată
+        activeAnimations[target] = null; // Elimină referința la animația finalizată
     }
 
     public void InitializeUI(string countButton_Keyboard, string doneButton_Keyboard)

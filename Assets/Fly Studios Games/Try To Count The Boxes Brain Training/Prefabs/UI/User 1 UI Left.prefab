@@ -151,10 +151,10 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 10
     m_MaxSize: 267
-    m_Alignment: 4
+    m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 0
+    m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: 0
@@ -485,7 +485,6 @@ GameObject:
   - component: {fileID: 7455787021721707198}
   - component: {fileID: 7455787021721707184}
   - component: {fileID: 7455787021721707199}
-  - component: {fileID: 7774457986328183959}
   m_Layer: 5
   m_Name: Cell 1 Count Text
   m_TagString: Untagged
@@ -555,27 +554,6 @@ MonoBehaviour:
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: 0
---- !u!95 &7774457986328183959
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7455787021721707197}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c1380ce27a5f9d94c822cb9a10362a28, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7455787022058523671
 GameObject:
   m_ObjectHideFlags: 0
@@ -667,7 +645,6 @@ GameObject:
   - component: {fileID: 7455787022176887193}
   - component: {fileID: 7455787022176887195}
   - component: {fileID: 7455787022176887194}
-  - component: {fileID: 7554089921441100328}
   m_Layer: 5
   m_Name: Cell 2 Count Text
   m_TagString: Untagged
@@ -737,27 +714,6 @@ MonoBehaviour:
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: 0
---- !u!95 &7554089921441100328
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7455787022176887192}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c1380ce27a5f9d94c822cb9a10362a28, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7455787022195655648
 GameObject:
   m_ObjectHideFlags: 0
@@ -1056,6 +1012,8 @@ MonoBehaviour:
   player_resultIcon_image: {fileID: 7455787022353624421}
   player_trueFlag_icon_sprite: {fileID: 21300000, guid: 336e72369ccc8d146a66e37c9e237587, type: 3}
   player_falseFlag_icon_sprite: {fileID: 21300000, guid: 4506ad0a4a150d646a08a93f332ef496, type: 3}
+  player_countCell_1_Animator: {fileID: 0}
+  player_countCell_2_Animator: {fileID: 0}
 --- !u!1 &7455787022646375681
 GameObject:
   m_ObjectHideFlags: 0
