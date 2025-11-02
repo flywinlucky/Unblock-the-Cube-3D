@@ -688,7 +688,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &292306359
 RectTransform:
   m_ObjectHideFlags: 0
@@ -725,7 +725,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.23887502, g: 0.3682249, b: 0.8301887, a: 1}
+  m_Color: {r: 0.4490565, g: 0.4490565, b: 0.4490565, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1913,7 +1913,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.29803923, g: 0.43529415, b: 0.92549026, a: 1}
+  m_Color: {r: 0.5254902, g: 0.5254902, b: 0.5254902, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2053,7 +2053,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 3
+  m_Text: '{3}'
 --- !u!222 &1192004721
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2091,6 +2091,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 192c7e46c1f60ca4d9516801124902e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player_1_UI: {fileID: 0}
+  player_2_UI: {fileID: 0}
 --- !u!4 &1208760976
 Transform:
   m_ObjectHideFlags: 0
@@ -2318,7 +2320,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Try to count the boxes.
+  m_Text: '{Try to count the boxes.}'
 --- !u!222 &1289793648
 CanvasRenderer:
   m_ObjectHideFlags: 0

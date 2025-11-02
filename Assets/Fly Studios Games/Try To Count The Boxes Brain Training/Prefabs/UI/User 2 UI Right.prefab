@@ -79,7 +79,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: A
+  m_Text: '{A}'
 --- !u!1 &44597499588546986
 GameObject:
   m_ObjectHideFlags: 0
@@ -553,7 +553,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Done!
+  m_Text: '{Done!}'
 --- !u!1 &44597500612199677
 GameObject:
   m_ObjectHideFlags: 0
@@ -866,7 +866,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: A
+  m_Text: '{A}'
 --- !u!1 &44597501087162819
 GameObject:
   m_ObjectHideFlags: 0
@@ -946,7 +946,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: +1
+  m_Text: '{+1}'
 --- !u!1 &44597501436836386
 GameObject:
   m_ObjectHideFlags: 0
@@ -1075,6 +1075,7 @@ GameObject:
   - component: {fileID: 44597501561372621}
   - component: {fileID: 44597501561372623}
   - component: {fileID: 44597501561372620}
+  - component: {fileID: 1320411236139758448}
   m_Layer: 5
   m_Name: User 2 UI Right
   m_TagString: Untagged
@@ -1142,3 +1143,29 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1320411236139758448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 44597501561372626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8ff4af7400181a438effc5f0c4d6339, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player_UI_panel: {fileID: 44597501436836386}
+  player_countCell_1_Text: {fileID: 44597500023064538}
+  player_countCell_2_Text: {fileID: 44597500612199679}
+  player_countButton_Keyboard_Key_Text: {fileID: 44597501030459756}
+  player_countButton_message_Text: {fileID: 44597501087162877}
+  player_countButton_message_string: +1
+  player_doneButton_Keyboard_Key_Text: {fileID: 44597499547366418}
+  player_doneButton_message_Text: {fileID: 44597500289245141}
+  player_doneButton_message_string: Done!
+  player_finalCountResult: {fileID: 44597500015474608}
+  player_finalCount_Text: {fileID: 44597499902665774}
+  player_resultIcon_image: {fileID: 44597500653635584}
+  player_trueFlag_icon_sprite: {fileID: 21300000, guid: 336e72369ccc8d146a66e37c9e237587, type: 3}
+  player_falseFlag_icon_sprite: {fileID: 21300000, guid: 4506ad0a4a150d646a08a93f332ef496, type: 3}

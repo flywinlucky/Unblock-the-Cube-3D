@@ -237,7 +237,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: A
+  m_Text: '{A}'
 --- !u!1 &7455787021288010959
 GameObject:
   m_ObjectHideFlags: 0
@@ -395,7 +395,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Done!
+  m_Text: '{Done!}'
 --- !u!1 &7455787021714625237
 GameObject:
   m_ObjectHideFlags: 0
@@ -633,7 +633,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: A
+  m_Text: '{A}'
 --- !u!1 &7455787022176887192
 GameObject:
   m_ObjectHideFlags: 0
@@ -918,6 +918,7 @@ GameObject:
   - component: {fileID: 7455787022588910248}
   - component: {fileID: 7455787022588910250}
   - component: {fileID: 7455787022588910249}
+  - component: {fileID: 100159313204639759}
   m_Layer: 5
   m_Name: User 1 UI Left
   m_TagString: Untagged
@@ -985,6 +986,32 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &100159313204639759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7455787022588910263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8ff4af7400181a438effc5f0c4d6339, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player_UI_panel: {fileID: 7455787022465982279}
+  player_countCell_1_Text: {fileID: 7455787022176887194}
+  player_countCell_2_Text: {fileID: 7455787021721707199}
+  player_countButton_Keyboard_Key_Text: {fileID: 7455787022058523657}
+  player_countButton_message_Text: {fileID: 7455787022786348184}
+  player_countButton_message_string: +1
+  player_doneButton_Keyboard_Key_Text: {fileID: 7455787021113119095}
+  player_doneButton_message_Text: {fileID: 7455787021451279024}
+  player_doneButton_message_string: Done!
+  player_finalCountResult: {fileID: 7455787021714625237}
+  player_finalCount_Text: {fileID: 7455787021066289483}
+  player_resultIcon_image: {fileID: 7455787022353624421}
+  player_trueFlag_icon_sprite: {fileID: 21300000, guid: 336e72369ccc8d146a66e37c9e237587, type: 3}
+  player_falseFlag_icon_sprite: {fileID: 21300000, guid: 4506ad0a4a150d646a08a93f332ef496, type: 3}
 --- !u!1 &7455787022646375681
 GameObject:
   m_ObjectHideFlags: 0
@@ -1141,4 +1168,4 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: +1
+  m_Text: '{+1}'
