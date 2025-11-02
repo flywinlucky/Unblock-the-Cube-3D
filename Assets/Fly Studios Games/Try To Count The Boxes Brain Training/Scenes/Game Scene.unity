@@ -2103,7 +2103,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player_1_UI: {fileID: 13290295}
+  player_1_IncreaseScore_Button_KeyCode: 122
+  player_1_Done_Button_KeyCode: 120
   player_2_UI: {fileID: 4398609987399464647}
+  player_2_IncreaseScore_Button_KeyCode: 110
+  player_2_Done_Button_KeyCode: 109
 --- !u!4 &1208760976
 Transform:
   m_ObjectHideFlags: 0
@@ -2446,6 +2450,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d2dbd6af0955ae4281dd3587b259570, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameMessage_Text: {fileID: 1289793647}
+  countDown_Text: {fileID: 1192004720}
 --- !u!1001 &1532127160
 PrefabInstance:
   m_ObjectHideFlags: 0

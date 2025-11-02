@@ -10,12 +10,12 @@ public class PlayerUI : MonoBehaviour
     public Text player_countCell_2_Text;
     public Text player_countButton_Keyboard_Key_Text;
     public Text player_countButton_message_Text;
-       public string player_countButton_message_string;
+    public string player_countButton_message_string;
     public Text player_doneButton_Keyboard_Key_Text;
-    
+
     public Text player_doneButton_message_Text;
     public string player_doneButton_message_string;
-    
+
     [Space]
     public GameObject player_finalCountResult;
     public Text player_finalCount_Text;
