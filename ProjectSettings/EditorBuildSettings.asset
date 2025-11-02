@@ -6,6 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Fly Studios Games/Tap Away Block Puzzle 3D/Scenes/Game Scene.unity
+    path: Assets/Fly Studios Games/Try To Count The Boxes Brain Training/Scenes/Game
+      Scene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}
