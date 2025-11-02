@@ -24,7 +24,15 @@ public class LevelManager : MonoBehaviour
  
     private void Start()
     {
+        player_1_UI.InitializeUI(
+            player_1_IncreaseScore_Button_KeyCode.ToString(),
+            player_1_Done_Button_KeyCode.ToString()
+        );
 
+        player_2_UI.InitializeUI(
+            player_2_IncreaseScore_Button_KeyCode.ToString(),
+            player_2_Done_Button_KeyCode.ToString()
+        );
     }
 
     private void Update()

@@ -26,7 +26,7 @@ public class PlayerUI : MonoBehaviour
 
     private void Start()
     {
-        InitializeUI();
+     
     }
 
     public void UpdateScore(int score)
@@ -38,10 +38,10 @@ public class PlayerUI : MonoBehaviour
         player_countCell_2_Text.text = cell2.ToString(); // Afișează 0 dacă nu are valoare
     }
 
-    public void InitializeUI()
+    public void InitializeUI(string countButton_Keyboard, string doneButton_Keyboard)
     {
-        player_countButton_Keyboard_Key_Text.text = "W";
-        player_doneButton_Keyboard_Key_Text.text = "Q";
+        player_countButton_Keyboard_Key_Text.text = countButton_Keyboard;
+        player_doneButton_Keyboard_Key_Text.text = doneButton_Keyboard;
         player_countButton_message_Text.text =  player_countButton_message_string;
         player_doneButton_message_Text.text = player_doneButton_message_string;
     }
