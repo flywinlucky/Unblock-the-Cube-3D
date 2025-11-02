@@ -405,6 +405,7 @@ GameObject:
   - component: {fileID: 44597500023064539}
   - component: {fileID: 44597500023064533}
   - component: {fileID: 44597500023064538}
+  - component: {fileID: 2674360684428491305}
   m_Layer: 5
   m_Name: Cell 1 Count Text
   m_TagString: Untagged
@@ -474,6 +475,27 @@ MonoBehaviour:
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: 0
+--- !u!95 &2674360684428491305
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 44597500023064536}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c1380ce27a5f9d94c822cb9a10362a28, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &44597500289245147
 GameObject:
   m_ObjectHideFlags: 0
@@ -565,6 +587,7 @@ GameObject:
   - component: {fileID: 44597500612199676}
   - component: {fileID: 44597500612199678}
   - component: {fileID: 44597500612199679}
+  - component: {fileID: 7329270423888770330}
   m_Layer: 5
   m_Name: Cell 2 Count Text
   m_TagString: Untagged
@@ -634,6 +657,27 @@ MonoBehaviour:
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: 0
+--- !u!95 &7329270423888770330
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 44597500612199677}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c1380ce27a5f9d94c822cb9a10362a28, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &44597500631246469
 GameObject:
   m_ObjectHideFlags: 0
