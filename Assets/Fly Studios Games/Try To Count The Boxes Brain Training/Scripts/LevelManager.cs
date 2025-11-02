@@ -95,7 +95,7 @@ public class LevelManager : MonoBehaviour
     {
         if (player_1_Done && player_2_Done)
         {
-            uiManager.StartCountUp(totalCountInScene, 0.5f, OnCountUpComplete);
+            uiManager.StartCountUp(totalCountInScene, 0.3f, OnCountUpComplete);
         }
     }
 

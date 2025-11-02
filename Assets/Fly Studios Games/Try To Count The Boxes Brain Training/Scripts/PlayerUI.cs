@@ -24,9 +24,6 @@ public class PlayerUI : MonoBehaviour
     public Sprite player_trueFlag_icon_sprite;
     public Sprite player_falseFlag_icon_sprite;
 
-    public Animator player_countCell_1_Animator;
-    public Animator player_countCell_2_Animator;
-
     private Dictionary<Transform, Coroutine> activeAnimations = new Dictionary<Transform, Coroutine>();
 
     private Vector3 initialScale_Cell1;
