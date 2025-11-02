@@ -46,9 +46,20 @@ public class PlayerUI : MonoBehaviour
         player_doneButton_message_Text.text = player_doneButton_message_string;
     }
 
-    public void ShowFinalResult(bool isCorrect)
+    public void ShowFinalResult(int playerScore, int totalCountInScene)
     {
-        player_resultIcon_image.sprite = isCorrect ? player_trueFlag_icon_sprite : player_falseFlag_icon_sprite;
+        player_UI_panel.SetActive(false);
         player_finalCountResult.SetActive(true);
+
+        player_finalCount_Text.text = playerScore.ToString();
+
+        bool isCorrect = playerScore == totalCountInScene;
+        player_resultIcon_image.gameObject.SetActive(false); // Dezactivăm inițial
+        player_resultIcon_image.sprite = isCorrect ? player_trueFlag_icon_sprite : player_falseFlag_icon_sprite;
+    }
+
+    public void ActivateResultIcon()
+    {
+        player_resultIcon_image.gameObject.SetActive(true); // Activăm când este necesar
     }
 }

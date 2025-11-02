@@ -129,6 +129,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 517673876}
     m_Modifications:
+    - target: {fileID: 7455787021714625237, guid: 7f69994373958334fa0cbe9b0dfc833c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7455787022588910248, guid: 7f69994373958334fa0cbe9b0dfc833c, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2109,6 +2113,7 @@ MonoBehaviour:
   player_2_IncreaseScore_Button_KeyCode: 110
   player_2_Done_Button_KeyCode: 109
   uiManager: {fileID: 1529943752}
+  totalCountInScene: 5
 --- !u!4 &1208760976
 Transform:
   m_ObjectHideFlags: 0
