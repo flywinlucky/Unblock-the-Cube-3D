@@ -2108,6 +2108,7 @@ MonoBehaviour:
   player_2_UI: {fileID: 4398609987399464647}
   player_2_IncreaseScore_Button_KeyCode: 110
   player_2_Done_Button_KeyCode: 109
+  uiManager: {fileID: 1529943752}
 --- !u!4 &1208760976
 Transform:
   m_ObjectHideFlags: 0

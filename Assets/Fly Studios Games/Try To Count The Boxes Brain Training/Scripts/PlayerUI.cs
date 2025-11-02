@@ -8,6 +8,7 @@ public class PlayerUI : MonoBehaviour
     public GameObject player_UI_panel;
     public Text player_countCell_1_Text;
     public Text player_countCell_2_Text;
+        [Space]
     public Text player_countButton_Keyboard_Key_Text;
     public Text player_countButton_message_Text;
     public string player_countButton_message_string;
@@ -25,7 +26,7 @@ public class PlayerUI : MonoBehaviour
 
     private void Start()
     {
-     
+        InitializeUI();
     }
 
     public void UpdateScore(int score)
@@ -37,12 +38,12 @@ public class PlayerUI : MonoBehaviour
         player_countCell_2_Text.text = cell2.ToString(); // Afișează 0 dacă nu are valoare
     }
 
-    public void InitializeUI(string increaseKey, string doneKey, string countMessage, string doneMessage)
+    public void InitializeUI()
     {
-        player_countButton_Keyboard_Key_Text.text = increaseKey;
-        player_doneButton_Keyboard_Key_Text.text = doneKey;
-        player_countButton_message_Text.text = countMessage;
-        player_doneButton_message_Text.text = doneMessage;
+        player_countButton_Keyboard_Key_Text.text = "W";
+        player_doneButton_Keyboard_Key_Text.text = "Q";
+        player_countButton_message_Text.text =  player_countButton_message_string;
+        player_doneButton_message_Text.text = player_doneButton_message_string;
     }
 
     public void ShowFinalResult(bool isCorrect)
