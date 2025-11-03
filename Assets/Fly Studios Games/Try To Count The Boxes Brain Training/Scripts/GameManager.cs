@@ -35,6 +35,8 @@ public class GameManager : MonoBehaviour
 
     private int currentLevelIndex = 0;
 
+    private bool canInteract = false; // Variabilă pentru a controla interacțiunea
+
     private void Start()
     {
         // Dezactivăm canvas-ul UI pentru jucători la început
@@ -63,6 +65,10 @@ public class GameManager : MonoBehaviour
             {
                 uiManager.players_UI_Canvas.SetActive(true);
             }
+
+            // Permitem interacțiunea după ce timerul se finalizează
+            canInteract = true;
+
             OnCountdownComplete();
         });
     }
@@ -99,6 +105,8 @@ public class GameManager : MonoBehaviour
 
     private void HandlePlayerInput()
     {
+        if (!canInteract) return; // Blocăm interacțiunea dacă nivelul nu a început
+
         if (!player_1_Done && Input.GetKeyDown(player_1_IncreaseScore_Button_KeyCode))
         {
             player_1_Score++;
@@ -187,6 +195,15 @@ public class GameManager : MonoBehaviour
 
     private void LoadNextLevel()
     {
+        // Dezactivăm canvas-ul UI pentru jucători
+        if (uiManager.players_UI_Canvas != null)
+        {
+            uiManager.players_UI_Canvas.SetActive(false);
+        }
+
+        // Dezactivăm interacțiunea până la următorul nivel
+        canInteract = false;
+
         // Dezinstanțiem nivelul curent
         if (currentLevelManager != null)
         {
@@ -220,11 +237,34 @@ public class GameManager : MonoBehaviour
 
         // Reîncepem logica pentru noul nivel
         uiManager.UpdateGameMessage("Try to count the boxes.");
-        uiManager.StartCountdown(3, OnCountdownComplete);
+        uiManager.StartCountdown(3, () =>
+        {
+            // Activăm canvas-ul UI pentru jucători după numerotarea inversă
+            if (uiManager.players_UI_Canvas != null)
+            {
+                uiManager.players_UI_Canvas.SetActive(true);
+            }
+
+            // Permitem interacțiunea după ce timerul se finalizează
+            canInteract = true;
+
+            OnCountdownComplete();
+        });
     }
 
     private void ResetGameData()
     {
+        // Activăm UI-ul pentru fiecare jucător înainte de resetare
+        if (!player_1_UI.gameObject.activeSelf)
+        {
+            player_1_UI.gameObject.SetActive(true);
+        }
+
+        if (!player_2_UI.gameObject.activeSelf)
+        {
+            player_2_UI.gameObject.SetActive(true);
+        }
+
         player_1_Score = 0;
         player_2_Score = 0;
         player_1_Done = false;
@@ -232,5 +272,7 @@ public class GameManager : MonoBehaviour
 
         player_1_UI.UpdateScore(player_1_Score);
         player_2_UI.UpdateScore(player_2_Score);
+
+        canInteract = false; // Dezactivăm interacțiunea până începe următorul nivel
     }
 }

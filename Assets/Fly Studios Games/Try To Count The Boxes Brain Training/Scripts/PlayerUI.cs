@@ -48,6 +48,11 @@ public class PlayerUI : MonoBehaviour
 
     private void AnimateBouncingScale(Transform target)
     {
+        if (!gameObject.activeInHierarchy)
+        {
+            return;
+        }
+
         if (activeAnimations.ContainsKey(target) && activeAnimations[target] != null)
         {
             StopCoroutine(activeAnimations[target]);
