@@ -169,6 +169,8 @@ public class GameManager : MonoBehaviour
         player_2_UI?.ActivateResultIcon();
         uiManager.countDown_Text.text = totalCountInScene.ToString();
 
+        audioManager?.PlayCountShowResult(); // Play result display sound
+
         yield return new WaitForSeconds(1.5f);
         LoadNextLevel();
     }

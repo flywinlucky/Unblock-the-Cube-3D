@@ -7,6 +7,7 @@ public class UIManager : MonoBehaviour
     public Text gameMessage_Text;
     public Text countDown_Text;
     public GameObject players_UI_Canvas;
+    public AudioManager audioManager;
 
     public void UpdateGameMessage(string message)
     {
@@ -24,6 +25,7 @@ public class UIManager : MonoBehaviour
         for (int i = startValue; i > 0; i--)
         {
             countDown_Text.text = i.ToString();
+            audioManager?.PlayCountdownClick(); // Play countdown click sound
             yield return new WaitForSeconds(1f);
         }
         countDown_Text.gameObject.SetActive(false);
@@ -41,6 +43,7 @@ public class UIManager : MonoBehaviour
         for (int i = 1; i <= endValue; i++)
         {
             countDown_Text.text = i.ToString();
+            audioManager?.PlayCountdownClick(); // Play countdown click sound
             yield return new WaitForSeconds(interval);
         }
         countDown_Text.gameObject.SetActive(false);

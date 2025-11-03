@@ -12,6 +12,7 @@ public class AudioManager : MonoBehaviour
 	public AudioSource buttonClickSource; // redenumit din sfxSource
 	public AudioSource buttonDoneClickSource;
 	public AudioSource countDownClickSource;
+	public AudioSource countShowResultSource;
 	
 	// Stări curente (cache)
 	private bool _musicEnabled = true;
@@ -99,6 +100,34 @@ public class AudioManager : MonoBehaviour
 			return;
 		}
 		buttonDoneClickSource.PlayOneShot(clip);
+	}
+
+	// Redă sunetul de countdown folosind clip-ul atașat pe countDownClickSource
+	public void PlayCountdownClick()
+	{
+		if (countDownClickSource == null || !_soundEnabled) return;
+		AudioClip clip = countDownClickSource.clip;
+		if (clip == null)
+		{
+			// fallback: încercăm Play() dacă nu este clip dar e configurat AudioSource
+			if (!countDownClickSource.isPlaying) countDownClickSource.Play();
+			return;
+		}
+		countDownClickSource.PlayOneShot(clip);
+	}
+
+	// Redă sunetul pentru afișarea rezultatului folosind clip-ul atașat pe countShowResultSource
+	public void PlayCountShowResult()
+	{
+		if (countShowResultSource == null || !_soundEnabled) return;
+		AudioClip clip = countShowResultSource.clip;
+		if (clip == null)
+		{
+			// fallback: încercăm Play() dacă nu este clip dar e configurat AudioSource
+			if (!countShowResultSource.isPlaying) countShowResultSource.Play();
+			return;
+		}
+		countShowResultSource.PlayOneShot(clip);
 	}
 
 	// Setări enable/disable apelate din SettingsManager
