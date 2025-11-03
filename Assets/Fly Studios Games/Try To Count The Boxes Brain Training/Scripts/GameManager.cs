@@ -54,6 +54,48 @@ public class GameManager : MonoBehaviour
 
         uiManager?.UpdateGameMessage("Try to count the boxes.");
         uiManager?.StartCountdown(3, () => InitializeLevel(currentLevelIndex));
+
+        player_1_UI?.increaseScore_Button.onClick.AddListener(() =>
+        {
+            if (!player_1_Done)
+            {
+                player_1_Score++;
+                player_1_UI?.UpdateScore(player_1_Score);
+                audioManager?.PlayButtonClick();
+            }
+        });
+
+        player_1_UI?.doneScore_Button.onClick.AddListener(() =>
+        {
+            if (!player_1_Done)
+            {
+                player_1_Done = true;
+                player_1_UI?.ShowFinalResult(player_1_Score, totalCountInScene);
+                audioManager?.PlayButtonDoneClick();
+                CheckBothPlayersDone();
+            }
+        });
+
+        player_2_UI?.increaseScore_Button.onClick.AddListener(() =>
+        {
+            if (!player_2_Done)
+            {
+                player_2_Score++;
+                player_2_UI?.UpdateScore(player_2_Score);
+                audioManager?.PlayButtonClick();
+            }
+        });
+
+        player_2_UI?.doneScore_Button.onClick.AddListener(() =>
+        {
+            if (!player_2_Done)
+            {
+                player_2_Done = true;
+                player_2_UI?.ShowFinalResult(player_2_Score, totalCountInScene);
+                audioManager?.PlayButtonDoneClick();
+                CheckBothPlayersDone();
+            }
+        });
     }
 
     private void InitializeLevel(int levelIndex)
