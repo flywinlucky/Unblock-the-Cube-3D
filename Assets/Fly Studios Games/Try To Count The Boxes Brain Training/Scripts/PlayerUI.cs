@@ -23,6 +23,9 @@ public class PlayerUI : MonoBehaviour
     public Image player_resultIcon_image;
     public Sprite player_trueFlag_icon_sprite;
     public Sprite player_falseFlag_icon_sprite;
+    [Space]
+    public Button increaseScore_Button;
+    public Button doneScore_Button;
 
     private Dictionary<Transform, Coroutine> activeAnimations = new Dictionary<Transform, Coroutine>();
 

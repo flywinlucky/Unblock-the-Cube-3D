@@ -1171,6 +1171,8 @@ MonoBehaviour:
   player_resultIcon_image: {fileID: 44597500653635584}
   player_trueFlag_icon_sprite: {fileID: 21300000, guid: 336e72369ccc8d146a66e37c9e237587, type: 3}
   player_falseFlag_icon_sprite: {fileID: 21300000, guid: 4506ad0a4a150d646a08a93f332ef496, type: 3}
+  increaseScore_Button: {fileID: 47502578653199419}
+  doneScore_Button: {fileID: 1130666708973058361}
 --- !u!1 &1133537763405430178
 GameObject:
   m_ObjectHideFlags: 0
