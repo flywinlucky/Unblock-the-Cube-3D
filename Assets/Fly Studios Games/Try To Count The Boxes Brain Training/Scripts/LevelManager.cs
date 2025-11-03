@@ -6,17 +6,28 @@ public class LevelManager : MonoBehaviour
 {
     public List<Cube> cubes = new List<Cube>();
     public int cubesCount;
+    public Transform leveCubesRoot;
 
     public void InitializeLevel()
     {
-        // Găsește toate componentele Cube din copiii obiectului curent
-        foreach (Transform child in transform)
+        // Golește lista de cuburi pentru a evita duplicarea
+        cubes.Clear();
+
+        // Găsește toate componentele Cube din copiii lui leveCubesRoot
+        if (leveCubesRoot != null)
         {
-            Cube cube = child.GetComponent<Cube>();
-            if (cube != null)
+            foreach (Transform child in leveCubesRoot)
             {
-                cubes.Add(cube);
+                Cube cube = child.GetComponent<Cube>();
+                if (cube != null)
+                {
+                    cubes.Add(cube);
+                }
             }
+        }
+        else
+        {
+            Debug.LogWarning("leveCubesRoot nu este setat în LevelManager.");
         }
 
         // Setează numărul total de cuburi

@@ -37,6 +37,9 @@ public class GameManager : MonoBehaviour
 
     private bool canInteract = false; // Variabilă pentru a controla interacțiunea
 
+    private bool randomMode = false; // Indică dacă suntem în modul aleatoriu
+    private int lastRandomLevelIndex = -1; // Păstrează ultimul nivel randomizat pentru a evita repetarea
+
     private void Start()
     {
         // Dezactivăm canvas-ul UI pentru jucători la început
@@ -210,19 +213,29 @@ public class GameManager : MonoBehaviour
             Destroy(currentLevelManager.gameObject);
         }
 
-        // Incrementăm indexul nivelului
-        currentLevelIndex++;
-        if (currentLevelIndex >= levels.Count)
+        // Determinăm următorul nivel
+        if (!randomMode)
         {
-            Debug.Log("All levels completed!");
+            // Modul secvențial
+            currentLevelIndex++;
+            if (currentLevelIndex >= levels.Count)
+            {
+                // Am terminat toate nivelurile, trecem la modul aleatoriu
+                randomMode = true;
+            }
+        }
 
-            // Resetăm datele jocului
-            ResetGameData();
+        if (randomMode)
+        {
+            // Modul aleatoriu
+            int randomIndex;
+            do
+            {
+                randomIndex = Random.Range(0, levels.Count);
+            } while (randomIndex == lastRandomLevelIndex); // Evităm repetarea aceluiași nivel consecutiv
 
-            // Resetăm UI-ul pentru fiecare jucător
-            player_1_UI.ResetUI();
-            player_2_UI.ResetUI();
-            return; // Ieșim dacă nu mai sunt niveluri
+            currentLevelIndex = randomIndex;
+            lastRandomLevelIndex = randomIndex;
         }
 
         // Resetăm datele jocului
