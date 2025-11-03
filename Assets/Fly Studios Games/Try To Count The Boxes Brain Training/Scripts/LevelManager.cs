@@ -10,7 +10,7 @@ public class LevelManager : MonoBehaviour
     public GameObject levelsCubes;
     public GameObject floorCells;
     [Header("Animation")]
-    public int activeDuration = 2;
+    public int activeDuration;
 
     public void InitializeLevel()
     {
