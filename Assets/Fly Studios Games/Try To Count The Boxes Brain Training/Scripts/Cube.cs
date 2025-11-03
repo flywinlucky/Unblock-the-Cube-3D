@@ -16,6 +16,6 @@ public class Cube : MonoBehaviour
 
     public void SetGreenMaterial()
     {
-             cubeMesh.material = greenMaterial;
+        cubeMesh.material = greenMaterial;
     }
 }
