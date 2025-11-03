@@ -48,8 +48,6 @@ public class GameManager : MonoBehaviour
             uiManager.players_UI_Canvas.SetActive(false);
         }
 
-        InitializeLevel(currentLevelIndex); // Începem cu primul nivel
-
         player_1_UI.InitializeUI(
             player_1_IncreaseScore_Button_KeyCode.ToString(),
             player_1_Done_Button_KeyCode.ToString()
@@ -63,16 +61,9 @@ public class GameManager : MonoBehaviour
         uiManager.UpdateGameMessage("Try to count the boxes.");
         uiManager.StartCountdown(3, () =>
         {
-            // Activăm canvas-ul UI pentru jucători după numerotarea inversă
-            if (uiManager.players_UI_Canvas != null)
-            {
-                uiManager.players_UI_Canvas.SetActive(true);
-            }
 
-            // Permitem interacțiunea după ce timerul se finalizează
-            canInteract = true;
+            InitializeLevel(currentLevelIndex); // Începem cu primul nivel
 
-            OnCountdownComplete();
         });
     }
 
@@ -87,6 +78,19 @@ public class GameManager : MonoBehaviour
         // Instanțiem nivelul și conectăm LevelManager
         GameObject levelInstance = Instantiate(levels[levelIndex], levelTarget);
         currentLevelManager = levelInstance.GetComponent<LevelManager>();
+
+        currentLevelManager.StartActiveCountdown(currentLevelManager.activeDuration, () =>
+        {
+            // Activăm canvas-ul UI pentru jucători după numerotarea inversă
+            if (uiManager.players_UI_Canvas != null)
+            {
+                uiManager.players_UI_Canvas.SetActive(true);
+            }
+            // Permitem interacțiunea după ce timerul se finalizează
+            canInteract = true;
+
+            OnCountdownComplete();
+        });
 
         if (currentLevelManager == null)
         {
@@ -160,9 +164,10 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator HandleLevelCompletion()
     {
+        currentLevelManager.ActivateLevelsCubesFlorrCell(true);
+        currentLevelManager.ActivateSelfFlorrCell(true);
         // Apelăm ShowChildsMaterialFocus din LevelManager
         currentLevelManager.ShowChildsMaterialFocus();
-
         // Așteptăm până când toți copiii sunt setați
         yield return new WaitForSeconds(currentLevelManager.cubesCount * 0.3f);
 

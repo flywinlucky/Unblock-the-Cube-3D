@@ -10,7 +10,7 @@ public class LevelManager : MonoBehaviour
     public GameObject levelsCubes;
     public GameObject floorCells;
     [Header("Animation")]
-    public float activeDuration = 5f;
+    public int activeDuration = 2;
 
     public void InitializeLevel()
     {
@@ -37,7 +37,6 @@ public class LevelManager : MonoBehaviour
         // Setează numărul total de cuburi
         cubesCount = cubes.Count;
 
-        StartCoroutine(ActiveDelayInitialization());
     }
 
     public void ShowChildsMaterialFocus()
@@ -54,12 +53,25 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    public  IEnumerator ActiveDelayInitialization()
+    public void StartActiveCountdown(int startValue, System.Action onComplete)
     {
-        levelsCubes.SetActive(false);
-        yield return new WaitForSeconds(1);
-        levelsCubes.SetActive(true);
+        StartCoroutine(CountdownRoutine(startValue, onComplete));
+    }
+
+    private IEnumerator CountdownRoutine(int startValue, System.Action onComplete)
+    {
         yield return new WaitForSeconds(activeDuration);
-        levelsCubes.SetActive(false);
+        ActivateLevelsCubesFlorrCell(false);
+        ActivateSelfFlorrCell(false);
+        onComplete?.Invoke();
+    }
+
+    public void ActivateSelfFlorrCell(bool state)
+    {
+        floorCells.SetActive(state);
+    }
+     public void ActivateLevelsCubesFlorrCell(bool state)
+    {
+        levelsCubes.SetActive(state);  
     }
 }
