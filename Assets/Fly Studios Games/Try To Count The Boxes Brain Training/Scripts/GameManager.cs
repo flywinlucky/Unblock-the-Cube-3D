@@ -37,6 +37,12 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        // Dezactivăm canvas-ul UI pentru jucători la început
+        if (uiManager.players_UI_Canvas != null)
+        {
+            uiManager.players_UI_Canvas.SetActive(false);
+        }
+
         InitializeLevel(currentLevelIndex); // Începem cu primul nivel
 
         player_1_UI.InitializeUI(
@@ -50,7 +56,15 @@ public class GameManager : MonoBehaviour
         );
 
         uiManager.UpdateGameMessage("Try to count the boxes.");
-        uiManager.StartCountdown(3, OnCountdownComplete);
+        uiManager.StartCountdown(3, () =>
+        {
+            // Activăm canvas-ul UI pentru jucători după numerotarea inversă
+            if (uiManager.players_UI_Canvas != null)
+            {
+                uiManager.players_UI_Canvas.SetActive(true);
+            }
+            OnCountdownComplete();
+        });
     }
 
     private void InitializeLevel(int levelIndex)

@@ -6,6 +6,7 @@ public class UIManager : MonoBehaviour
 {
     public Text gameMessage_Text;
     public Text countDown_Text;
+    public GameObject players_UI_Canvas;
 
     public void UpdateGameMessage(string message)
     {
