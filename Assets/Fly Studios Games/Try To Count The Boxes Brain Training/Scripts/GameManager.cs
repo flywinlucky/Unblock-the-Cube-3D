@@ -94,22 +94,27 @@ public class GameManager : MonoBehaviour
 
     private void HandlePlayerInput()
     {
+        if (!canInteract) return;
+
         if (!player_1_Done && Input.GetKeyDown(player_1_IncreaseScore_Button_KeyCode))
         {
             player_1_Score++;
             player_1_UI?.UpdateScore(player_1_Score);
+            audioManager?.PlayButtonClick(); // Play button click sound
         }
 
         if (!player_2_Done && Input.GetKeyDown(player_2_IncreaseScore_Button_KeyCode))
         {
             player_2_Score++;
             player_2_UI?.UpdateScore(player_2_Score);
+            audioManager?.PlayButtonClick(); // Play button click sound
         }
 
         if (Input.GetKeyDown(player_1_Done_Button_KeyCode) && !player_1_Done)
         {
             player_1_Done = true;
             player_1_UI?.ShowFinalResult(player_1_Score, totalCountInScene);
+            audioManager?.PlayButtonDoneClick(); // Play button done click sound
             CheckBothPlayersDone();
         }
 
@@ -117,6 +122,7 @@ public class GameManager : MonoBehaviour
         {
             player_2_Done = true;
             player_2_UI?.ShowFinalResult(player_2_Score, totalCountInScene);
+            audioManager?.PlayButtonDoneClick(); // Play button done click sound
             CheckBothPlayersDone();
         }
     }

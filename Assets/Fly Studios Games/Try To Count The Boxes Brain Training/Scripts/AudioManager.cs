@@ -9,7 +9,10 @@ public class AudioManager : MonoBehaviour
 	public AudioSource musicSource;
 	[Tooltip("AudioSource pentru sunetul de click al blocului (atașat direct cu clip).")]
 	public AudioSource blockClickSource; // redenumit din sfxSource
-
+	public AudioSource buttonClickSource; // redenumit din sfxSource
+	public AudioSource buttonDoneClickSource;
+	public AudioSource countDownClickSource;
+	
 	// Stări curente (cache)
 	private bool _musicEnabled = true;
 	private bool _soundEnabled = true;
@@ -68,6 +71,34 @@ public class AudioManager : MonoBehaviour
 			return;
 		}
 		blockClickSource.PlayOneShot(clip);
+	}
+
+	// Redă sunetul de button click folosind clip-ul atașat pe buttonClickSource
+	public void PlayButtonClick()
+	{
+		if (buttonClickSource == null || !_soundEnabled) return;
+		AudioClip clip = buttonClickSource.clip;
+		if (clip == null)
+		{
+			// fallback: încercăm Play() dacă nu este clip dar e configurat AudioSource
+			if (!buttonClickSource.isPlaying) buttonClickSource.Play();
+			return;
+		}
+		buttonClickSource.PlayOneShot(clip);
+	}
+
+	// Redă sunetul de button done click folosind clip-ul atașat pe buttonDoneClickSource
+	public void PlayButtonDoneClick()
+	{
+		if (buttonDoneClickSource == null || !_soundEnabled) return;
+		AudioClip clip = buttonDoneClickSource.clip;
+		if (clip == null)
+		{
+			// fallback: încercăm Play() dacă nu este clip dar e configurat AudioSource
+			if (!buttonDoneClickSource.isPlaying) buttonDoneClickSource.Play();
+			return;
+		}
+		buttonDoneClickSource.PlayOneShot(clip);
 	}
 
 	// Setări enable/disable apelate din SettingsManager
