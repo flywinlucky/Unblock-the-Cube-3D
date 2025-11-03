@@ -14,34 +14,31 @@ public class LevelManager : MonoBehaviour
 
     public void InitializeLevel()
     {
-        // Golește lista de cuburi pentru a evita duplicarea
         cubes.Clear();
 
-        // Găsește toate componentele Cube din copiii lui leveCubesRoot
-        if (leveCubesRoot != null)
+        if (leveCubesRoot == null)
         {
-            foreach (Transform child in leveCubesRoot)
+            Debug.LogWarning("leveCubesRoot is not set in LevelManager.");
+            return;
+        }
+
+        foreach (Transform child in leveCubesRoot)
+        {
+            if (child.TryGetComponent(out Cube cube))
             {
-                Cube cube = child.GetComponent<Cube>();
-                if (cube != null)
-                {
-                    cubes.Add(cube);
-                }
+                cubes.Add(cube);
             }
         }
-        else
-        {
-            Debug.LogWarning("leveCubesRoot nu este setat în LevelManager.");
-        }
 
-        // Setează numărul total de cuburi
         cubesCount = cubes.Count;
-
     }
 
     public void ShowChildsMaterialFocus()
     {
-        StartCoroutine(ShowChildsMaterialFocusRoutine());
+        if (cubes.Count > 0)
+        {
+            StartCoroutine(ShowChildsMaterialFocusRoutine());
+        }
     }
 
     private IEnumerator ShowChildsMaterialFocusRoutine()
@@ -49,18 +46,26 @@ public class LevelManager : MonoBehaviour
         foreach (Cube cube in cubes)
         {
             cube.SetGreenMaterial();
-            yield return new WaitForSeconds(0.1f); // Așteaptă 0.3 secunde între fiecare schimbare
+            yield return new WaitForSeconds(0.1f);
         }
     }
 
     public void StartActiveCountdown(System.Action onComplete)
     {
-        StartCoroutine(CountdownRoutine(onComplete));
+        if (activeDuration > 0)
+        {
+            StartCoroutine(CountdownRoutine(onComplete));
+        }
+        else
+        {
+            Debug.LogWarning("Active duration is not set or invalid.");
+            onComplete?.Invoke();
+        }
     }
 
     private IEnumerator CountdownRoutine(System.Action onComplete)
     {
-        yield return new WaitForSeconds(activeDuration); // activeDuration is now a float
+        yield return new WaitForSeconds(activeDuration);
         ActivateLevelsCubesFlorrCell(false);
         ActivateSelfFlorrCell(false);
         onComplete?.Invoke();
@@ -68,10 +73,17 @@ public class LevelManager : MonoBehaviour
 
     public void ActivateSelfFlorrCell(bool state)
     {
-        floorCells.SetActive(state);
+        if (floorCells != null)
+        {
+            floorCells.SetActive(state);
+        }
     }
-     public void ActivateLevelsCubesFlorrCell(bool state)
+
+    public void ActivateLevelsCubesFlorrCell(bool state)
     {
-        levelsCubes.SetActive(state);  
+        if (levelsCubes != null)
+        {
+            levelsCubes.SetActive(state);
+        }
     }
 }

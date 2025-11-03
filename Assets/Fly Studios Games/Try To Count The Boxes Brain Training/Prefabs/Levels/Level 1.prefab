@@ -51,7 +51,7 @@ MonoBehaviour:
   leveCubesRoot: {fileID: 3195007533694324151}
   levelsCubes: {fileID: 3195007533694324150}
   floorCells: {fileID: 1777697683608341701}
-  activeDuration: 0.3
+  activeDuration: 0.5
 --- !u!1 &1777697683608341701
 GameObject:
   m_ObjectHideFlags: 0

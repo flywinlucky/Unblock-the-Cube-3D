@@ -8,14 +8,32 @@ public class Cube : MonoBehaviour
     public Material greenMaterial;
     public MeshRenderer cubeMesh;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        cubeMesh.material = grayMaterial;
+        if (cubeMesh == null)
+        {
+            Debug.LogError("CubeMesh is not assigned in " + gameObject.name);
+        }
+        if (grayMaterial == null || greenMaterial == null)
+        {
+            Debug.LogError("Materials are not assigned in " + gameObject.name);
+        }
+    }
+
+    // Start is called before the first frame update
+    private void Start()
+    {
+        if (cubeMesh != null && grayMaterial != null)
+        {
+            cubeMesh.material = grayMaterial;
+        }
     }
 
     public void SetGreenMaterial()
     {
-        cubeMesh.material = greenMaterial;
+        if (cubeMesh != null && greenMaterial != null)
+        {
+            cubeMesh.material = greenMaterial;
+        }
     }
 }

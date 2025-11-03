@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,61 +9,51 @@ public class GameManager : MonoBehaviour
 
     private LevelManager currentLevelManager;
 
-    [Header("Game Mode")]
-    // two mods of game single player amnd for two players, run on local keyboard
     [Header("Player UI 1")]
     public PlayerUI player_1_UI;
     public KeyCode player_1_IncreaseScore_Button_KeyCode;
     public KeyCode player_1_Done_Button_KeyCode;
-    private int player_1_Score = 0;
+    private int player_1_Score;
 
     [Header("Player UI 2")]
     public PlayerUI player_2_UI;
     public KeyCode player_2_IncreaseScore_Button_KeyCode;
     public KeyCode player_2_Done_Button_KeyCode;
-    private int player_2_Score = 0;
+    private int player_2_Score;
 
-    [Header("Referinces")]
+    [Header("References")]
     public UIManager uiManager;
+    public AudioManager audioManager;
 
     [Header("Game Settings")]
-    public int totalCountInScene; // Exemplu: numărul total de cuburi din scenă
+    public int totalCountInScene;
 
-    private bool player_1_Done = false;
-    private bool player_2_Done = false;
-
-    private int currentLevelIndex = 0;
-
-    private bool canInteract = false; // Variabilă pentru a controla interacțiunea
-
-    private bool randomMode = false; // Indică dacă suntem în modul aleatoriu
-    private int lastRandomLevelIndex = -1; // Păstrează ultimul nivel randomizat pentru a evita repetarea
+    private bool player_1_Done;
+    private bool player_2_Done;
+    private int currentLevelIndex;
+    private bool canInteract;
+    private bool randomMode;
+    private int lastRandomLevelIndex;
 
     private void Start()
     {
-        // Dezactivăm canvas-ul UI pentru jucători la început
-        if (uiManager.players_UI_Canvas != null)
+        if (uiManager?.players_UI_Canvas != null)
         {
             uiManager.players_UI_Canvas.SetActive(false);
         }
 
-        player_1_UI.InitializeUI(
+        player_1_UI?.InitializeUI(
             player_1_IncreaseScore_Button_KeyCode.ToString(),
             player_1_Done_Button_KeyCode.ToString()
         );
 
-        player_2_UI.InitializeUI(
+        player_2_UI?.InitializeUI(
             player_2_IncreaseScore_Button_KeyCode.ToString(),
             player_2_Done_Button_KeyCode.ToString()
         );
 
-        uiManager.UpdateGameMessage("Try to count the boxes.");
-        uiManager.StartCountdown(3, () =>
-        {
-
-            InitializeLevel(currentLevelIndex); // Începem cu primul nivel
-
-        });
+        uiManager?.UpdateGameMessage("Try to count the boxes.");
+        uiManager?.StartCountdown(3, () => InitializeLevel(currentLevelIndex));
     }
 
     private void InitializeLevel(int levelIndex)
@@ -75,22 +64,8 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        // Instanțiem nivelul și conectăm LevelManager
         GameObject levelInstance = Instantiate(levels[levelIndex], levelTarget);
         currentLevelManager = levelInstance.GetComponent<LevelManager>();
-
-        currentLevelManager.StartActiveCountdown(() =>
-        {
-            // Activăm canvas-ul UI pentru jucători după numerotarea inversă
-            if (uiManager.players_UI_Canvas != null)
-            {
-                uiManager.players_UI_Canvas.SetActive(true);
-            }
-            // Permitem interacțiunea după ce timerul se finalizează
-            canInteract = true;
-
-            OnCountdownComplete();
-        });
 
         if (currentLevelManager == null)
         {
@@ -98,58 +73,62 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        // Apelăm metoda InitializeLevel din LevelManager
-        currentLevelManager.InitializeLevel();
+        currentLevelManager.StartActiveCountdown(() =>
+        {
+            uiManager?.players_UI_Canvas?.SetActive(true);
+            canInteract = true;
+            OnCountdownComplete();
+        });
 
-        // Setăm totalCountInScene cu valoarea cubesCount din LevelManager
+        currentLevelManager.InitializeLevel();
         totalCountInScene = currentLevelManager.cubesCount;
     }
 
     private void Update()
     {
-        HandlePlayerInput();
+        if (canInteract)
+        {
+            HandlePlayerInput();
+        }
     }
 
     private void HandlePlayerInput()
     {
-        if (!canInteract) return; // Blocăm interacțiunea dacă nivelul nu a început
-
         if (!player_1_Done && Input.GetKeyDown(player_1_IncreaseScore_Button_KeyCode))
         {
             player_1_Score++;
-            player_1_UI.UpdateScore(player_1_Score); // Actualizează scorul folosind metoda din PlayerUI
+            player_1_UI?.UpdateScore(player_1_Score);
         }
 
         if (!player_2_Done && Input.GetKeyDown(player_2_IncreaseScore_Button_KeyCode))
         {
             player_2_Score++;
-            player_2_UI.UpdateScore(player_2_Score); // Actualizează scorul folosind metoda din PlayerUI
+            player_2_UI?.UpdateScore(player_2_Score);
         }
 
         if (Input.GetKeyDown(player_1_Done_Button_KeyCode) && !player_1_Done)
         {
             player_1_Done = true;
-            player_1_UI.ShowFinalResult(player_1_Score, totalCountInScene);
+            player_1_UI?.ShowFinalResult(player_1_Score, totalCountInScene);
             CheckBothPlayersDone();
         }
 
         if (Input.GetKeyDown(player_2_Done_Button_KeyCode) && !player_2_Done)
         {
             player_2_Done = true;
-            player_2_UI.ShowFinalResult(player_2_Score, totalCountInScene);
+            player_2_UI?.ShowFinalResult(player_2_Score, totalCountInScene);
             CheckBothPlayersDone();
         }
     }
 
     private void OnCountdownComplete()
     {
-        uiManager.UpdateGameMessage("How many boxes were there?");
+        uiManager?.UpdateGameMessage("How many boxes were there?");
         EnablePlayerInteraction();
     }
 
     private void EnablePlayerInteraction()
     {
-        // Logica pentru activarea interacțiunii cu butoanele
         player_1_Done = false;
         player_2_Done = false;
     }
@@ -164,124 +143,73 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator HandleLevelCompletion()
     {
-        currentLevelManager.ActivateLevelsCubesFlorrCell(true);
-        currentLevelManager.ActivateSelfFlorrCell(true);
-        // Apelăm ShowChildsMaterialFocus din LevelManager
-        currentLevelManager.ShowChildsMaterialFocus();
-        // Așteptăm până când toți copiii sunt setați
-        yield return new WaitForSeconds(currentLevelManager.cubesCount * 0.3f);
+        currentLevelManager?.ActivateLevelsCubesFlorrCell(true);
+        currentLevelManager?.ActivateSelfFlorrCell(true);
+        currentLevelManager?.ShowChildsMaterialFocus();
 
+        yield return new WaitForSeconds(currentLevelManager.cubesCount * 0.3f);
         StartCoroutine(ShowFinalResultsAfterDelay());
     }
 
     private IEnumerator ShowFinalResultsAfterDelay()
     {
-        // Calculăm intervalul dinamic pe baza valorii totale
-        float baseInterval = 0.3f; // Intervalul de bază
-        float interval = Mathf.Clamp(baseInterval / Mathf.Log10(totalCountInScene + 1), 0.02f, baseInterval);
-
-        // Apelăm StartCountUp pentru a face incrementarea scorului în countDown_Text
+        float interval = Mathf.Clamp(0.3f / Mathf.Log10(totalCountInScene + 1), 0.02f, 0.3f);
         bool countUpCompleted = false;
-        uiManager.StartCountUp(totalCountInScene, interval, () =>
-        {
-            countUpCompleted = true;
-        });
 
-        // Așteptăm până când numerotarea este completă
+        uiManager?.StartCountUp(totalCountInScene, interval, () => countUpCompleted = true);
         yield return new WaitUntil(() => countUpCompleted);
 
-        player_1_UI.ActivateResultIcon(); // Activăm iconița pentru Player 1
-        player_2_UI.ActivateResultIcon(); // Activăm iconița pentru Player 2
+        player_1_UI?.ActivateResultIcon();
+        player_2_UI?.ActivateResultIcon();
         uiManager.countDown_Text.text = totalCountInScene.ToString();
 
-        // Așteptăm 1.5 secunde înainte de a începe numerotarea
         yield return new WaitForSeconds(1.5f);
-
-        // După ce numerotarea este completă, trecem la nivelul următor
         LoadNextLevel();
     }
 
     private void LoadNextLevel()
     {
-        currentLevelManager.ActivateLevelsCubesFlorrCell(false);
-        currentLevelManager.ActivateSelfFlorrCell(true);
+        currentLevelManager?.ActivateLevelsCubesFlorrCell(false);
+        currentLevelManager?.ActivateSelfFlorrCell(true);
 
-        // Dezactivăm canvas-ul UI pentru jucători
-        if (uiManager.players_UI_Canvas != null)
-        {
-            uiManager.players_UI_Canvas.SetActive(false);
-        }
-
-        // Dezactivăm interacțiunea până la următorul nivel
+        uiManager?.players_UI_Canvas?.SetActive(false);
         canInteract = false;
 
-        // Dezinstanțiem nivelul curent
         if (currentLevelManager != null)
         {
             Destroy(currentLevelManager.gameObject);
         }
 
-        // Determinăm următorul nivel
-        if (!randomMode)
-        {
-            // Modul secvențial
-            currentLevelIndex++;
-            if (currentLevelIndex >= levels.Count)
-            {
-                // Am terminat toate nivelurile, trecem la modul aleatoriu
-                randomMode = true;
-            }
-        }
+        currentLevelIndex = randomMode
+            ? GetRandomLevelIndex()
+            : (currentLevelIndex + 1) % levels.Count;
 
-        if (randomMode)
-        {
-            // Modul aleatoriu
-            int randomIndex;
-            do
-            {
-                randomIndex = Random.Range(0, levels.Count);
-            } while (randomIndex == lastRandomLevelIndex); // Evităm repetarea aceluiași nivel consecutiv
-
-            currentLevelIndex = randomIndex;
-            lastRandomLevelIndex = randomIndex;
-        }
-
-        // Resetăm datele jocului
         ResetGameData();
+        player_1_UI?.ResetUI();
+        player_2_UI?.ResetUI();
 
-        // Resetăm UI-ul pentru fiecare jucător
-        player_1_UI.ResetUI();
-        player_2_UI.ResetUI();
+        uiManager?.StartCountdown(3, () => InitializeLevel(currentLevelIndex));
+    }
 
-        // Adăugăm logica de countdown pentru activarea interacțiunii
-        uiManager.StartCountdown(3, () =>
+    private int GetRandomLevelIndex()
+    {
+        int randomIndex;
+        do
         {
-            // Începem inițializarea nivelului următor
-            InitializeLevel(currentLevelIndex);
-        });
+            randomIndex = Random.Range(0, levels.Count);
+        } while (randomIndex == lastRandomLevelIndex);
+
+        lastRandomLevelIndex = randomIndex;
+        return randomIndex;
     }
 
     private void ResetGameData()
     {
-        // Activăm UI-ul pentru fiecare jucător înainte de resetare
-        if (!player_1_UI.gameObject.activeSelf)
-        {
-            player_1_UI.gameObject.SetActive(true);
-        }
+        player_1_Score = player_2_Score = 0;
+        player_1_Done = player_2_Done = false;
+        canInteract = false;
 
-        if (!player_2_UI.gameObject.activeSelf)
-        {
-            player_2_UI.gameObject.SetActive(true);
-        }
-
-        player_1_Score = 0;
-        player_2_Score = 0;
-        player_1_Done = false;
-        player_2_Done = false;
-
-        player_1_UI.UpdateScore(player_1_Score);
-        player_2_UI.UpdateScore(player_2_Score);
-
-        canInteract = false; // Dezactivăm interacțiunea până începe următorul nivel
+        player_1_UI?.UpdateScore(player_1_Score);
+        player_2_UI?.UpdateScore(player_2_Score);
     }
 }
