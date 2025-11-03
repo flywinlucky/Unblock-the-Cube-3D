@@ -153,13 +153,13 @@ public class GameManager : MonoBehaviour
         currentLevelManager?.ActivateSelfFlorrCell(true);
         currentLevelManager?.ShowChildsMaterialFocus();
 
-        yield return new WaitForSeconds(currentLevelManager.cubesCount * 0.3f);
+        yield return new WaitForSeconds(currentLevelManager.cubesCount * 0.25f);
         StartCoroutine(ShowFinalResultsAfterDelay());
     }
 
     private IEnumerator ShowFinalResultsAfterDelay()
     {
-        float interval = Mathf.Clamp(0.3f / Mathf.Log10(totalCountInScene + 1), 0.02f, 0.3f);
+        float interval = Mathf.Clamp(0.25f / Mathf.Log10(totalCountInScene + 1), 0.02f, 0.25f);
         bool countUpCompleted = false;
 
         uiManager?.StartCountUp(totalCountInScene, interval, () => countUpCompleted = true);
