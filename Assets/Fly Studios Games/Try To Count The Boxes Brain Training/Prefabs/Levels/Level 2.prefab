@@ -105,6 +105,8 @@ MonoBehaviour:
   cubes: []
   cubesCount: 0
   leveCubesRoot: {fileID: 6514940607391425752}
+  levelsCubes: {fileID: 6514940607391425753}
+  floorCells: {fileID: 982092990711474758}
 --- !u!1 &6514940607391425753
 GameObject:
   m_ObjectHideFlags: 0

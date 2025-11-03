@@ -7,6 +7,10 @@ public class LevelManager : MonoBehaviour
     public List<Cube> cubes = new List<Cube>();
     public int cubesCount;
     public Transform leveCubesRoot;
+    public GameObject levelsCubes;
+    public GameObject floorCells;
+    [Header("Animation")]
+    public float activeDuration = 5f;
 
     public void InitializeLevel()
     {
@@ -32,14 +36,8 @@ public class LevelManager : MonoBehaviour
 
         // Setează numărul total de cuburi
         cubesCount = cubes.Count;
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKey(KeyCode.Space))
-        {
-            ShowChildsMaterialFocus();
-        }
+
+        StartCoroutine(ActiveDelayInitialization());
     }
 
     public void ShowChildsMaterialFocus()
@@ -54,5 +52,14 @@ public class LevelManager : MonoBehaviour
             cube.SetGreenMaterial();
             yield return new WaitForSeconds(0.1f); // Așteaptă 0.3 secunde între fiecare schimbare
         }
+    }
+
+    public  IEnumerator ActiveDelayInitialization()
+    {
+        levelsCubes.SetActive(false);
+        yield return new WaitForSeconds(1);
+        levelsCubes.SetActive(true);
+        yield return new WaitForSeconds(activeDuration);
+        levelsCubes.SetActive(false);
     }
 }
