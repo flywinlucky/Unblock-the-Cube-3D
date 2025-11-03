@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     private LevelManager currentLevelManager;
 
     [Header("Game Mode")]
-// two mods of game single player amnd for two players, run on local keyboard
+    // two mods of game single player amnd for two players, run on local keyboard
     [Header("Player UI 1")]
     public PlayerUI player_1_UI;
     public KeyCode player_1_IncreaseScore_Button_KeyCode;
@@ -146,11 +146,24 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator ShowFinalResultsAfterDelay()
     {
+        // Apelăm StartCountUp pentru a face incrementarea scorului în countDown_Text
+        bool countUpCompleted = false;
+        uiManager.StartCountUp(totalCountInScene, 0.3f, () =>
+        {
+            countUpCompleted = true;
+        });
+
+        // Așteptăm până când numerotarea este completă
+        yield return new WaitUntil(() => countUpCompleted);
+
         player_1_UI.ActivateResultIcon(); // Activăm iconița pentru Player 1
         player_2_UI.ActivateResultIcon(); // Activăm iconița pentru Player 2
         uiManager.countDown_Text.text = totalCountInScene.ToString();
-        yield return new WaitForSeconds(1.5f); // Așteaptă 2 secunde înainte de a trece la nivelul următor
 
+        // Așteptăm 1.5 secunde înainte de a începe numerotarea
+        yield return new WaitForSeconds(2f);
+
+        // După ce numerotarea este completă, trecem la nivelul următor
         LoadNextLevel();
     }
 
@@ -168,12 +181,12 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("All levels completed!");
 
-                  // Resetăm datele jocului
-        ResetGameData();
+            // Resetăm datele jocului
+            ResetGameData();
 
-        // Resetăm UI-ul pentru fiecare jucător
-        player_1_UI.ResetUI();
-        player_2_UI.ResetUI();
+            // Resetăm UI-ul pentru fiecare jucător
+            player_1_UI.ResetUI();
+            player_2_UI.ResetUI();
             return; // Ieșim dacă nu mai sunt niveluri
         }
 
