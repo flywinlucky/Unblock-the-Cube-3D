@@ -140,7 +140,7 @@ MonoBehaviour:
   leveCubesRoot: {fileID: 1014429518079194345}
   levelsCubes: {fileID: 1014429518079194344}
   floorCells: {fileID: 5150292873094051560}
-  activeDuration: 4
+  activeDuration: 0.2
 --- !u!1001 &1014429517506969212
 PrefabInstance:
   m_ObjectHideFlags: 0

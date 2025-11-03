@@ -10,7 +10,7 @@ public class LevelManager : MonoBehaviour
     public GameObject levelsCubes;
     public GameObject floorCells;
     [Header("Animation")]
-    public int activeDuration;
+    public float activeDuration;
 
     public void InitializeLevel()
     {
@@ -53,14 +53,14 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    public void StartActiveCountdown(int startValue, System.Action onComplete)
+    public void StartActiveCountdown(System.Action onComplete)
     {
-        StartCoroutine(CountdownRoutine(startValue, onComplete));
+        StartCoroutine(CountdownRoutine(onComplete));
     }
 
-    private IEnumerator CountdownRoutine(int startValue, System.Action onComplete)
+    private IEnumerator CountdownRoutine(System.Action onComplete)
     {
-        yield return new WaitForSeconds(activeDuration);
+        yield return new WaitForSeconds(activeDuration); // activeDuration is now a float
         ActivateLevelsCubesFlorrCell(false);
         ActivateSelfFlorrCell(false);
         onComplete?.Invoke();

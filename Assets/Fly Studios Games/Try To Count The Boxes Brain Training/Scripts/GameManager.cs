@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour
         GameObject levelInstance = Instantiate(levels[levelIndex], levelTarget);
         currentLevelManager = levelInstance.GetComponent<LevelManager>();
 
-        currentLevelManager.StartActiveCountdown(currentLevelManager.activeDuration, () =>
+        currentLevelManager.StartActiveCountdown(() =>
         {
             // Activăm canvas-ul UI pentru jucători după numerotarea inversă
             if (uiManager.players_UI_Canvas != null)
