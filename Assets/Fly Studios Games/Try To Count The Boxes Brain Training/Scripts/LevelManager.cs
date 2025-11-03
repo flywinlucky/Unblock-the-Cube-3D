@@ -7,12 +7,6 @@ public class LevelManager : MonoBehaviour
     public List<Cube> cubes = new List<Cube>();
     public int cubesCount;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        InitializeLevel();
-    }
-
     public void InitializeLevel()
     {
         // Găsește toate componentele Cube din copiii obiectului curent

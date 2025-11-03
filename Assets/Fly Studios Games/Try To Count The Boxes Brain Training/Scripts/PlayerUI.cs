@@ -111,4 +111,17 @@ public class PlayerUI : MonoBehaviour
     {
         player_resultIcon_image.gameObject.SetActive(true); // Activăm când este necesar
     }
+
+    public void ResetUI()
+    {
+        // Dezactivează rezultatul final și activează UI-ul principal
+         player_finalCountResult.SetActive(false);
+ 
+        
+        player_UI_panel.SetActive(true);
+
+        // Resetează textele de count la 0
+        player_countCell_1_Text.text = "0";
+        player_countCell_2_Text.text = "0";
+    }
 }
