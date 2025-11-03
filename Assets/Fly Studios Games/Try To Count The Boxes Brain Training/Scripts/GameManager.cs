@@ -146,9 +146,13 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator ShowFinalResultsAfterDelay()
     {
+        // Calculăm intervalul dinamic pe baza valorii totale
+        float baseInterval = 0.3f; // Intervalul de bază
+        float interval = Mathf.Clamp(baseInterval / Mathf.Log10(totalCountInScene + 1), 0.02f, baseInterval);
+
         // Apelăm StartCountUp pentru a face incrementarea scorului în countDown_Text
         bool countUpCompleted = false;
-        uiManager.StartCountUp(totalCountInScene, 0.3f, () =>
+        uiManager.StartCountUp(totalCountInScene, interval, () =>
         {
             countUpCompleted = true;
         });
@@ -161,7 +165,7 @@ public class GameManager : MonoBehaviour
         uiManager.countDown_Text.text = totalCountInScene.ToString();
 
         // Așteptăm 1.5 secunde înainte de a începe numerotarea
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.5f);
 
         // După ce numerotarea este completă, trecem la nivelul următor
         LoadNextLevel();
