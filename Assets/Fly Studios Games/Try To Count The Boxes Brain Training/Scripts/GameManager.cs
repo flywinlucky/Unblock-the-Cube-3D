@@ -203,6 +203,9 @@ public class GameManager : MonoBehaviour
 
     private void LoadNextLevel()
     {
+        currentLevelManager.ActivateLevelsCubesFlorrCell(false);
+        currentLevelManager.ActivateSelfFlorrCell(true);
+
         // Dezactivăm canvas-ul UI pentru jucători
         if (uiManager.players_UI_Canvas != null)
         {
@@ -250,23 +253,11 @@ public class GameManager : MonoBehaviour
         player_1_UI.ResetUI();
         player_2_UI.ResetUI();
 
-        // Incarcăm următorul nivel
-        InitializeLevel(currentLevelIndex);
-
-        // Reîncepem logica pentru noul nivel
-        uiManager.UpdateGameMessage("Try to count the boxes.");
+        // Adăugăm logica de countdown pentru activarea interacțiunii
         uiManager.StartCountdown(3, () =>
         {
-            // Activăm canvas-ul UI pentru jucători după numerotarea inversă
-            if (uiManager.players_UI_Canvas != null)
-            {
-                uiManager.players_UI_Canvas.SetActive(true);
-            }
-
-            // Permitem interacțiunea după ce timerul se finalizează
-            canInteract = true;
-
-            OnCountdownComplete();
+            // Începem inițializarea nivelului următor
+            InitializeLevel(currentLevelIndex);
         });
     }
 
