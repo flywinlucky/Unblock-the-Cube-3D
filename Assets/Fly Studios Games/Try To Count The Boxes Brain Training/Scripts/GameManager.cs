@@ -149,7 +149,7 @@ public class GameManager : MonoBehaviour
         player_1_UI.ActivateResultIcon(); // Activăm iconița pentru Player 1
         player_2_UI.ActivateResultIcon(); // Activăm iconița pentru Player 2
         uiManager.countDown_Text.text = totalCountInScene.ToString();
-        yield return new WaitForSeconds(2f); // Așteaptă 2 secunde înainte de a trece la nivelul următor
+        yield return new WaitForSeconds(1.5f); // Așteaptă 2 secunde înainte de a trece la nivelul următor
 
         LoadNextLevel();
     }
