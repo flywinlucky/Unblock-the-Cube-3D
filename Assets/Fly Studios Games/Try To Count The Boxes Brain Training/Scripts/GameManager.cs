@@ -49,6 +49,31 @@ public class GameManager : MonoBehaviour
 
     private bool gamePaused = true; // Flag to pause the game initially
 
+    // Reaction timing
+    private float interactionStartTime;
+
+    // Helper: înregistrează rezultatul când un jucător finalizează
+    private void RecordPlayerDone(int playerIndex, int playerScore)
+    {
+        float reactionTime = Mathf.Max(0f, Time.time - interactionStartTime);
+        bool correct = playerScore == totalCountInScene;
+        if (uiManager != null)
+        {
+            if (isSinglePlayerMode)
+            {
+                uiManager.RecordSinglePlayerResult(correct, reactionTime);
+            }
+            else if (isMultiplayerBotMode)
+            {
+                uiManager.RecordMultiplayerBotResult(playerIndex, correct, reactionTime);
+            }
+            else
+            {
+                uiManager.RecordLocalMultiplayerResult(playerIndex, correct, reactionTime);
+            }
+        }
+    }
+
     private void Start()
     {
         if (uiManager?.players_UI_Canvas != null)
@@ -242,6 +267,7 @@ public class GameManager : MonoBehaviour
                 player_2_Done = true;
                 player_2_UI?.ShowFinalResult(player_2_Score, totalCountInScene);
                 audioManager?.PlayButtonDoneClick();
+                RecordPlayerDone(2, player_2_Score);
                 CheckBothPlayersDone();
             }
             yield return null;
@@ -267,6 +293,7 @@ public class GameManager : MonoBehaviour
             player_1_Done = true;
             player_1_UI?.ShowFinalResult(player_1_Score, totalCountInScene);
             audioManager?.PlayButtonDoneClick();
+            RecordPlayerDone(1, player_1_Score);
             CheckBothPlayersDone();
         }
 
@@ -282,6 +309,7 @@ public class GameManager : MonoBehaviour
             player_2_Done = true;
             player_2_UI?.ShowFinalResult(player_2_Score, totalCountInScene);
             audioManager?.PlayButtonDoneClick();
+            RecordPlayerDone(2, player_2_Score);
             CheckBothPlayersDone();
         }
     }
@@ -290,6 +318,8 @@ public class GameManager : MonoBehaviour
     {
         uiManager?.UpdateGameMessage("How many boxes were there?");
         EnablePlayerInteraction();
+        // startăm măsurarea timpului de reacție
+        interactionStartTime = Time.time;
     }
 
     private void EnablePlayerInteraction()
