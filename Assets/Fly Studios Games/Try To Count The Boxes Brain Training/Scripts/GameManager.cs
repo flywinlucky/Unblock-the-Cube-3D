@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour
             player_2_Done_Button_KeyCode.ToString()
         );
 
-        uiManager?.UpdateGameMessage("Choose a game mode to start.");
+        uiManager?.UpdateGameMessage("Try to count the boxes");
     }
 
     private void InitializeLevel(int levelIndex)
@@ -130,6 +130,9 @@ public class GameManager : MonoBehaviour
         // IMPORTANT: în single-player considerăm player_2 deja "done"
         // astfel când player_1 apasă Done nivelul/rezultatul se va procesa imediat.
         player_2_Done = true;
+
+        // Asigurăm butoanele player2 dezactivate
+        SetPlayer2ButtonsActive(false);
     }
 
     public void StartMultiplayerBotMode()
@@ -141,6 +144,9 @@ public class GameManager : MonoBehaviour
         {
             player_2_UI.gameObject.SetActive(true); // Enable Player 2 UI
         }
+
+        // Dezactivează butoanele UI pentru player2 (botul lucrează intern)
+        SetPlayer2ButtonsActive(false);
 
         // Start bot coroutine if not already running; coroutine will wait until level starts/canInteract
         if (botCoroutine == null)
@@ -156,6 +162,9 @@ public class GameManager : MonoBehaviour
         {
             player_2_UI.gameObject.SetActive(true); // Enable Player 2 UI
         }
+
+        // În local multiplayer activăm butoanele pentru player2
+        SetPlayer2ButtonsActive(true);
     }
 
     private IEnumerator BotPlayerRoutine()
@@ -379,7 +388,31 @@ public class GameManager : MonoBehaviour
             botCoroutine = null;
         }
 
+        // Restaurăm starea butoanelor player2 conform modului curent
+        // - single player: butoanele dezactivate
+        // - bot mode: butoanele dezactivate (botul controlează intern)
+        // - local multiplayer: butoanele activate
+        bool player2ButtonsShouldBeActive = !isSinglePlayerMode && !isMultiplayerBotMode;
+        SetPlayer2ButtonsActive(player2ButtonsShouldBeActive);
+
         player_1_UI?.UpdateScore(player_1_Score);
         player_2_UI?.UpdateScore(player_2_Score);
+    }
+
+    // Helper pentru a activa/dezactiva butoanele din PlayerUI2 (gameObject + interactable)
+    private void SetPlayer2ButtonsActive(bool active)
+    {
+        if (player_2_UI == null) return;
+
+        if (player_2_UI.increaseScore_Button != null)
+        {
+            player_2_UI.increaseScore_Button.gameObject.SetActive(active);
+            player_2_UI.increaseScore_Button.interactable = active;
+        }
+        if (player_2_UI.doneScore_Button != null)
+        {
+            player_2_UI.doneScore_Button.gameObject.SetActive(active);
+            player_2_UI.doneScore_Button.interactable = active;
+        }
     }
 }
