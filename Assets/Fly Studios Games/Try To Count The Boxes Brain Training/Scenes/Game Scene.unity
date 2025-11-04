@@ -2232,6 +2232,10 @@ MonoBehaviour:
   uiManager: {fileID: 1529943752}
   audioManager: {fileID: 514135127}
   totalCountInScene: 0
+  botMinActionDelay: 0.2
+  botMaxActionDelay: 0.8
+  botAccuracy: 0.6
+  botFluctuation: 2
 --- !u!4 &1208760976
 Transform:
   m_ObjectHideFlags: 0
@@ -2755,7 +2759,7 @@ MonoBehaviour:
   countDown_Text: {fileID: 1192004720}
   players_UI_Canvas: {fileID: 517673875}
   audioManager: {fileID: 514135127}
-  ChoseGameModePanel: {fileID: 0}
+  ChoseGameModePanel: {fileID: 1649009202}
   singlePlayerGameMode: {fileID: 113960998}
   multiplayerGameMode: {fileID: 387994330}
   LocalMultiplayerGameMode: {fileID: 862171141}

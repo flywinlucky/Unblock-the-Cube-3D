@@ -95,6 +95,12 @@ public class GameManager : MonoBehaviour
 
         currentLevelManager.InitializeLevel();
         totalCountInScene = currentLevelManager.cubesCount;
+
+        // Dacă suntem în modul cu bot, (re)pornește coroutine-ul bot dacă nu rulează deja.
+        if (isMultiplayerBotMode && botCoroutine == null)
+        {
+            botCoroutine = StartCoroutine(BotPlayerRoutine());
+        }
     }
 
     private void Update()
