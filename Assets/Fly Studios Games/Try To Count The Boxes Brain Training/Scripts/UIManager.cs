@@ -8,7 +8,12 @@ public class UIManager : MonoBehaviour
     public Text countDown_Text;
     public GameObject players_UI_Canvas;
     public AudioManager audioManager;
-
+    [Space]
+    public GameObject ChoseGameModePanel;
+    public Button singlePlayerGameMode;
+    public Button multiplayerGameMode;
+    public Button LocalMultiplayerGameMode;
+    
     public void UpdateGameMessage(string message)
     {
         gameMessage_Text.text = message;
@@ -48,5 +53,30 @@ public class UIManager : MonoBehaviour
         }
         countDown_Text.gameObject.SetActive(false);
         onComplete?.Invoke();
+    }
+
+    private void Start()
+    {
+        // Add listeners for game mode buttons
+        singlePlayerGameMode.onClick.AddListener(() =>
+        {
+            ChoseGameModePanel.SetActive(false);
+            FindObjectOfType<GameManager>()?.StartSinglePlayerMode();
+            FindObjectOfType<GameManager>()?.StartGame();
+        });
+
+        multiplayerGameMode.onClick.AddListener(() =>
+        {
+            ChoseGameModePanel.SetActive(false);
+            FindObjectOfType<GameManager>()?.StartMultiplayerBotMode();
+            FindObjectOfType<GameManager>()?.StartGame();
+        });
+
+        LocalMultiplayerGameMode.onClick.AddListener(() =>
+        {
+            ChoseGameModePanel.SetActive(false);
+            FindObjectOfType<GameManager>()?.StartLocalMultiplayerMode();
+            FindObjectOfType<GameManager>()?.StartGame();
+        });
     }
 }
