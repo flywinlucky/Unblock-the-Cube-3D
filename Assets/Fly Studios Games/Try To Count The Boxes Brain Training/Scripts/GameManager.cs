@@ -92,6 +92,35 @@ public class GameManager : MonoBehaviour
         );
 
         uiManager?.UpdateGameMessage("Try to count the boxes");
+
+        // Bind UI buttons to central handlers (works for both UI and keyboard paths)
+        if (player_1_UI != null)
+        {
+            if (player_1_UI.increaseScore_Button != null)
+            {
+                player_1_UI.increaseScore_Button.onClick.RemoveAllListeners();
+                player_1_UI.increaseScore_Button.onClick.AddListener(() => ButtonIncreaseScore(1));
+            }
+            if (player_1_UI.doneScore_Button != null)
+            {
+                player_1_UI.doneScore_Button.onClick.RemoveAllListeners();
+                player_1_UI.doneScore_Button.onClick.AddListener(() => ButtonDone(1));
+            }
+        }
+
+        if (player_2_UI != null)
+        {
+            if (player_2_UI.increaseScore_Button != null)
+            {
+                player_2_UI.increaseScore_Button.onClick.RemoveAllListeners();
+                player_2_UI.increaseScore_Button.onClick.AddListener(() => ButtonIncreaseScore(2));
+            }
+            if (player_2_UI.doneScore_Button != null)
+            {
+                player_2_UI.doneScore_Button.onClick.RemoveAllListeners();
+                player_2_UI.doneScore_Button.onClick.AddListener(() => ButtonDone(2));
+            }
+        }
     }
 
     private void InitializeLevel(int levelIndex)
@@ -277,40 +306,71 @@ public class GameManager : MonoBehaviour
         botCoroutine = null;
     }
 
-    private void HandlePlayerInput()
+    // Central handlers used by both UI buttons and keyboard input
+    public void ButtonIncreaseScore(int playerIndex)
     {
-        if (!canInteract) return;
+        if (gamePaused || !canInteract) return;
 
-        if (!player_1_Done && Input.GetKeyDown(player_1_IncreaseScore_Button_KeyCode))
+        if (playerIndex == 1)
         {
+            if (player_1_Done) return;
             player_1_Score++;
             player_1_UI?.UpdateScore(player_1_Score);
             audioManager?.PlayButtonClick();
         }
-
-        if (!player_1_Done && Input.GetKeyDown(player_1_Done_Button_KeyCode))
+        else if (playerIndex == 2)
         {
+            if (isSinglePlayerMode || player_2_Done) return;
+            player_2_Score++;
+            player_2_UI?.UpdateScore(player_2_Score);
+            audioManager?.PlayButtonClick();
+        }
+    }
+
+    public void ButtonDone(int playerIndex)
+    {
+        if (gamePaused || !canInteract) return;
+
+        if (playerIndex == 1)
+        {
+            if (player_1_Done) return;
             player_1_Done = true;
             player_1_UI?.ShowFinalResult(player_1_Score, totalCountInScene);
             audioManager?.PlayButtonDoneClick();
             RecordPlayerDone(1, player_1_Score);
             CheckBothPlayersDone();
         }
-
-        if (!isSinglePlayerMode && !player_2_Done && Input.GetKeyDown(player_2_IncreaseScore_Button_KeyCode))
+        else if (playerIndex == 2)
         {
-            player_2_Score++;
-            player_2_UI?.UpdateScore(player_2_Score);
-            audioManager?.PlayButtonClick();
-        }
-
-        if (!isSinglePlayerMode && !player_2_Done && Input.GetKeyDown(player_2_Done_Button_KeyCode))
-        {
+            if (isSinglePlayerMode || player_2_Done) return;
             player_2_Done = true;
             player_2_UI?.ShowFinalResult(player_2_Score, totalCountInScene);
             audioManager?.PlayButtonDoneClick();
             RecordPlayerDone(2, player_2_Score);
             CheckBothPlayersDone();
+        }
+    }
+
+    private void HandlePlayerInput()
+    {
+        if (!canInteract) return;
+
+        // Keyboard input now delegates to same handlers as UI buttons
+        if (Input.GetKeyDown(player_1_IncreaseScore_Button_KeyCode))
+        {
+            ButtonIncreaseScore(1);
+        }
+        if (Input.GetKeyDown(player_1_Done_Button_KeyCode))
+        {
+            ButtonDone(1);
+        }
+        if (Input.GetKeyDown(player_2_IncreaseScore_Button_KeyCode))
+        {
+            ButtonIncreaseScore(2);
+        }
+        if (Input.GetKeyDown(player_2_Done_Button_KeyCode))
+        {
+            ButtonDone(2);
         }
     }
 
