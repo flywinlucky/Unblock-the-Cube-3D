@@ -13,6 +13,7 @@ public class AudioManager : MonoBehaviour
 	public AudioSource buttonDoneClickSource;
 	public AudioSource countDownClickSource;
 	public AudioSource countShowResultSource;
+	public AudioSource countShowRCubesSource;
 	
 	// Stări curente (cache)
 	private bool _musicEnabled = true;
@@ -123,13 +124,25 @@ public class AudioManager : MonoBehaviour
 		AudioClip clip = countShowResultSource.clip;
 		if (clip == null)
 		{
-			// fallback: încercăm Play() dacă nu este clip dar e configurat AudioSource
 			if (!countShowResultSource.isPlaying) countShowResultSource.Play();
 			return;
 		}
 		countShowResultSource.PlayOneShot(clip);
 	}
 
+	// Redă sunet specific pentru "reveal cubes" (count + reveal) folosind countShowRCubesSource
+	public void PlayCountShowRCubes()
+	{
+		if (countShowRCubesSource == null || !_soundEnabled) return;
+		AudioClip clip = countShowRCubesSource.clip;
+		if (clip == null)
+		{
+			if (!countShowRCubesSource.isPlaying) countShowRCubesSource.Play();
+			return;
+		}
+		countShowRCubesSource.PlayOneShot(clip);
+	}
+	
 	// Setări enable/disable apelate din SettingsManager
 	public void SetMusicEnabled(bool enabled)
 	{

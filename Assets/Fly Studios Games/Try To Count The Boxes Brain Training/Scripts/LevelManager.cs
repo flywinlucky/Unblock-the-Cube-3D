@@ -11,9 +11,11 @@ public class LevelManager : MonoBehaviour
     public GameObject floorCells;
     [Header("Animation")]
     public float activeDuration;
+    private AudioManager audioManager;
 
     public void InitializeLevel()
     {
+        audioManager = FindObjectOfType<AudioManager>();
         cubes.Clear();
 
         if (leveCubesRoot == null)
@@ -46,6 +48,7 @@ public class LevelManager : MonoBehaviour
         foreach (Cube cube in cubes)
         {
             cube.SetGreenMaterial();
+            audioManager?.PlayCountShowRCubes();
             yield return new WaitForSeconds(0.1f);
         }
     }
