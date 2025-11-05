@@ -15,8 +15,12 @@ public class LevelManager : MonoBehaviour
     public bool isEasy;
     public bool isNormal;
     public bool isHard;
+
+    private AudioManager audioManager;
     public void InitializeLevel()
     {
+        audioManager = FindObjectOfType<AudioManager>();
+
         cubes.Clear();
 
         if (leveCubesRoot == null)
@@ -64,7 +68,8 @@ public class LevelManager : MonoBehaviour
         foreach (Cube cube in cubes)
         {
             cube.SetGreenMaterial();
-            yield return new WaitForSeconds(0.1f);
+            audioManager.PlayCountShowRCubes();
+            yield return new WaitForSeconds(0.2f);
         }
     }
 

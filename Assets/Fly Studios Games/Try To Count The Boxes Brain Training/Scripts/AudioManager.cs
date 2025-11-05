@@ -131,6 +131,19 @@ public class AudioManager : MonoBehaviour
 		countShowResultSource.PlayOneShot(clip);
 	}
 
+	// Redă sunetul pentru afișarea rezultatelor pe "R cubes"
+	public void PlayCountShowRCubes()
+	{
+		if (countShowRCubesSource == null || !_soundEnabled) return;
+		AudioClip clip = countShowRCubesSource.clip;
+		if (clip == null)
+		{
+			if (!countShowRCubesSource.isPlaying) countShowRCubesSource.Play();
+			return;
+		}
+		countShowRCubesSource.PlayOneShot(clip);
+	}
+	
 	// Setări enable/disable apelate din SettingsManager
 	public void SetMusicEnabled(bool enabled)
 	{
@@ -201,7 +214,12 @@ public class AudioManager : MonoBehaviour
 
 	private void ApplySoundState()
 	{
-		if (blockClickSource == null) return;
-		blockClickSource.mute = !_soundEnabled;
+		// mute/unmute toate sursele de sunet relevante
+		if (blockClickSource != null) blockClickSource.mute = !_soundEnabled;
+		if (buttonClickSource != null) buttonClickSource.mute = !_soundEnabled;
+		if (buttonDoneClickSource != null) buttonDoneClickSource.mute = !_soundEnabled;
+		if (countDownClickSource != null) countDownClickSource.mute = !_soundEnabled;
+		if (countShowResultSource != null) countShowResultSource.mute = !_soundEnabled;
+		if (countShowRCubesSource != null) countShowRCubesSource.mute = !_soundEnabled;
 	}
 }
