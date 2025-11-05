@@ -468,7 +468,7 @@ public class GameManager : MonoBehaviour
             roundsModeActive = false;
             gamePaused = true;
             uiManager?.SetRoundsText(currentRound, roundsTotal);
-            uiManager?.ShowTwoPlayersResultPanel( BuildPlayerSummaryText(1), BuildPlayerSummaryText(2) );
+            uiManager?.ShowTwoPlayersResultPanel(BuildPlayerSummaryText(1), BuildPlayerSummaryText(2));
         }
         else
         {

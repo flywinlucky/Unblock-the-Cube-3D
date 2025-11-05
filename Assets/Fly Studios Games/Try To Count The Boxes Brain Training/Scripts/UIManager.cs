@@ -19,6 +19,12 @@ public class UIManager : MonoBehaviour
     public GameObject twoPlayersResultPanel;
     public Text player_1_Result_Text;
     public Text player_2_Result_Text;
+    [Space]
+    public Button singlePlayer_Stats_Button;
+    public Button multiplayer_Stats_Button;
+    public Button local_Stats_Button;
+    public Color default_statcolor_button;
+    public Color selected_statcolor_button;
 
     private void Start()
     {
@@ -47,6 +53,31 @@ public class UIManager : MonoBehaviour
         UpdatePlayerStatsDisplay();
         if (twoPlayersResultPanel != null) twoPlayersResultPanel.SetActive(false);
         if (rounds_Text != null) rounds_Text.gameObject.SetActive(false);
+
+        // Stat buttons: legăm listenerii (dacă există)
+        if (singlePlayer_Stats_Button != null)
+        {
+            singlePlayer_Stats_Button.onClick.RemoveAllListeners();
+            singlePlayer_Stats_Button.onClick.AddListener(ShowSinglePlayerStats);
+        }
+        if (multiplayer_Stats_Button != null)
+        {
+            multiplayer_Stats_Button.onClick.RemoveAllListeners();
+            multiplayer_Stats_Button.onClick.AddListener(ShowMultiplayerStats);
+        }
+        if (local_Stats_Button != null)
+        {
+            local_Stats_Button.onClick.RemoveAllListeners();
+            local_Stats_Button.onClick.AddListener(ShowLocalStats);
+        }
+
+        // Default: selectăm Multiplayer stats (dacă nu e prezent, alegem primul disponibil)
+        Button defaultBtn = multiplayer_Stats_Button ?? singlePlayer_Stats_Button ?? local_Stats_Button;
+        SetSelectedStatButton(defaultBtn);
+        // afișăm textul inițial conform butonului selectat
+        if (defaultBtn == multiplayer_Stats_Button) ShowMultiplayerStats();
+        else if (defaultBtn == singlePlayer_Stats_Button) ShowSinglePlayerStats();
+        else if (defaultBtn == local_Stats_Button) ShowLocalStats();
     }
 
     public void UpdateGameMessage(string message)
@@ -113,7 +144,7 @@ public class UIManager : MonoBehaviour
     private const string BOT_BOT_CORRECT = "BOT_BOT_Correct";
     private const string BOT_BOT_TOTAL_RT = "BOT_BOT_TOTAL_RT";
 
-    // Total score keys (aggregate score across games)
+    // Total score keys (per mode / per player)
     private const string SP_TOTAL_SCORE = "SP_TotalScore";
     private const string MP_P1_TOTAL_SCORE = "MP_P1_TotalScore";
     private const string MP_P2_TOTAL_SCORE = "MP_P2_TotalScore";
@@ -180,11 +211,10 @@ public class UIManager : MonoBehaviour
             int games = PlayerPrefs.GetInt(BOT_BOT_GAMES, 0) + 1;
             int corrects = PlayerPrefs.GetInt(BOT_BOT_CORRECT, 0) + (correct ? 1 : 0);
             float totalRT = PlayerPrefs.GetFloat(BOT_BOT_TOTAL_RT, 0f) + reactionTime;
-            // int totalScore = PlayerPrefs.GetInt(BOT_BOT_GAMES, 0) + score; // optional store for bot if wanted
+            // We don't track bot total score in prefs (optional) - keep existing behaviour but no score increment for bot
             PlayerPrefs.SetInt(BOT_BOT_GAMES, games);
             PlayerPrefs.SetInt(BOT_BOT_CORRECT, corrects);
             PlayerPrefs.SetFloat(BOT_BOT_TOTAL_RT, totalRT);
-            // PlayerPrefs.SetInt(BOT_BOT_TOTAL_SCORE, totalScore); // not used for display
         }
         PlayerPrefs.Save();
         UpdatePlayerStatsDisplay();
@@ -226,22 +256,25 @@ public class UIManager : MonoBehaviour
         string localP1Block =
             "Local Multiplayer - Player 1\n" +
             $"Games Played: {mp1Games}\n" +
-            $"Wins / Accuracy: {mp1Correct}/{mp1Games} ({mp1Acc:0}% )\n" +
-            $"Total Score: {mp1TotalScore}   Average Score: {mp1AvgScore:0.##}\n" +
+            $"Wins (accuracy): {mp1Acc:0}%\n" +
+            $"Total Score: {mp1TotalScore}\n" +
+            $"Average Score / Game: {mp1AvgScore:0.##}\n" +
             $"Average Reaction Time: {mp1AvgRT:0.###} s\n";
 
         string localP2Block =
             "Local Multiplayer - Player 2\n" +
             $"Games Played: {mp2Games}\n" +
-            $"Wins / Accuracy: {mp2Correct}/{mp2Games} ({mp2Acc:0}% )\n" +
-            $"Total Score: {mp2TotalScore}   Average Score: {mp2AvgScore:0.##}\n" +
+            $"Wins (accuracy): {mp2Acc:0}%\n" +
+            $"Total Score: {mp2TotalScore}\n" +
+            $"Average Score / Game: {mp2AvgScore:0.##}\n" +
             $"Average Reaction Time: {mp2AvgRT:0.###} s\n";
 
         string vsBotBlock =
             "Versus Bot - Player 1 (human)\n" +
             $"Games Played: {botP1Games}\n" +
-            $"Wins / Accuracy: {botP1Correct}/{botP1Games} ({botP1Acc:0}% )\n" +
-            $"Total Score: {botP1TotalScore}   Average Score: {botP1AvgScore:0.##}\n" +
+            $"Wins (accuracy): {botP1Acc:0}%\n" +
+            $"Total Score: {botP1TotalScore}\n" +
+            $"Average Score / Game: {botP1AvgScore:0.##}\n" +
             $"Average Reaction Time: {botP1AvgRT:0.###} s\n";
 
         // Compose final text: show local multiplayer first, then versus-bot (only human stats)
@@ -273,5 +306,118 @@ public class UIManager : MonoBehaviour
         PlayerPrefs.Save();
         UpdatePlayerStatsDisplay();
     }
+
+    // Setează textul rundelor, format: "2/10"
+    public void SetRoundsText(int current, int total)
+    {
+        if (rounds_Text == null) return;
+        rounds_Text.text = $"{current}/{total}";
+    }
+
+    // Afișează panelul final pentru două jucători (apelează când runde s-au terminat)
+    public void ShowTwoPlayersResultPanel(string player1Text, string player2Text)
+    {
+        if (twoPlayersResultPanel == null) return;
+        if (player_1_Result_Text != null) player_1_Result_Text.text = player1Text;
+        if (player_2_Result_Text != null) player_2_Result_Text.text = player2Text;
+        twoPlayersResultPanel.SetActive(true);
+    }
     // -------------------------
+
+    // --- Stat buttons handlers ---
+    private void ShowSinglePlayerStats()
+    {
+        SetSelectedStatButton(singlePlayer_Stats_Button);
+        playerGameStats.text = BuildSinglePlayerStatsText();
+    }
+
+    private void ShowMultiplayerStats()
+    {
+        SetSelectedStatButton(multiplayer_Stats_Button);
+        playerGameStats.text = BuildMultiplayerStatsText();
+    }
+
+    private void ShowLocalStats()
+    {
+        SetSelectedStatButton(local_Stats_Button);
+        playerGameStats.text = BuildLocalStatsText();
+    }
+
+    private void SetSelectedStatButton(Button selected)
+    {
+        // helper pentru a aplica culori butoanelor
+        void ApplyColor(Button b, Color c)
+        {
+            if (b == null) return;
+            Image img = b.image;
+            if (img != null) img.color = c;
+        }
+
+        ApplyColor(singlePlayer_Stats_Button, default_statcolor_button);
+        ApplyColor(multiplayer_Stats_Button, default_statcolor_button);
+        ApplyColor(local_Stats_Button, default_statcolor_button);
+
+        if (selected != null)
+            ApplyColor(selected, selected_statcolor_button);
+    }
+
+    // Construiesc textul pentru fiecare mod (folosesc PlayerPrefs existente)
+    private string BuildSinglePlayerStatsText()
+    {
+        int games = PlayerPrefs.GetInt(SP_GAMES, 0);
+        int correct = PlayerPrefs.GetInt(SP_CORRECT, 0);
+        float totalRT = PlayerPrefs.GetFloat(SP_TOTAL_RT, 0f);
+        int totalScore = PlayerPrefs.GetInt(SP_TOTAL_SCORE, 0);
+        float avgRT = games > 0 ? totalRT / games : 0f;
+        float acc = games > 0 ? 100f * correct / games : 0f;
+
+        return
+            "Single Player Stats\n" +
+    $"\n" +
+            $"Games Played: {games}\n" +
+            $"Wins (correct guesses): {correct} ({acc:0}%)\n" +
+            $"Total Score (all games): {totalScore}\n" +
+            $"Average Score per Game: {(games > 0 ? (totalScore / (float)games) : 0f):0.##}\n" +
+            $"Average Reaction Time: {avgRT:0.###} s\n";
+    }
+
+    private string BuildMultiplayerStatsText()
+    {
+        // multiplayer vs bot - show human player 1 stats (as requested)
+        int games = PlayerPrefs.GetInt(BOT_P1_GAMES, 0);
+        int correct = PlayerPrefs.GetInt(BOT_P1_CORRECT, 0);
+        float totalRT = PlayerPrefs.GetFloat(BOT_P1_TOTAL_RT, 0f);
+        int totalScore = PlayerPrefs.GetInt(BOT_P1_TOTAL_SCORE, 0);
+        float avgRT = games > 0 ? totalRT / games : 0f;
+        float acc = games > 0 ? 100f * correct / games : 0f;
+
+        return
+            "Multiplayer Stats\n" +
+    $"\n" +
+            $"Games Played: {games}\n" +
+            $"Wins (correct guesses): {correct} ({acc:0}%)\n" +
+            $"Total Score (all games): {totalScore}\n" +
+            $"Average Score per Game: {(games > 0 ? (totalScore / (float)games) : 0f):0.##}\n" +
+            $"Average Reaction Time: {avgRT:0.###} s\n";
+    }
+
+    private string BuildLocalStatsText()
+    {
+        // Local multiplayer: show both players side by side
+        int p1Games = PlayerPrefs.GetInt(MP_P1_GAMES, 0);
+        int p1Correct = PlayerPrefs.GetInt(MP_P1_CORRECT, 0);
+        float p1TotalRT = PlayerPrefs.GetFloat(MP_P1_TOTAL_RT, 0f);
+        int p1TotalScore = PlayerPrefs.GetInt(MP_P1_TOTAL_SCORE, 0);
+        float p1AvgRT = p1Games > 0 ? p1TotalRT / p1Games : 0f;
+        float p1Acc = p1Games > 0 ? 100f * p1Correct / p1Games : 0f;
+
+        return
+            "Local Multiplayer Stats\n" +
+            $"\n" +
+            $"Games Played: {p1Games}\n" +
+            $"Wins: {p1Correct} ({p1Acc:0}%)\n" +
+            $"Total Score: {p1TotalScore}\n" +
+            $"Avg Score/Game: {(p1Games > 0 ? (p1TotalScore / (float)p1Games) : 0f):0.##}\n" +
+            $"Avg Reaction Time: {p1AvgRT:0.###} s\n\n";
+    }
 }
