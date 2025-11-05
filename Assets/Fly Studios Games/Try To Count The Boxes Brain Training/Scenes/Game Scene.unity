@@ -3492,10 +3492,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levels:
-  - {fileID: 1777697682771542502, guid: 9720b9f55305b6745b92b4ea294b0215, type: 3}
-  - {fileID: 982092991955117925, guid: 1a8d64310d2f98540b4eb59557270b5d, type: 3}
-  - {fileID: 3161267677279778300, guid: ee0ce7bc8d1ef7546be77236f61cfd53, type: 3}
-  - {fileID: 5150292874400611275, guid: 46b6ccb8b04621244bbe5c8877f59be6, type: 3}
+  - {fileID: 5150292874400611275, guid: a0b27afb0d07b7f42b3d16e9f0450b7b, type: 3}
+  - {fileID: 5150292874400611275, guid: d6917f6232ffe6a4bbfcd921658ca58f, type: 3}
+  - {fileID: 5150292874400611275, guid: 6376b4b8463d89945875727c6a59f95a, type: 3}
+  - {fileID: 5150292874400611275, guid: 28ccfc11619fd4e4a941b967d4c6d46f, type: 3}
+  - {fileID: 5150292874400611275, guid: 933d90a268586cd47a15f96d89ac7499, type: 3}
+  - {fileID: 5150292874400611275, guid: aaa5481f99663a54cb0ae5a437cb3ba4, type: 3}
+  - {fileID: 5150292874400611275, guid: 80b8ccb144800a344b622d6c820352fe, type: 3}
+  - {fileID: 5150292874400611275, guid: 74264cdf58b7ec94e9af946f820d2130, type: 3}
+  - {fileID: 5150292874400611275, guid: faaa94e87ebda8f4d9bf8265871352e6, type: 3}
+  - {fileID: 5150292874400611275, guid: 22162b2e9f4e95c43bda888aa3b3db98, type: 3}
+  - {fileID: 5150292874400611275, guid: 1809f04c52ed74f4da1d24370ea14a48, type: 3}
   levelTarget: {fileID: 1239601846}
   player_1_UI: {fileID: 13290295}
   player_1_IncreaseScore_Button_KeyCode: 122
@@ -3506,7 +3513,7 @@ MonoBehaviour:
   uiManager: {fileID: 1529943752}
   audioManager: {fileID: 514135127}
   totalCountInScene: 0
-  roundsTotal: 5
+  roundsTotal: 20
   botMinActionDelay: 0.2
   botMaxActionDelay: 0.8
   botAccuracy: 0.6
