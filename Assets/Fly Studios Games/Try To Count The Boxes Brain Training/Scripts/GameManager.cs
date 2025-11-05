@@ -71,15 +71,15 @@ public class GameManager : MonoBehaviour
         {
             if (isSinglePlayerMode)
             {
-                uiManager.RecordSinglePlayerResult(correct, reactionTime);
+                uiManager.RecordSinglePlayerResult(correct, reactionTime, playerScore);
             }
             else if (isMultiplayerBotMode)
             {
-                uiManager.RecordMultiplayerBotResult(playerIndex, correct, reactionTime);
+                uiManager.RecordMultiplayerBotResult(playerIndex, correct, reactionTime, playerScore);
             }
             else
             {
-                uiManager.RecordLocalMultiplayerResult(playerIndex, correct, reactionTime);
+                uiManager.RecordLocalMultiplayerResult(playerIndex, correct, reactionTime, playerScore);
             }
         }
     }
