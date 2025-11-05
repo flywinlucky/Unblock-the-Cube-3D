@@ -3491,7 +3491,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 192c7e46c1f60ca4d9516801124902e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levels:
+  easy_levels:
   - {fileID: 5150292874400611275, guid: a0b27afb0d07b7f42b3d16e9f0450b7b, type: 3}
   - {fileID: 5150292874400611275, guid: d6917f6232ffe6a4bbfcd921658ca58f, type: 3}
   - {fileID: 5150292874400611275, guid: 6376b4b8463d89945875727c6a59f95a, type: 3}
@@ -3502,6 +3502,7 @@ MonoBehaviour:
   - {fileID: 5150292874400611275, guid: 74264cdf58b7ec94e9af946f820d2130, type: 3}
   - {fileID: 5150292874400611275, guid: faaa94e87ebda8f4d9bf8265871352e6, type: 3}
   - {fileID: 5150292874400611275, guid: 22162b2e9f4e95c43bda888aa3b3db98, type: 3}
+  normal_levels:
   - {fileID: 5150292874400611275, guid: 1809f04c52ed74f4da1d24370ea14a48, type: 3}
   - {fileID: 5150292874400611275, guid: 3c3b612f747f6964a994a05b2ee85370, type: 3}
   - {fileID: 5150292874400611275, guid: 4f243b8a08c9e6d4c9e320d211829595, type: 3}
@@ -3512,6 +3513,17 @@ MonoBehaviour:
   - {fileID: 5150292874400611275, guid: def12f692286e59448c721a99b018d08, type: 3}
   - {fileID: 5150292874400611275, guid: c2c4c44eab816ff4cbee1d4828a56c94, type: 3}
   - {fileID: 5150292874400611275, guid: 4f8fefe2cfe29f948a8301a600b0615b, type: 3}
+  hard_levels:
+  - {fileID: 5150292874400611275, guid: eb0ed17b598b39b4cac212e758e0a278, type: 3}
+  - {fileID: 5150292874400611275, guid: f06455d71ff89584b9d9e12229160b9f, type: 3}
+  - {fileID: 5150292874400611275, guid: 11ea7b7d94623a642a77a40bd8a57eda, type: 3}
+  - {fileID: 5150292874400611275, guid: 5b39c0e49a35c4d459bdd4d8dffcb20d, type: 3}
+  - {fileID: 5150292874400611275, guid: 1a92d97d14c9ae54aa32ce49b74e1070, type: 3}
+  - {fileID: 5150292874400611275, guid: 350a79ea9c91d2d46909d24f83be6098, type: 3}
+  - {fileID: 5150292874400611275, guid: 02f6ae7383030314981229306805185b, type: 3}
+  - {fileID: 5150292874400611275, guid: c60226c763337104581c09590ef9a7b0, type: 3}
+  - {fileID: 5150292874400611275, guid: 6b9b6d411c365544cafb3daf1f9844e2, type: 3}
+  - {fileID: 5150292874400611275, guid: c9630a955c587084bb5dd3933f17dbc2, type: 3}
   levelTarget: {fileID: 1239601846}
   player_1_UI: {fileID: 13290295}
   player_1_IncreaseScore_Button_KeyCode: 122

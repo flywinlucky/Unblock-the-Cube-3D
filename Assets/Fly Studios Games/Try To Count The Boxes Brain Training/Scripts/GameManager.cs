@@ -4,9 +4,13 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
-    public List<GameObject> levels;
-    public Transform levelTarget;
+    public List<GameObject> easy_levels;
+    public List<GameObject> normal_levels;
+    public List<GameObject> hard_levels;
 
+    private List<GameObject> allLevels = new List<GameObject>();
+    private List<GameObject> currentLevelSet = new List<GameObject>();
+    public Transform levelTarget; 
     private LevelManager currentLevelManager;
 
     [Header("Player UI 1")]
@@ -131,17 +135,22 @@ public class GameManager : MonoBehaviour
                 player_2_UI.doneScore_Button.onClick.AddListener(() => ButtonDone(2));
             }
         }
+
+        // Construim lista completă de nivele pentru singleplayer
+        allLevels.AddRange(easy_levels);
+        allLevels.AddRange(normal_levels);
+        allLevels.AddRange(hard_levels);
     }
 
     private void InitializeLevel(int levelIndex)
     {
-        if (levelIndex < 0 || levelIndex >= levels.Count)
+        if (levelIndex < 0 || levelIndex >= currentLevelSet.Count)
         {
             Debug.LogError("Invalid level index.");
             return;
         }
 
-        GameObject levelInstance = Instantiate(levels[levelIndex], levelTarget);
+        GameObject levelInstance = Instantiate(currentLevelSet[levelIndex], levelTarget);
         currentLevelManager = levelInstance.GetComponent<LevelManager>();
 
         if (currentLevelManager == null)
@@ -206,6 +215,11 @@ public class GameManager : MonoBehaviour
         // update rounds text in UI
         uiManager?.rounds_Text?.gameObject?.SetActive(true);
         uiManager?.SetRoundsText(currentRound, roundsTotal);
+
+        // În multiplayer, selectăm nivele random: 5 din easy, 10 din normal, 5 din hard
+        currentLevelSet = GetRandomLevels(easy_levels, 5);
+        currentLevelSet.AddRange(GetRandomLevels(normal_levels, 10));
+        currentLevelSet.AddRange(GetRandomLevels(hard_levels, 5));
     }
 
     public void StartLocalMultiplayerMode()
@@ -228,6 +242,11 @@ public class GameManager : MonoBehaviour
         player1ScoreTotal = player2ScoreTotal = 0;
         uiManager?.rounds_Text?.gameObject?.SetActive(true);
         uiManager?.SetRoundsText(currentRound, roundsTotal);
+
+        // În local multiplayer, selectăm nivele random: 5 din easy, 10 din normal, 5 din hard
+        currentLevelSet = GetRandomLevels(easy_levels, 5);
+        currentLevelSet.AddRange(GetRandomLevels(normal_levels, 10));
+        currentLevelSet.AddRange(GetRandomLevels(hard_levels, 5));
     }
 
     public void StartSinglePlayerMode()
@@ -250,6 +269,9 @@ public class GameManager : MonoBehaviour
 
         // Asigurăm butoanele player2 dezactivate
         SetPlayer2ButtonsActive(false);
+
+        // În singleplayer, folosim toate nivelele secvențial
+        currentLevelSet = new List<GameObject>(allLevels);
     }
 
     private IEnumerator BotPlayerRoutine()
@@ -548,9 +570,8 @@ public class GameManager : MonoBehaviour
             Destroy(currentLevelManager.gameObject);
         }
 
-        currentLevelIndex = randomMode
-            ? GetRandomLevelIndex()
-            : (currentLevelIndex + 1) % levels.Count;
+        // Avansăm la următorul nivel din currentLevelSet
+        currentLevelIndex = (currentLevelIndex + 1) % currentLevelSet.Count;
 
         ResetGameData();
         player_1_UI?.ResetUI();
@@ -559,16 +580,19 @@ public class GameManager : MonoBehaviour
         uiManager?.StartCountdown(3, () => InitializeLevel(currentLevelIndex));
     }
 
-    private int GetRandomLevelIndex()
+    private List<GameObject> GetRandomLevels(List<GameObject> sourceList, int count)
     {
-        int randomIndex;
-        do
-        {
-            randomIndex = Random.Range(0, levels.Count);
-        } while (randomIndex == lastRandomLevelIndex);
+        List<GameObject> randomLevels = new List<GameObject>();
+        if (sourceList == null || sourceList.Count == 0 || count <= 0) return randomLevels;
 
-        lastRandomLevelIndex = randomIndex;
-        return randomIndex;
+        List<GameObject> tempList = new List<GameObject>(sourceList);
+        for (int i = 0; i < count && tempList.Count > 0; i++)
+        {
+            int randomIndex = Random.Range(0, tempList.Count);
+            randomLevels.Add(tempList[randomIndex]);
+            tempList.RemoveAt(randomIndex);
+        }
+        return randomLevels;
     }
 
     private void ResetGameData()
