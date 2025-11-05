@@ -480,7 +480,7 @@ public class GameManager : MonoBehaviour
 
         audioManager?.PlayCountShowResult();
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1.0f);
 
         // Record round results
         RecordRoundResults();

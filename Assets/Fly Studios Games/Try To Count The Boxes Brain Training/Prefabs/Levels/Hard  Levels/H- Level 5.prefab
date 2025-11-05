@@ -156,6 +156,9 @@ MonoBehaviour:
   levelsCubes: {fileID: 1014429518079194344}
   floorCells: {fileID: 5150292873094051560}
   activeDuration: 0.6
+  enable_DinamicActiveDuration_bool: 1
+  dinamicActiveDuration: 0
+  countShowRCubesSource: {fileID: 0}
 --- !u!1001 &10954429039272219
 PrefabInstance:
   m_ObjectHideFlags: 0

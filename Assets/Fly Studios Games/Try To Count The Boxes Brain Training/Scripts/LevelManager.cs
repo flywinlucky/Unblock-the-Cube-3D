@@ -11,13 +11,9 @@ public class LevelManager : MonoBehaviour
     public GameObject floorCells;
     [Header("Animation")]
     public float activeDuration;
-    public bool enable_DinamicActiveDuration_bool;
-    public float dinamicActiveDuration;
-    private AudioManager audioManager;
 
     public void InitializeLevel()
     {
-        audioManager = FindObjectOfType<AudioManager>();
         cubes.Clear();
 
         if (leveCubesRoot == null)
@@ -35,6 +31,8 @@ public class LevelManager : MonoBehaviour
         }
 
         cubesCount = cubes.Count;
+        activeDuration = 0.120f * cubesCount;
+        Debug.Log("set active Duration : " + activeDuration);
     }
 
     public void ShowChildsMaterialFocus()
@@ -50,8 +48,7 @@ public class LevelManager : MonoBehaviour
         foreach (Cube cube in cubes)
         {
             cube.SetGreenMaterial();
-            audioManager?.PlayCountShowRCubes();
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.1f);
         }
     }
 
