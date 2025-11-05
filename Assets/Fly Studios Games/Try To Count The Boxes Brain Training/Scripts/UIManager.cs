@@ -372,13 +372,13 @@ public class UIManager : MonoBehaviour
         float acc = games > 0 ? 100f * correct / games : 0f;
 
         return
-            "Single Player Stats\n" +
-    $"\n" +
+            "Singleplayer | Stats\n" +
+            $"\n" +
             $"Games Played: {games}\n" +
-            $"Wins (correct guesses): {correct} ({acc:0}%)\n" +
-            $"Total Score (all games): {totalScore}\n" +
-            $"Average Score per Game: {(games > 0 ? (totalScore / (float)games) : 0f):0.##}\n" +
-            $"Average Reaction Time: {avgRT:0.###} s\n";
+            $"Wins: {correct} ({acc:0}%)\n" +
+            $"Total Score: {totalScore}\n" +
+            $"Avg Score/Game: {(games > 0 ? (totalScore / (float)games) : 0f):0.##}\n" +
+            $"Avg Reaction Time: {avgRT:0.###} s\n";
     }
 
     private string BuildMultiplayerStatsText()
@@ -392,13 +392,13 @@ public class UIManager : MonoBehaviour
         float acc = games > 0 ? 100f * correct / games : 0f;
 
         return
-            "Multiplayer Stats\n" +
-    $"\n" +
+            "Multiplayer | Stats\n" +
+            $"\n" +
             $"Games Played: {games}\n" +
-            $"Wins (correct guesses): {correct} ({acc:0}%)\n" +
-            $"Total Score (all games): {totalScore}\n" +
-            $"Average Score per Game: {(games > 0 ? (totalScore / (float)games) : 0f):0.##}\n" +
-            $"Average Reaction Time: {avgRT:0.###} s\n";
+            $"Wins: {correct} ({acc:0}%)\n" +
+            $"Total Score: {totalScore}\n" +
+            $"Avg Score/Game: {(games > 0 ? (totalScore / (float)games) : 0f):0.##}\n" +
+            $"Avg Reaction Time: {avgRT:0.###} s\n";
     }
 
     private string BuildLocalStatsText()
@@ -412,7 +412,7 @@ public class UIManager : MonoBehaviour
         float p1Acc = p1Games > 0 ? 100f * p1Correct / p1Games : 0f;
 
         return
-            "Local Multiplayer Stats\n" +
+            "Local Multiplayer | Stats\n" +
             $"\n" +
             $"Games Played: {p1Games}\n" +
             $"Wins: {p1Correct} ({p1Acc:0}%)\n" +
