@@ -11,6 +11,8 @@ public class LevelManager : MonoBehaviour
     public GameObject floorCells;
     [Header("Animation")]
     public float activeDuration;
+    public bool enable_DinamicActiveDuration_bool;
+    public float dinamicActiveDuration;
     private AudioManager audioManager;
 
     public void InitializeLevel()
