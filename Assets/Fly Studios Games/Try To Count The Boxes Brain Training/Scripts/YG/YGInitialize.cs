@@ -6,7 +6,6 @@ using YG;
 public class YGInitialize : MonoBehaviour
 {
     private string currendLang;
-    public GameObject[] mobileButtons;
     
     private void Start()
     {
@@ -16,21 +15,6 @@ public class YGInitialize : MonoBehaviour
         currendLang = YG2.envir.language;
 
         ChangeLanguage(currendLang);
-
-        if (YG2.envir.isDesktop)
-        {
-            foreach (GameObject button in mobileButtons)
-            {
-                button.SetActive(false);
-            }
-        }
-        else
-        {
-            foreach (GameObject button in mobileButtons)
-            {
-                button.SetActive(true);
-            }
-        }
     }
 
     public void ChangeLanguage(string prefixLanguage)

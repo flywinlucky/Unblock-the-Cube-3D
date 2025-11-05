@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using YG;
 public class PlayerUI : MonoBehaviour
 {
     [Header("Player UI")]
     public GameObject player_UI_panel;
     public Text player_countCell_1_Text;
     public Text player_countCell_2_Text;
-        [Space]
+    [Space]
     public Text player_countButton_Keyboard_Key_Text;
     public Text player_countButton_message_Text;
     public string player_countButton_message_string;
@@ -26,7 +27,11 @@ public class PlayerUI : MonoBehaviour
     [Space]
     public Button increaseScore_Button;
     public Button doneScore_Button;
-
+    [Space]
+    public GameObject countButtonGameobject;
+    public GameObject doneButtonGameobject;
+    public GameObject countButton_Mobile_Gameobject;
+    public GameObject doneButton_Mobile_Gameobject;
     private Dictionary<Transform, Coroutine> activeAnimations = new Dictionary<Transform, Coroutine>();
 
     private Vector3 initialScale_Cell1;
@@ -36,6 +41,23 @@ public class PlayerUI : MonoBehaviour
     {
         initialScale_Cell1 = player_countCell_1_Text.transform.localScale;
         initialScale_Cell2 = player_countCell_2_Text.transform.localScale;
+
+        if (YG2.envir.isDesktop)
+        {
+            countButtonGameobject.SetActive(true);
+            doneButtonGameobject.SetActive(true);
+
+            countButton_Mobile_Gameobject.SetActive(false);
+            doneButton_Mobile_Gameobject.SetActive(false);
+        }
+        else
+        {
+            countButtonGameobject.SetActive(false);
+            doneButtonGameobject.SetActive(false);
+
+            countButton_Mobile_Gameobject.SetActive(true);
+            doneButton_Mobile_Gameobject.SetActive(true);
+        }
     }
 
     public void UpdateScore(int score)
@@ -99,7 +121,7 @@ public class PlayerUI : MonoBehaviour
     {
         player_countButton_Keyboard_Key_Text.text = countButton_Keyboard;
         player_doneButton_Keyboard_Key_Text.text = doneButton_Keyboard;
-        player_countButton_message_Text.text =  player_countButton_message_string;
+        player_countButton_message_Text.text = player_countButton_message_string;
         player_doneButton_message_Text.text = player_doneButton_message_string;
     }
 
@@ -123,9 +145,9 @@ public class PlayerUI : MonoBehaviour
     public void ResetUI()
     {
         // Dezactivează rezultatul final și activează UI-ul principal
-         player_finalCountResult.SetActive(false);
- 
-        
+        player_finalCountResult.SetActive(false);
+
+
         player_UI_panel.SetActive(true);
 
         // Resetează textele de count la 0

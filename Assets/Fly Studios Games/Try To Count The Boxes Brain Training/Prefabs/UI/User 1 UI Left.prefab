@@ -1420,6 +1420,10 @@ MonoBehaviour:
   player_falseFlag_icon_sprite: {fileID: 21300000, guid: 4506ad0a4a150d646a08a93f332ef496, type: 3}
   increaseScore_Button: {fileID: 5729418819007684331}
   doneScore_Button: {fileID: 1886465676914746119}
+  countButtonGameobject: {fileID: 7455787021049650484}
+  doneButtonGameobject: {fileID: 7455787021288010959}
+  countButton_Mobile_Gameobject: {fileID: 6423603573872097759}
+  doneButton_Mobile_Gameobject: {fileID: 3476283729852204768}
 --- !u!1 &7455787022646375681
 GameObject:
   m_ObjectHideFlags: 0
