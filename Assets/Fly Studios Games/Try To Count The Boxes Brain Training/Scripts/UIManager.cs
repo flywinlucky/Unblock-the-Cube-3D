@@ -418,6 +418,6 @@ public class UIManager : MonoBehaviour
             $"Wins: {p1Correct} ({p1Acc:0}%)\n" +
             $"Total Score: {p1TotalScore}\n" +
             $"Avg Score/Game: {(p1Games > 0 ? (p1TotalScore / (float)p1Games) : 0f):0.##}\n" +
-            $"Avg Reaction Time: {p1AvgRT:0.###} s\n\n";
+            $"Avg Reaction Time: {p1AvgRT:0.###} s\n";
     }
 }
