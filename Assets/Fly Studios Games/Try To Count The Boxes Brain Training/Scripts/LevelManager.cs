@@ -12,6 +12,9 @@ public class LevelManager : MonoBehaviour
     [Header("Animation")]
     public float activeDuration;
 
+    public bool isEasy;
+    public bool isNormal;
+    public bool isHard;
     public void InitializeLevel()
     {
         cubes.Clear();
@@ -31,7 +34,20 @@ public class LevelManager : MonoBehaviour
         }
 
         cubesCount = cubes.Count;
-        activeDuration = 0.120f * cubesCount;
+
+        if (isEasy)
+        {
+            activeDuration = 0.250f * cubesCount;
+        }
+        if (isNormal)
+        {
+            activeDuration = 0.390f * cubesCount;
+        }
+        if (isHard)
+        {
+            activeDuration = 0.550f * cubesCount;
+        }
+
         Debug.Log("set active Duration : " + activeDuration);
     }
 
