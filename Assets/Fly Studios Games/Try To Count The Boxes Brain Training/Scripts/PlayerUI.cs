@@ -37,9 +37,9 @@ public class PlayerUI : MonoBehaviour
     private Vector3 initialScale_Cell1;
     private Vector3 initialScale_Cell2;
 
-void OnEnable()
-{
-    if (YG2.envir.isDesktop)
+    void OnEnable()
+    {
+        if (YG2.envir.isDesktop)
         {
             countButtonGameobject.SetActive(true);
             doneButtonGameobject.SetActive(true);
@@ -55,7 +55,7 @@ void OnEnable()
             countButton_Mobile_Gameobject.SetActive(true);
             doneButton_Mobile_Gameobject.SetActive(true);
         }
-}
+    }
 
     private void Start()
     {
