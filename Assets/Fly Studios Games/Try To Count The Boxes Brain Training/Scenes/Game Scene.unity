@@ -3515,7 +3515,7 @@ MonoBehaviour:
   totalCountInScene: 0
   roundsTotal: 20
   botMinActionDelay: 0.2
-  botMaxActionDelay: 0.8
+  botMaxActionDelay: 0.7
   botAccuracy: 0.6
   botFluctuation: 2
 --- !u!4 &1208760976
