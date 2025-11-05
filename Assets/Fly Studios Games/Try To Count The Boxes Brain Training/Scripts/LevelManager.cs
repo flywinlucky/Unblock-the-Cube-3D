@@ -49,7 +49,7 @@ public class LevelManager : MonoBehaviour
         {
             cube.SetGreenMaterial();
             audioManager?.PlayCountShowRCubes();
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.2f);
         }
     }
 
