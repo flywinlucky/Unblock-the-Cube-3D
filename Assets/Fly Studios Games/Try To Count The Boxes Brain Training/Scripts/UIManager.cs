@@ -14,6 +14,11 @@ public class UIManager : MonoBehaviour
     public Button multiplayerGameMode;
     public Button LocalMultiplayerGameMode;
     public Text playerGameStats;
+    [Space]
+    public Text rounds_Text;
+    public GameObject twoPlayersResultPanel;
+    public Text player_1_Result_Text;
+    public Text player_2_Result_Text;
 
     private void Start()
     {
@@ -40,6 +45,8 @@ public class UIManager : MonoBehaviour
         });
 
         UpdatePlayerStatsDisplay();
+        if (twoPlayersResultPanel != null) twoPlayersResultPanel.SetActive(false);
+        if (rounds_Text != null) rounds_Text.gameObject.SetActive(false);
     }
 
     public void UpdateGameMessage(string message)
@@ -231,6 +238,22 @@ public class UIManager : MonoBehaviour
         PlayerPrefs.DeleteKey(BOT_BOT_TOTAL_RT);
         PlayerPrefs.Save();
         UpdatePlayerStatsDisplay();
+    }
+
+    // Setează textul rundelor, format: "2/10"
+    public void SetRoundsText(int current, int total)
+    {
+        if (rounds_Text == null) return;
+        rounds_Text.text = $"{current}/{total}";
+    }
+
+    // Afișează panelul final pentru două jucători (apelează când runde s-au terminat)
+    public void ShowTwoPlayersResultPanel(string player1Text, string player2Text)
+    {
+        if (twoPlayersResultPanel == null) return;
+        if (player_1_Result_Text != null) player_1_Result_Text.text = player1Text;
+        if (player_2_Result_Text != null) player_2_Result_Text.text = player2Text;
+        twoPlayersResultPanel.SetActive(true);
     }
     // -------------------------
 }

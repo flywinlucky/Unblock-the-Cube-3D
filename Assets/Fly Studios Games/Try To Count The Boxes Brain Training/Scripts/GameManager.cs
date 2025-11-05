@@ -38,6 +38,16 @@ public class GameManager : MonoBehaviour
     private bool isSinglePlayerMode;
     private bool isMultiplayerBotMode;
 
+    // Rounds support
+    [Header("Rounds (multiplayer modes)")]
+    public int roundsTotal = 5;        // numărul de runde (configurabil)
+    private int currentRound = 0;
+    private bool roundsModeActive = false;
+    private int player1RoundsWins = 0;
+    private int player2RoundsWins = 0;
+    private int player1ScoreTotal = 0;
+    private int player2ScoreTotal = 0;
+
     // Bot configuration
     [Header("Bot Settings (Multiplayer vs Bot)")]
     public float botMinActionDelay = 0.2f;
@@ -171,24 +181,6 @@ public class GameManager : MonoBehaviour
         uiManager?.StartCountdown(3, () => InitializeLevel(currentLevelIndex));
     }
 
-    public void StartSinglePlayerMode()
-    {
-        isSinglePlayerMode = true;
-        isMultiplayerBotMode = false;
-
-        if (player_2_UI != null)
-        {
-            player_2_UI.gameObject.SetActive(false); // Disable Player 2 UI
-        }
-
-        // IMPORTANT: în single-player considerăm player_2 deja "done"
-        // astfel când player_1 apasă Done nivelul/rezultatul se va procesa imediat.
-        player_2_Done = true;
-
-        // Asigurăm butoanele player2 dezactivate
-        SetPlayer2ButtonsActive(false);
-    }
-
     public void StartMultiplayerBotMode()
     {
         isSinglePlayerMode = false;
@@ -205,6 +197,15 @@ public class GameManager : MonoBehaviour
         // Start bot coroutine if not already running; coroutine will wait until level starts/canInteract
         if (botCoroutine == null)
             botCoroutine = StartCoroutine(BotPlayerRoutine());
+
+        // enable rounds mode for multiplayer vs bot
+        roundsModeActive = true;
+        currentRound = 1;
+        player1RoundsWins = player2RoundsWins = 0;
+        player1ScoreTotal = player2ScoreTotal = 0;
+        // update rounds text in UI
+        uiManager?.rounds_Text?.gameObject?.SetActive(true);
+        uiManager?.SetRoundsText(currentRound, roundsTotal);
     }
 
     public void StartLocalMultiplayerMode()
@@ -219,6 +220,36 @@ public class GameManager : MonoBehaviour
 
         // În local multiplayer activăm butoanele pentru player2
         SetPlayer2ButtonsActive(true);
+
+        // enable rounds mode for local multiplayer
+        roundsModeActive = true;
+        currentRound = 1;
+        player1RoundsWins = player2RoundsWins = 0;
+        player1ScoreTotal = player2ScoreTotal = 0;
+        uiManager?.rounds_Text?.gameObject?.SetActive(true);
+        uiManager?.SetRoundsText(currentRound, roundsTotal);
+    }
+
+    public void StartSinglePlayerMode()
+    {
+        // ensure single-player leaves rounds deactivated (keeps earlier behavior)
+        roundsModeActive = false;
+        uiManager?.rounds_Text?.gameObject?.SetActive(false);
+
+        isSinglePlayerMode = true;
+        isMultiplayerBotMode = false;
+
+        if (player_2_UI != null)
+        {
+            player_2_UI.gameObject.SetActive(false); // Disable Player 2 UI
+        }
+
+        // IMPORTANT: în single-player considerăm player_2 deja "done"
+        // astfel când player_1 apasă Done nivelul/rezultatul se va procesa imediat.
+        player_2_Done = true;
+
+        // Asigurăm butoanele player2 dezactivate
+        SetPlayer2ButtonsActive(false);
     }
 
     private IEnumerator BotPlayerRoutine()
@@ -395,7 +426,82 @@ public class GameManager : MonoBehaviour
     {
         if (player_1_Done && player_2_Done)
         {
-            StartCoroutine(HandleLevelCompletion());
+            if (roundsModeActive)
+                StartCoroutine(HandleRoundSequence());
+            else
+                StartCoroutine(HandleLevelCompletion());
+        }
+    }
+
+    // Called when both players have finished a round-level in rounds mode
+    private IEnumerator HandleRoundSequence()
+    {
+        // Show visual reveal similar to HandleLevelCompletion
+        currentLevelManager?.ActivateLevelsCubesFlorrCell(true);
+        currentLevelManager?.ActivateSelfFlorrCell(true);
+        currentLevelManager?.ShowChildsMaterialFocus();
+
+        yield return new WaitForSeconds(currentLevelManager.cubesCount * 0.25f);
+
+        // Show count up and result icons (similar to ShowFinalResultsAfterDelay but not loading next immediately)
+        float interval = Mathf.Clamp(0.25f / Mathf.Log10(totalCountInScene + 1), 0.02f, 0.25f);
+        bool countUpCompleted = false;
+
+        uiManager?.StartCountUp(totalCountInScene, interval, () => countUpCompleted = true);
+        yield return new WaitUntil(() => countUpCompleted);
+
+        player_1_UI?.ActivateResultIcon();
+        player_2_UI?.ActivateResultIcon();
+        uiManager.countDown_Text.text = totalCountInScene.ToString();
+
+        audioManager?.PlayCountShowResult();
+
+        yield return new WaitForSeconds(1.0f);
+
+        // Record round results
+        RecordRoundResults();
+
+        // If last round -> show summary panel; else -> load next round/level
+        if (currentRound >= roundsTotal)
+        {
+            // Show final aggregated panel
+            roundsModeActive = false;
+            gamePaused = true;
+            uiManager?.SetRoundsText(currentRound, roundsTotal);
+            uiManager?.ShowTwoPlayersResultPanel( BuildPlayerSummaryText(1), BuildPlayerSummaryText(2) );
+        }
+        else
+        {
+            // proceed to next round
+            currentRound++;
+            uiManager?.SetRoundsText(currentRound, roundsTotal);
+            // Move to next level (reusing LoadNextLevel flow)
+            LoadNextLevel();
+        }
+    }
+
+    private void RecordRoundResults()
+    {
+        bool p1Correct = player_1_Score == totalCountInScene;
+        bool p2Correct = player_2_Score == totalCountInScene;
+        if (p1Correct) player1RoundsWins++;
+        if (p2Correct) player2RoundsWins++;
+        player1ScoreTotal += player_1_Score;
+        player2ScoreTotal += player_2_Score;
+        // persist optional per-round stats via PlayerPrefs if desired (not required)
+    }
+
+    private string BuildPlayerSummaryText(int playerIndex)
+    {
+        if (playerIndex == 1)
+        {
+            float avgScore = (player1ScoreTotal > 0 && currentRound > 0) ? (float)player1ScoreTotal / Mathf.Max(1, currentRound) : 0f;
+            return $"\nWins: {player1RoundsWins}/{currentRound}\nTotalScore: {player1ScoreTotal}\nAvgScore: {avgScore:0.##}";
+        }
+        else
+        {
+            float avgScore = (player2ScoreTotal > 0 && currentRound > 0) ? (float)player2ScoreTotal / Mathf.Max(1, currentRound) : 0f;
+            return $"\nWins: {player2RoundsWins}/{currentRound}\nTotalScore: {player2ScoreTotal}\nAvgScore: {avgScore:0.##}";
         }
     }
 
