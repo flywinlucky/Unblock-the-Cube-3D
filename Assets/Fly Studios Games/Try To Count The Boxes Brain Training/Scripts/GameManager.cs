@@ -41,6 +41,8 @@ public class GameManager : MonoBehaviour
 
     private bool isSinglePlayerMode;
     private bool isMultiplayerBotMode;
+    // PlayerPrefs key for single-player current level persistence
+    private const string SP_CURRENT_LEVEL_KEY = "SP_CurrentLevelIndex";
 
     // Rounds support
     [Header("Rounds (multiplayer modes)")]
@@ -140,6 +142,11 @@ public class GameManager : MonoBehaviour
         allLevels.AddRange(easy_levels);
         allLevels.AddRange(normal_levels);
         allLevels.AddRange(hard_levels);
+
+        // Ensure currentLevelIndex has a safe default (use saved single-player index if exists)
+        int savedIndex = PlayerPrefs.GetInt(SP_CURRENT_LEVEL_KEY, 0);
+        if (savedIndex < 0) savedIndex = 0;
+        currentLevelIndex = savedIndex;
     }
 
     private void InitializeLevel(int levelIndex)
@@ -272,6 +279,17 @@ public class GameManager : MonoBehaviour
 
         // În singleplayer, folosim toate nivelele secvențial
         currentLevelSet = new List<GameObject>(allLevels);
+
+        // Load saved single-player level index and clamp to available range
+        int saved = PlayerPrefs.GetInt(SP_CURRENT_LEVEL_KEY, 0);
+        if (currentLevelSet.Count == 0)
+        {
+            currentLevelIndex = 0;
+        }
+        else
+        {
+            currentLevelIndex = Mathf.Clamp(saved, 0, currentLevelSet.Count - 1);
+        }
     }
 
     private IEnumerator BotPlayerRoutine()
@@ -572,6 +590,13 @@ public class GameManager : MonoBehaviour
 
         // Avansăm la următorul nivel din currentLevelSet
         currentLevelIndex = (currentLevelIndex + 1) % currentLevelSet.Count;
+
+        // Persist single-player progress
+        if (isSinglePlayerMode)
+        {
+            PlayerPrefs.SetInt(SP_CURRENT_LEVEL_KEY, currentLevelIndex);
+            PlayerPrefs.Save();
+        }
 
         ResetGameData();
         player_1_UI?.ResetUI();
