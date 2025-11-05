@@ -3503,6 +3503,15 @@ MonoBehaviour:
   - {fileID: 5150292874400611275, guid: faaa94e87ebda8f4d9bf8265871352e6, type: 3}
   - {fileID: 5150292874400611275, guid: 22162b2e9f4e95c43bda888aa3b3db98, type: 3}
   - {fileID: 5150292874400611275, guid: 1809f04c52ed74f4da1d24370ea14a48, type: 3}
+  - {fileID: 5150292874400611275, guid: 3c3b612f747f6964a994a05b2ee85370, type: 3}
+  - {fileID: 5150292874400611275, guid: 4f243b8a08c9e6d4c9e320d211829595, type: 3}
+  - {fileID: 5150292874400611275, guid: ce8452ae20f1a5245b36702c04b03ef0, type: 3}
+  - {fileID: 5150292874400611275, guid: 12493e4a8a1a9f84a876e1526e61c9a4, type: 3}
+  - {fileID: 5150292874400611275, guid: 6e6477ef59f34dd4d8f69c6e7d91c823, type: 3}
+  - {fileID: 5150292874400611275, guid: 2be999367b681eb43b0c5e1252bc14d1, type: 3}
+  - {fileID: 5150292874400611275, guid: def12f692286e59448c721a99b018d08, type: 3}
+  - {fileID: 5150292874400611275, guid: c2c4c44eab816ff4cbee1d4828a56c94, type: 3}
+  - {fileID: 5150292874400611275, guid: 4f8fefe2cfe29f948a8301a600b0615b, type: 3}
   levelTarget: {fileID: 1239601846}
   player_1_UI: {fileID: 13290295}
   player_1_IncreaseScore_Button_KeyCode: 122

@@ -37,12 +37,9 @@ public class PlayerUI : MonoBehaviour
     private Vector3 initialScale_Cell1;
     private Vector3 initialScale_Cell2;
 
-    private void Start()
-    {
-        initialScale_Cell1 = player_countCell_1_Text.transform.localScale;
-        initialScale_Cell2 = player_countCell_2_Text.transform.localScale;
-
-        if (YG2.envir.isDesktop)
+void OnEnable()
+{
+    if (YG2.envir.isDesktop)
         {
             countButtonGameobject.SetActive(true);
             doneButtonGameobject.SetActive(true);
@@ -58,6 +55,12 @@ public class PlayerUI : MonoBehaviour
             countButton_Mobile_Gameobject.SetActive(true);
             doneButton_Mobile_Gameobject.SetActive(true);
         }
+}
+
+    private void Start()
+    {
+        initialScale_Cell1 = player_countCell_1_Text.transform.localScale;
+        initialScale_Cell2 = player_countCell_2_Text.transform.localScale;
     }
 
     public void UpdateScore(int score)

@@ -22,6 +22,4 @@ public class YGInitialize : MonoBehaviour
         Debug.Log("YGInitialize : Language changed to " + prefixLanguage);
         YG2.SwitchLanguage(prefixLanguage);
     }
-
-
 }
