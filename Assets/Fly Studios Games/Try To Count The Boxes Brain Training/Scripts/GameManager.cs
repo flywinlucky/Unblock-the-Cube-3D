@@ -351,7 +351,8 @@ public class GameManager : MonoBehaviour
         }
         else if (playerIndex == 2)
         {
-            if (isSinglePlayerMode || player_2_Done) return;
+            // Prevent manual control of Player 2 when in single-player mode or when Player 2 is a bot.
+            if (isSinglePlayerMode || isMultiplayerBotMode || player_2_Done) return;
             player_2_Score++;
             player_2_UI?.UpdateScore(player_2_Score);
             audioManager?.PlayButtonClick();
@@ -373,7 +374,8 @@ public class GameManager : MonoBehaviour
         }
         else if (playerIndex == 2)
         {
-            if (isSinglePlayerMode || player_2_Done) return;
+            // Block manual Done for Player 2 if single-player mode or bot mode is active.
+            if (isSinglePlayerMode || isMultiplayerBotMode || player_2_Done) return;
             player_2_Done = true;
             player_2_UI?.ShowFinalResult(player_2_Score, totalCountInScene);
             audioManager?.PlayButtonDoneClick();
