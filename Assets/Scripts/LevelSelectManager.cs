@@ -54,6 +54,11 @@ public class LevelSelectManager : MonoBehaviour {
 		levelSelectManager = this;
 	}
 
+	void Start()
+	{
+		ShowWorldSelectMenu();
+	}
+
 	IEnumerator LoadingDepartCoroutine()
 	{
 		// Dok ide loading depart funkcija aktiviramo svet sa levelima koje smo presli za sada
