@@ -1,0 +1,3336 @@
+﻿<xml>
+<category name="Fine Japanese Cuisine"> 
+	<title title="Sushi" maxletters="3">
+		<level bonus="no">
+			<letters>a,r,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>are,ear,era,er</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,a,w</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>saw,was,as</words>
+			<additional_words>aw</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>f,o,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>for,of,or</words>
+			<additional_words>fro</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>a,s,d</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>sad,ads,ad,as</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>a,r,t</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>art,rat,tar,at,ta</words>
+			<additional_words></additional_words>
+		</level>	
+	</title>
+	<title title="Miso Soup" maxletters="3">
+		<level bonus="no">
+			<letters>d,w,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>wed,dew,we</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>d,m,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>mad,dam,ad,am</words>
+			<additional_words>ma</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>a,e,t</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>tea,eat,ate,at</words>
+			<additional_words>ta</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>t,s,i</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>its,it,is,sit</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>n,t,o</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>not,no,on,ton,to</words>
+			<additional_words></additional_words>
+		</level>	
+	</title>
+</category>
+<category name="Exquisite French Desserts"> 
+	<title title="Profiteroles" maxletters="4">
+		<level bonus="no">
+			<letters>w,g,i,n</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>wing,wig,gin,win</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>n,o,e,n</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>neon,none,eon,one</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>a,m,r,h</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>harm,arm,ham,ram</words>
+			<additional_words>mar,rah</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,o,w,f</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>flow,wolf,low,owl,fowl</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>a,r,e,c</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>care,race,are,car,ear,era</words>
+			<additional_words>acre,arc,ace,rec</additional_words>
+		</level>	
+		<level bonus="yes">
+			<letters>a,r,e,c</letters>
+			<additional_letters>s</additional_letters>
+			<solved_words>care,race,are,car,ear,era</solved_words>
+			<words>races,scare,cars,case,ears</words>
+			<additional_words>acres,aces,arcs,cares,scar</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>d,s,o,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>does,dose,odes,ode,doe</words>
+			<additional_words>dos,ose,sod,ods</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>b,r,u,n</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>burn,bun,rub,run,urn</words>
+			<additional_words>bur,nub,urb</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>c,p,a,m</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>camp,cap,cam,mac,map</words>
+			<additional_words>amp,pac,pam</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>m,g,a,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>game,mage,mega,age,gem</words>
+			<additional_words>mag,meg,mae,gam</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>n,m,e,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>amen,mane,mean,name,man,men</words>
+			<additional_words>nema,nae,nam</additional_words>
+		</level>
+	</title>
+	<title title="Macarons" maxletters="4">
+		<level bonus="no">
+			<letters>l,v,i,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>live,evil,veil,vile,lie</words>
+			<additional_words>lev,vie,lei</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>f,e,l,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>flee,feel,eel,elf,fee</words>
+			<additional_words>lee</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>k,l,a,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>kale,lake,leak,ale,elk</words>
+			<additional_words>kae,lea,lek</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>o,e,m,d</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>demo,dome,mode,doe,ode</words>
+			<additional_words>dom,med,mod</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>b,a,r,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>bare,bear,bar,bra,ear,era</words>
+			<additional_words>brae,arb,reb</additional_words>
+		</level>	
+		<level bonus="yes">
+			<letters>b,a,r,e</letters>
+			<additional_letters>s</additional_letters>
+			<solved_words>bare,bear,bar,bra,ear,era</solved_words>
+			<words>bears,saber,bars,base,ears,sea</words>
+			<additional_words>bares,rebs,sear,sera,sabre,bras,eras</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>e,d,a,n</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>dean,and,dan,den</words>
+			<additional_words>nae,ane</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,n,p,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>plan,lap,nap,pal,pan</words>
+			<additional_words>alp</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,w,o,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>slow,owls,lows,low,owl,sow</words>
+			<additional_words>sol,wos</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>h,n,i,t</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>hint,thin,hit,tin,nit</words>
+			<additional_words>hin,nth</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>w,r,a,d</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>draw,ward,rad,raw,war,wad</words>
+			<additional_words>daw</additional_words>
+		</level>
+	</title>
+	<title title="Éclairs" maxletters="4">
+		<level bonus="no">
+			<letters>b,l,w,o</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>blow,bowl,lob,low,owl</words>
+			<additional_words>bow</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>d,m,a,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>dame,made,mead,dam,mad</words>
+			<additional_words>mae,med</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>n,i,t,o</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>into,ion,not,tin,ton</words>
+			<additional_words>nit</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,i,k,d</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>skid,disk,kids,kid,ski</words>
+			<additional_words>dis,ids,kis</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,f,i,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>file,life,elf,lie,lief</words>
+			<additional_words>fil,fie,lei</additional_words>
+		</level>	
+		<level bonus="yes">
+			<letters>l,f,i,e</letters>
+			<additional_letters>s</additional_letters>
+			<solved_words>file,life,elf,lie,lief</solved_words>
+			<words>files,flies,isle,lies,self</words>
+			<additional_words>fils,leis,seif,fes,lis</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>c,p,o,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>crop,cop,cor,orc,pro</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>d,y,a,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>days,ads,day,sad,say</words>
+			<additional_words>ays</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>r,f,a,m</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>farm,arm,far,mar,ram</words>
+			<additional_words>arf</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,c,a,t</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>cast,acts,cats,act,cat,sat</words>
+			<additional_words>scat,sac,tas</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>e,d,a,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>dear,read,are,ear,era,red</words>
+			<additional_words>rad</additional_words>
+		</level>
+	</title>
+	<title title="Crème Brulée" maxletters="4">
+		<level bonus="no">
+			<letters>f,t,a,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>fast,fats,fat,sat</words>
+			<additional_words>aft,fas,tas</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,g,o,d</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>gold,god,dog,log,old</words>
+			<additional_words>dol</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>r,s,o,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>eros,rose,sore,ore</words>
+			<additional_words>roes,ers,oes,ose,res,roe,ser,ors</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,p,o,u</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>soup,opus,pus,ops</words>
+			<additional_words>sou,upo,ups,sop</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>m,s,p,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>amps,maps,spam,amp,map</words>
+			<additional_words>pams,samp,asp,mas,pas,sap,pam,aps</additional_words>
+		</level>	
+		<level bonus="yes">
+			<letters>m,s,p,a</letters>
+			<additional_letters>w</additional_letters>
+			<solved_words>amps,maps,spam,amp,map</solved_words>
+			<words>swamp,paws,swap,wasp,paw,was</words>
+			<additional_words>maws,waps,maw,wap</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>r,p,e,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>reap,pear,ape,ear,are,era</words>
+			<additional_words>aper,par,per,rep,pea,rap</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>d,l,e,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>deal,lead,ale,lad,del,led</words>
+			<additional_words>dale,lade,dal,eld,lea</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>g,r,o,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>ergo,goer,gore,ogre,ego,roe</words>
+			<additional_words>erg,gor,reg,ore</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,t,e,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>east,seat,teas,ate,sea,tea</words>
+			<additional_words>ates,etas,sate,seta,eta,sae,tae,tas</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>m,t,a,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>mate,meat,tame,team,eat,tea</words>
+			<additional_words>eta,mae,mat,met,tae,tam,meta</additional_words>
+		</level>
+	</title>
+	<title title="Crêpes" maxletters="4">
+		<level bonus="no">
+			<letters>l,r,a,i</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>liar,lair,rail,lira,air</words>
+			<additional_words>aril,lari,ail,lar,rai,ria,rial</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>h,p,o,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>hops,posh,shop,hop,ops</words>
+			<additional_words>soph,hos,ohs,sop,poh</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,t,a,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>tale,late,ale,ate,eat,let</words>
+			<additional_words>tael,teal,eta,lat,lea,tae,tel,alt</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>w,s,a,p</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>wasp,paws,swap,paw,saw,spa</words>
+			<additional_words>waps,asp,pas,sap,wap,was</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,m,p,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>lamp,palm,lap,map,pal</words>
+			<additional_words>amp,alp,lam,pam</additional_words>
+		</level>	
+		<level bonus="yes">
+			<letters>l,m,p,a</letters>
+			<additional_letters>e</additional_letters>
+			<solved_words>lamp,palm,lap,map,pal</solved_words>
+			<words>ample,maple,leap,elm,pea</words>
+			<additional_words>alme,peal,mel</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,d,e,u</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>dues,sued,used,due,use,sue</words>
+			<additional_words>eds</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>n,s,e,t</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>nest,nets,sent,net,set,ten</words>
+			<additional_words>ens,sen,tens</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>r,p,a,t</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>part,trap,tarp,art,pat,rat</words>
+			<additional_words>prat,rapt,apt,par</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>w,t,o,n</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>town,not,now,own,ton,tow</words>
+			<additional_words>wot,nowt,wont</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,t,p,o</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>spot,post,pots,stop,tops,top</words>
+			<additional_words>sot,ops,pst,sop</additional_words>
+		</level>
+	</title>
+</category>
+<category name="Divine Italian Kitchen"> 
+	<title title="Bruschetta" maxletters="4">
+		<level bonus="no">
+			<letters>r,d,a,i</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>raid,arid,aid,air,rad,rid</words>
+			<additional_words>rai,ris</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,v,o,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>love,ole,voe,lo</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>n,r,a,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>earn,near,are,ear,era,ran</words>
+			<additional_words>ane,ern</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,t,i,f</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>fist,fits,sift,fit,its,sit</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>d,n,u,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>dune,nude,den,due,dun,end</words>
+			<additional_words>unde</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>g,t,o,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>goat,toga,ago,got,oat,tag</words>
+			<additional_words>gat,goa,tao,tog</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,w,e,t</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>stew,west,wets,set,sew,wet</words>
+			<additional_words>tews,tew</additional_words>
+		</level>	
+		<level bonus="yes">
+			<letters>s,w,e,t</letters>
+			<additional_letters>o</additional_letters>
+			<solved_words>stew,west,wets,set,sew,wet</solved_words>
+			<words>owes,stow,toes,tows,woes,owe</words>
+			<additional_words>twos,wos,wot,sot,tow</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>m,t,a,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>mast,mats,mat,sat</words>
+			<additional_words>tams,mas,tam,tas</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>h,r,e,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>hare,hear,are,ear,era,her</words>
+			<additional_words>rhea,hae,rah</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>t,d,e,i</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>diet,edit,tide,tied,die,tie</words>
+			<additional_words>dite,ted</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,w,a,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>laws,slaw,law,saw,was</words>
+			<additional_words>awls,als,awl,las</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>p,n,a,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>naps,pans,snap,span,nap,pan</words>
+			<additional_words>asp,pas,sap,spa</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>k,g,i,n</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>king,gin,ink,kin,in</words>
+			<additional_words>gink</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>f,s,i,h</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>fish,his,ifs,hi,if,is</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,e,l,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>lase,sale,seal,ale,sea</words>
+			<additional_words>leas,ales,als,els,las,lea,les,sae,sel</additional_words>
+		</level>
+	</title>
+	<title title="Pizza" maxletters="4">
+		<level bonus="no">
+			<letters>a,t,n,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>neat,ant,ate,eat,net,tan</words>
+			<additional_words>etna,ante,ane,eta,nae,tae</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,e,s,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>else,eels,eel,see</words>
+			<additional_words>lees,seel,els,les,sel,lee</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>o,r,v,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>over,rove,roe,voe,or</words>
+			<additional_words>ore,rev</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>m,b,a,l</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>balm,lamb,lab,lam</words>
+			<additional_words>blam,alb,bal,bam</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>w,e,n,t</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>newt,went,net,new,ten,wet</words>
+			<additional_words>tew,wen</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>i,o,n,c</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>icon,con,ion,cion</words>
+			<additional_words>coni</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,a,w,y</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>sway,ways,saw,was,say,way</words>
+			<additional_words>ays,yaw,yaws</additional_words>
+		</level>	
+		<level bonus="yes">
+			<letters>s,a,w,n,y</letters>
+			<additional_letters>n</additional_letters>
+			<solved_words>sway,ways,saw,say,was,way</solved_words>
+			<words>yawns,swan,yawn,any,sawn,nay</words>
+			<additional_words>awny,nays,snaw,wany,wyns</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>r,p,s,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>raps,rasp,rap,spa</words>
+			<additional_words>pars,ars,asp,par,pas,ras,sap</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,s,i,t</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>list,lits,slit,lit,sit,til</words>
+			<additional_words>silt,tils,lis</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>m,t,e,i</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>emit,item,time,met,tie</words>
+			<additional_words>mite</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>r,b,g,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>brag,garb,grab,bag,bar,bra</words>
+			<additional_words>arb,gab,gar,rag</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>t,b,a,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>bats,stab,tabs,abs,bat,tab</words>
+			<additional_words>bast,sab,tas,bas,sat</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>n,w,e,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>anew,awe,awn,nae,new,wan</words>
+			<additional_words>wane,wean,ane,naw,wae,wen</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,g,i,n</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>sign,sing,gins,gin,sin,is</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>w,t,i,h</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>with,whit,hit,wit,hi,it</words>
+			<additional_words></additional_words>
+		</level>
+	</title>
+	<title title="Spaghetti" maxletters="5">
+		<level bonus="no">
+			<letters>s,t,e,a,b</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>beast,beats,base,best,bets,stab</words>
+			<additional_words>bates,abets,abet</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,v,e,e,n</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>seven,even,eves,seen,eve,see</words>
+			<additional_words>evens,esne,neve</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>a,b,t,o,u</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>about,auto,boat,tabu,but,oat</words>
+			<additional_words>bout,bota,tuba</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>d,t,a,e,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>rated,trade,tread,dare,dart,date</words>
+			<additional_words>dater,derat,tared</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,m,i,e,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>limes,miles,slime,smile,elms,isle</words>
+			<additional_words>mils,mise</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>n,t,o,e,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>notes,onset,stone,tones,nest,nose</words>
+			<additional_words>noes,nets,sone</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>p,o,e,r,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>pores,poser,prose,ropes,spore</words>
+			<additional_words>ores,peso,roes</additional_words>
+		</level>	
+		<level bonus="yes">
+			<letters>p,o,e,r,s</letters>
+			<additional_letters>s</additional_letters>
+			<solved_words>pores,poser,prose,ropes,pore,pose</solved_words>
+			<words>posers,proses,spores,pesos,press,roses</words>
+			<additional_words>posse,pross</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>k,s,a,e,t</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>skate,stake,steak,takes,sake,ask</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>h,a,e,s,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>hares,hears,shear,hers,rash,shea</words>
+			<additional_words>sear,rheas,sahre,rase,resh,sera</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,b,o,e,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>sober,robes,bore,bros,orbs,robe</words>
+			<additional_words>bores,brose,obes,rebs,sorb</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,t,e,a,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>alert,alter,later,earl,late,rate</words>
+			<additional_words>artel,ratel,taler</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>c,a,o,t,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>coast,coats,tacos,acts,cast,cats</words>
+			<additional_words>taos,cos,oca,sac,sot</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>t,a,e,r,w</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>water,rate,wart,wear,raw,wet</words>
+			<additional_words>eta,tae</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>g,a,a,i,n</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>again,gain,gin,nag,an,in</words>
+			<additional_words>aign,anga</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>p,p,y,a,h</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>happy,app,hap,hay,pap,pay</words>
+			<additional_words></additional_words>
+		</level>
+	</title>
+	<title title="Fettuccine Alfredo" maxletters="5">
+		<level bonus="no">
+			<letters>k,r,a,b,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>baker,brake,break,bake,bare,bark</words>
+			<additional_words>beal</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>d,w,o,r,y</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>dowry,rowdy,wordy,word,dry,rod</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,x,i,t,y</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>sixty,its,sit,six,tis,sty</words>
+			<additional_words>xysti,xyst</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>b,r,a,d,o</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>board,broad,bard,boar,road,ado</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,t,i,r,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>liter,litre,lire,lite,rite,tile</words>
+			<additional_words>tiler,lier,rile</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>p,l,a,e,d</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>pedal,plead,deal,lead,leap,pale</words>
+			<additional_words>dale,lade</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>r,e,n,i,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>rinse,risen,siren,rise,sire,sir</words>
+			<additional_words>reins,resin,srein</additional_words>
+		</level>	
+		<level bonus="yes">
+			<letters>r,e,n,i,s</letters>
+			<additional_letters>t</additional_letters>
+			<solved_words>rinse,risen,siren,rise,sire,sir</solved_words>
+			<words>insert,inert,inter,rites,stern,tries</words>
+			<additional_words>nitres,inerts,inters,nitre,inset,rents,trine</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,a,t,e,t</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>state,taste,test,sat,sea,set</words>
+			<additional_words>tates,teats,testa</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>h,t,r,e,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>three,ether,there,here,tree,the</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>n,g,e,a,l</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>angle,angel,glean,elan,lane,lean</words>
+			<additional_words>gale,egal</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>c,a,e,r,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>carer,racer,acre,care,race,rare</words>
+			<additional_words>carr</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>w,n,i,s,g</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>wings,swing,sign,wigs,wing,wins</words>
+			<additional_words>swig</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>m,a,g,e,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>gamer,game,gear,germ,gram,mega</words>
+			<additional_words>ream</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>m,n,t,h,o</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>month,moth,hot,not,tho,ton</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>v,r,e,i,d</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>drive,diver,dire,dive,ride,die</words>
+			<additional_words>rived,ired,rive,vide,vied,vier</additional_words>
+		</level>
+	</title>
+	<title title="Lasagne" maxletters="5">
+		<level bonus="no">
+			<letters>b,g,e,n,i</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>begin,being,binge,beg,big,bin</words>
+			<additional_words>bine,gibe,gien</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>d,t,e,a,h</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>death,hated,date,head,hate,heat</words>
+			<additional_words>ahed,eath,haed,haet,thae</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>g,r,e,n,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>green,genre,eng,neg,reg</words>
+			<additional_words>eger,erne,gree</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>m,l,e,a,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>meals,males,male,lame,meal,sale</words>
+			<additional_words>lames,alme,alms,lams</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,p,o,s,o</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>loops,polos,pools,loop,polo,pool</words>
+			<additional_words>spool,loos,lops,poos,slop</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>p,a,n,e,l</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>panel,penal,plane,leap,peal,plan</words>
+			<additional_words>nape,neap,pean,ane,lea,nae,pea,plea</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>r,e,t,s,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>reset,rest,trees,tees,tree,tee</words>
+			<additional_words>ester,reest,stere,terse</additional_words>
+		</level>	
+		<level bonus="yes">
+			<letters>r,e,t,s,e</letters>
+			<additional_letters>a</additional_letters>
+			<solved_words>reset,rest,trees,tees,tree,tee</solved_words>
+			<words>easter,eaters,reseat,seater,teaser,erase</words>
+			<additional_words>aster,rates,resat,saree</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>e,w,r,d,i</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>weird,wider,wired,drew,wide,wore</words>
+			<additional_words>wried,dire,ired,weir</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>m,e,i,t,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>emits,items,times,emit,item,mist</words>
+			<additional_words>mites,stime</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>r,d,a,m,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>drama,arm,dam,mad,rad,ram</words>
+			<additional_words>damar,dram,maar,mara</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,s,w,a,p</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>wasps,swaps,pass,swap,wasp,saw</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>k,n,s,e,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>knees,keen,knee,seek,seen,see</words>
+			<additional_words>skeen,skene</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>d,r,a,e,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>drear,dare,dear,rare,read,rear</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>r,t,y,p,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>party,part,pray,tarp,trap,tray</words>
+			<additional_words>paty,prat</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>m,o,t,h,u</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>mouth,moth,thou,hot,hut,out</words>
+			<additional_words></additional_words>
+		</level>
+	</title>
+</category>
+<category name="Piquant Chinese Food"> 
+	<title title="Spring Rolls" maxletters="5">
+		<level bonus="no">
+			<letters>b,w,o,l,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>below,bowel,elbow,blew,blow,bowl</words>
+			<additional_words>bole,lowe</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>p,i,a,o,n</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>piano,pain,pion,nap,nip,pan</words>
+			<additional_words>nipa,pian</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>e,r,a,n,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>earns,snare,near,sane,ran,sea</words>
+			<additional_words>nares,anes</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>m,n,a,e,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>amens,manes,means,names,amen,mane</words>
+			<additional_words>manse,maes,mans</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,t,e,a,p</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>paste,spate,tapes,past,peas,pest</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>i,t,s,e,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>rites,tires,tries,rest,rise,rite</words>
+			<additional_words>resit,tiers</additional_words>
+		</level>	
+		<level bonus="yes">
+			<letters>i,t,s,e,r</letters>
+			<additional_letters>p</additional_letters>
+			<solved_words>rites,tires,tries,rest,rise,rite</solved_words>
+			<words>esprit,priest,ripest,sprite,stripe,tripes</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>b,s,h,u,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>brush,shrub,bush,rubs,rush,bus</words>
+			<additional_words>buhrs,buhr</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>t,d,i,e,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>diets,edits,sited,edit,side,site</words>
+			<additional_words>dites,dite</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,l,a,e,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>sales,seals,less,sale,seal,seas</words>
+			<additional_words>lass,leas,sals</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>m,l,e,o,n</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>melon,lemon,lone,mole,omen,elm</words>
+			<additional_words>noel,enol,leno</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>h,r,a,p,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>sharp,rash,ash,has,rap,spa</words>
+			<additional_words>harp,hasp,pars</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>n,e,s,e,d</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>dense,needs,need,seed,seen,send</words>
+			<additional_words>denes,dees,dene</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>p,r,a,e,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>pears,reaps,spare,spear,pear,reap</words>
+			<additional_words>apers,apres,asper</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>w,m,a,o,n</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>woman,moan,mown,man,now,own</words>
+			<additional_words>mano</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,g,a,u,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>sugar,rags,rugs,gas,rug,rag</words>
+			<additional_words>gaurs</additional_words>
+		</level>
+	</title>
+	<title title="Dumplings" maxletters="5">
+		<level bonus="no">
+			<letters>b,r,a,e,d</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>beard,bread,bead,bade,dab,rad</words>
+			<additional_words>debar,abed</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>t,h,e,a,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>earth,hater,heart,hart,hate,heat</words>
+			<additional_words>rathe,eath,haet,rath</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>m,b,e,a,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>amber,beam,mare,ream,arm,ram</words>
+			<additional_words>bream,barm,bema,berm,brae</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>t,m,a,e,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>mates,meats,steam,teams,seam,tame</words>
+			<additional_words>satem,ates,etas</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>p,l,e,t,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>slept,spelt,lets,pest,pets,step</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,i,n,t,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>saint,satin,stain,ants,tans,tins</words>
+			<additional_words>antis,tains</additional_words>
+		</level>	
+		<level bonus="yes">
+			<letters>s,i,n,t,a</letters>
+			<additional_letters>s</additional_letters>
+			<solved_words>saint,satin,stain,ants,tans,tins</solved_words>
+			<words>saints,satins,stains,sans,sins,sits</words>
+			<additional_words>satis</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>d,a,i,y,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>dairy,diary,arid,raid,yard,aid</words>
+			<additional_words>yaird,dray,yird</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>d,a,e,s,t</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>dates,stead,date,ads,sad,sat</words>
+			<additional_words>sated,stade</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>m,i,s,t,o</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>moist,omits,mist,most,omit,sim</words>
+			<additional_words>mots,smit</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,l,i,k,l</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>skill,kills,kill,silk,sill,ill</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>c,e,a,o,n</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>ocean,canoe,acne,cane,cone,once</words>
+			<additional_words>aeon</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,lo,i,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>soils,silos,loss,oils,soil,oil</words>
+			<additional_words>soli,sols</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>p,r,a,t,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>parts,strap,traps,tarps,part,past</words>
+			<additional_words>prats,sprat,pars,pats,prat,rapt</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>d,e,a,r,m</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>dream,armed,dame,made,mare,mead</words>
+			<additional_words>derma,derm</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>p,a,p,l,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>apple,leap,palp,peal,plea,app</words>
+			<additional_words>appel,pepla</additional_words>
+		</level>
+	</title>
+	<title title="Sweet and Sour Pork" maxletters="5">
+		<level bonus="no">
+			<letters>p,r,a,i,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>pairs,paris,airs,pair,raps,rips</words>
+			<additional_words>pars,pias,rais,rasp,rias,sari,spar</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>p,s,e,l,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>lapse,leaps,pleas,alps,seal,slap</words>
+			<additional_words>salep,sepal,spale</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,g,h,a,u</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>laugh,haul,hula,hug,ugh</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>r,m,e,i,t</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>merit,remit,timer,emit,item,rime</words>
+			<additional_words>miter,mitre</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>p,i,r,e,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>piers,prise,ripes,pier,pies,ripe</words>
+			<additional_words>peris,pries,speir</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,v,e,a,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>slave,veals,sale,save,vase,veal</words>
+			<additional_words>laves,selva,valse</additional_words>
+		</level>	
+		<level bonus="yes">
+			<letters>l,v,e,a,s</letters>
+			<additional_letters>e</additional_letters>
+			<solved_words>slave,veals,sale,save,vase,veal</solved_words>
+			<words>leaves,sleave,easel,eaves,elves,lease</words>
+			<additional_words>alee,else,lees</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,p,o,s,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>slope,poles,lose,pole,pose,sole</words>
+			<additional_words>epos,oles,opes,pols,sloe</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>c,u,r,l,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>cruel,ulcer,lucre,clue,cure,curl</words>
+			<additional_words>ecru,luce</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>f,r,e,d,i</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>fired,fried,fire,ride,fed,fir</words>
+			<additional_words>defi,ired,reif,rife</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,p,a,r,y</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>spray,prays,pays,pray,rays,spay</words>
+			<additional_words>pars,pyas,ryas,spar,spry,yaps</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>b,r,d,e,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>breed,beer,bred,bree,deer,reed</words>
+			<additional_words>brede</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>c,o,d,u,l</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>cloud,could,cold,loud,cod,duo</words>
+			<additional_words>clod</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>c,r,t,a,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>cater,crate,react,trace,cart,rate</words>
+			<additional_words>caret,carte,cate</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>t,g,e,r,i</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>tiger,girt,grit,get,rig,it</words>
+			<additional_words>gite,tier</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>f,t,h,a,i</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>faith,fat,fit,hat,hit,hi</words>
+			<additional_words></additional_words>
+		</level>
+	</title>
+	<title title="Kung Pao Chicken" maxletters="5">
+		<level bonus="no">
+			<letters>c,p,a,e,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>capes,paces,scape,space,aces,case</words>
+			<additional_words>apse</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>p,t,e,a,l</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>leapt,palet,petal,plate,leap,tale</words>
+			<additional_words>lepta,pleat,tepal</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>m,n,o,e,y</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>money,omen,eon,men,one,my</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,t,i,p,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>strip,trips,pits,rips,spit,stir</words>
+			<additional_words>stirp,sprit</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>p,n,i,s,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>pines,spine,nips,pens,pies,pine</words>
+			<additional_words>spin</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>e,r,v,s,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>serve,sever,verse,ever,eves,eve</words>
+			<additional_words></additional_words>
+		</level>	
+		<level bonus="yes">
+			<letters>e,r,v,s,e</letters>
+			<additional_letters>d</additional_letters>
+			<solved_words>serve,sever,verse,ever,eves,eve</solved_words>
+			<words>served,versed,reeds,reed,seed,red</words>
+			<additional_words>drees</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>h,r,o,e,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>horse,hoser,shore,shoer,hero,hers</words>
+			<additional_words>heros</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>c,a,s,l,p</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>claps,clasp,scalp,clap,cap,spa</words>
+			<additional_words>lacs,pacs</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,a,c,t,k</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>stack,acts,cast,sack,task,act</words>
+			<additional_words>cask,kats</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,i,k,c,t</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>stick,ticks,cist,kits,sick,skit</words>
+			<additional_words>kist</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>p,r,o,s,t</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>sport,ports,opts,port,post,pots</words>
+			<additional_words>prost,strop,orts</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>r,a,c,e,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>races,scare,arcs,case,scar,sear</words>
+			<additional_words>carse,escar,serac</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>n,l,a,i,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>nails,slain,snail,nail,sail</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>p,e,a,c,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>peace,cape,pace,ace,ape,pee</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>f,r,t,y,o</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>forty,fort,for,fro,fry,toy</words>
+			<additional_words>tyro</additional_words>
+		</level>
+	</title>
+	<title title="Peking Roast Duck" maxletters="5">
+		<level bonus="no">
+			<letters>s,a,r,t,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>rates,stare,tears,rest,star,tsar</words>
+			<additional_words>resat,tares</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,t,e,a,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>least,stale,steal,tales,tesla,salt</words>
+			<additional_words>setal,stela,taels,teals</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>w,r,o,d,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>words,sword,rods,rows,word,rod</words>
+			<additional_words>dors,sord</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>n,t,o,e,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>tenor,toner,note,rent,tone,tore,torn</words>
+			<additional_words>rote,tern</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>p,t,i,n,o</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>piton,point,into,pint,pion,pin</words>
+			<additional_words>pinot,topi</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>n,w,e,i,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>sinew,swine,wines,news,sewn,wine</words>
+			<additional_words></additional_words>
+		</level>	
+		<level bonus="yes">
+			<letters>n,w,e,i,s</letters>
+			<additional_letters>o</additional_letters>
+			<solved_words>sinew,swine,wines,news,sewn,wine</solved_words>
+			<words>winoes,noise,owes,owns,snow,woes</words>
+			<additional_words>enows,sewn</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,o,v,e,t</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>stove,votes,toes,vest,veto,vote</words>
+			<additional_words>voes,vets</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>c,d,e,r,i</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>cider,cried,dicer,riced,dice,iced</words>
+			<additional_words>cedi,cire,cred,dire</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>p,r,a,k,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>parks,spark,arks,park,ark,ask</words>
+			<additional_words>pars,sark,spar</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>w,a,t,i,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>waist,waits,swat,wait,wast,wats</words>
+			<additional_words>aits,wist</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>w,s,e,l,l</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>wells,swell,sell,slew,well,sel</words>
+			<additional_words>ells</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>m,r,c,a,h</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>march,charm,arch,char,harm,arc</words>
+			<additional_words>cham,cram</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>h,p,a,s,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>heaps,phase,shape,heap,she,spa</words>
+			<additional_words>ephas,apse,epha,haes,haps</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>b,a,e,t,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>abate,abet,beat,ate,bat,bet</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,e,h,o,u</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>house,hose,hues,shoe,hue,sue</words>
+			<additional_words>hoes</additional_words>
+		</level>
+	</title>
+</category>
+<category name="Delectable Greek Feast"> 
+	<title title="Tzatziki" maxletters="5">
+		<level bonus="no">
+			<letters>a,c,t,o,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>actor,cart,taco,cot,oar,oat</words>
+			<additional_words>taroc,arco,orca</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,t,h,o,u</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>south,shout,host,huts,shot,shut</words>
+			<additional_words>oust,soth,tosh</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,o,n,e,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>alone,aloe,elan,lane,lean,loan</words>
+			<additional_words>anole,aeon,enol</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>w,t,c,h,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>watch,chat,thaw,what,caw,taw</words>
+			<additional_words>tach</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>m,i,n,e,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>anime,amen,main,mane,mean,mine</words>
+			<additional_words>minae,amie,amin,mien</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,p,i,r,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>peril,plier,pier,pile,ripe,lie</words>
+			<additional_words>lire,peri</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>m,t,e,e,o</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>emote,meet,met,tee,toe,me</words>
+			<additional_words>mete,mote,teem</additional_words>
+		</level>
+		<level bonus="yes">
+			<letters>m,t,e,e,o</letters>
+			<additional_letters>r</additional_letters>
+			<solved_words>emote,meet,met,tee,toe,me</solved_words>
+			<words>meteor,remote,emoter,meter,metre,metro</words>
+			<additional_words>remet,retem,mort,omer</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>a,r,t,e,f</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>after,fare,fate,fear,feat,fret</words>
+			<additional_words>feta,frae,frat</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>c,h,i,n,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>chain,china,chia,inch,can,nah</words>
+			<additional_words>cain</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>t,n,i,h,g</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>thing,night,hint,thin,ting,tin</words>
+			<additional_words>nigh</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>c,g,h,o,u</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>cough,chug,ouch,hog,hug,ugh</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,t,r,o,y</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>story,sort,toys,soy,sty,tor</words>
+			<additional_words>stroy,rosy,ryot,tyros,orts,tors,troy</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,g,h,t,i</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>light,hilt,hit,lit,til,hi</words>
+			<additional_words>gilt</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>w,e,r,p,o</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>power,pore,repo,rope,wore,woe</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>d,y,a,t,o</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>today,toady,toad,day,dot,toy</words>
+			<additional_words>dato,doat,tody</additional_words>
+		</level>
+	</title>
+	<title title="Moussaka" maxletters="5">
+		<level bonus="no">
+			<letters>a,g,e,r,n</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>anger,range,earn,gear,gran,near</words>
+			<additional_words>regna,ager,gaen,gane,gnar</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>b,e,a,t,l</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>bleat,table,belt,late,tale,alt</words>
+			<additional_words>blate,bale,bate,beta</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,r,y,o,g</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>glory,gory,gyro,lory,log,go</words>
+			<additional_words>logy,gor,goy</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,a,r,p,i</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>april,pilar,lair,liar,pair,rail</words>
+			<additional_words>aril,lari</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>v,n,e,i,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>veins,vines,vein,vine,vise,sin</words>
+			<additional_words>nevi,sine</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>h,o,p,e,n</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>phone,hope,nope,open,hen,hop</words>
+			<additional_words>hone,peon,phon</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>g,a,n,v,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>vegan,gave,vane,age,nae,veg</words>
+			<additional_words>gaen,gane,nave</additional_words>
+		</level>	
+		<level bonus="yes">
+			<letters>g,a,n,v,e</letters>
+			<additional_letters>s</additional_letters>
+			<solved_words>vegan,gave,vane,age,nae,veg</solved_words>
+			<words>vegans,sage,sang,save,vase,gas</words>
+			<additional_words>avens,naves,anes,aves,engs,gaes</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>f,r,o,m,u</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>forum,form,four,from,for,fro</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>o,h,r,e,t</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>other,hero,hot,the,tho,toe</words>
+			<additional_words>throe,rote,thro</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>r,g,a,e,c</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>grace,cager,cage,care,gear,rag</words>
+			<additional_words>ager,crag</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,t,a,p,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>pasta,tapas,past,pats,spat,taps</words>
+			<additional_words>ataps,atap,tapa</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>d,e,i,m,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>media,amid,dime,idea,maid,aid</words>
+			<additional_words>amide,aide</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>n,k,f,e,i</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>knife,fine,fin,ink,kin,if</words>
+			<additional_words>fink,kine</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,n,a,t,p</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>plant,pant,plan,alt,ant,lap</words>
+			<additional_words>apt,lat</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>m,r,a,t,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>smart,arms,mars,mast,mats,rams</words>
+			<additional_words>tams,tars</additional_words>
+		</level>
+	</title>
+	<title title="Souvlaki" maxletters="5">
+		<level bonus="no">
+			<letters>r,n,l,a,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>learn,earl,earn,lean,real,ran</words>
+			<additional_words>renal,lear</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>b,l,e,s,u</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>blues,lubes,blue,lube,sub,sue</words>
+			<additional_words>lues</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>z,b,a,r,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>zebra,braze,brae,raze,bar,bra</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>t,a,i,n,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>train,anti,rain,rant,tarn,air</words>
+			<additional_words>riant,airn,airt,rani,tain</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>a,p,e,y,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>payer,repay,pear,pray,prey,reap</words>
+			<additional_words>apery,aery,aper</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,v,e,r,i</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>liver,evil,live,rile,veil,lie</words>
+			<additional_words>lier</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>b,a,i,r,n</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>brain,bran,barn,ban,bin,nib</words>
+			<additional_words>bairn,abri,airn,bani,brin</additional_words>
+		</level>	
+		<level bonus="yes">
+			<letters>b,a,i,r,n</letters>
+			<additional_letters>s</additional_letters>
+			<solved_words>brain,bran,barn,ban,bin,nib</solved_words>
+			<words>brains,barns,basin,brans,rains,bias</words>
+			<additional_words>bairns,abris,airns,brins</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>n,a,i,v,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>naive,vain,vane,vein,vine,ave</words>
+			<additional_words>naevi</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>m,a,n,g,o</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>among,mango,moan,mag,man,nag</words>
+			<additional_words>mano,noma</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>n,d,e,u,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>under,dune,nerd,nude,rude,den</words>
+			<additional_words>dure</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>f,r,u,t,i</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>fruit,rift,turf,fir,fit,fur</words>
+			<additional_words>frit</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>r,d,a,o,i</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>radio,arid,raid,road,ado,air</words>
+			<additional_words>aroid</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>d,n,c,e,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>dance,caned,aced,acne,cane,dean</words>
+			<additional_words>cade</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>f,l,e,d,i</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>field,filed,flied,deli,file,fled</words>
+			<additional_words>delf,def,del</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>p,r,a,i,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>pairs,pair,rap,rip,sip,sir</words>
+			<additional_words></additional_words>
+		</level>
+	</title>
+	<title title="Pastitsio" maxletters="5">
+		<level bonus="no">
+			<letters>c,h,e,s,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>aches,chase,ache,cash,each,has</words>
+			<additional_words>haes</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>c,l,e,a,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>clear,lacer,earl,lace,race,real</words>
+			<additional_words>carle,alec</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>b,g,n,i,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>begin,being,binge,beg,big,bin</words>
+			<additional_words>bine,gibe</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>n,e,r,t,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>enter,rent,teen,tree,net,tee</words>
+			<additional_words>rete,tern</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>f,t,i,l,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>filet,flite,felt,file,left,life</words>
+			<additional_words>lief</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,p,e,d,o</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>dole,dope,pole,doe,led,ode</words>
+			<additional_words>loped,lope,oped</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>g,d,i,l,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>glide,deli,gild,idle,lied,die</words>
+			<additional_words>gelid</additional_words>
+		</level>	
+		<level bonus="yes">
+			<letters>g,d,i,l,e</letters>
+			<additional_letters>r</additional_letters>
+			<solved_words>glide,deli,gild,idle,lied,die</solved_words>
+			<words>glider,girdle,dirge,glide,gride,idler</words>
+			<additional_words>ridgel,dirl,gird</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>m,t,e,a,l</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>metal,lame,late,male,mate,meal</words>
+			<additional_words>alme,tael,tral</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>c,a,r,f,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>scarf,arcs,cars,scar,arc,car</words>
+			<additional_words>arfs</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>m,s,o,u,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>mouse,emus,muse,some,sumo,emu</words>
+			<additional_words>moues</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>n,r,t,h,o</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>north,thorn,horn,torn,hot,nor</words>
+			<additional_words>thro</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>d,a,i,l,y</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>daily,dial,idly,lady,laid,aid</words>
+			<additional_words>idyl</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>p,e,a,p,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>paper,pear,prep,reap,repp,pea</words>
+			<additional_words>perp</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,a,c,e,p</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>place,clap,lace,leap,pace,pale</words>
+			<additional_words>alec</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>h,a,i,r,c</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>chair,arch,char,chia,hair,rich</words>
+			<additional_words>chai</additional_words>
+		</level>
+	</title>
+	<title title="Baklava" maxletters="5">
+		<level bonus="no">
+			<letters>b,d,g,e,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>badge,aged,bade,bead,age,bag</words>
+			<additional_words>abed,egad,gaed</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>t,a,c,e,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>react,trace,cart,rate,act,art</words>
+			<additional_words>caret,recta</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>a,v,i,l,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>alive,evil,live,vail,veal,veil</words>
+			<additional_words>ilea,vela</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>d,s,e,r,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>deers,reeds,deer,reds,reed,seed</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>w,r,t,h,o</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>worth,throw,thro,how,who,two</words>
+			<additional_words>whort,wort</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>i,e,a,d,l</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>ailed,ideal,deal,dial,idea,lead</words>
+			<additional_words>dale,deil</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>m,s,a,e,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>smear,mare,rams,ream,same,seam</words>
+			<additional_words>marse,maes,mesa</additional_words>
+		</level>
+		<level bonus="yes">
+			<letters>m,s,a,e,r</letters>
+			<additional_letters>t</additional_letters>
+			<solved_words>smear,mare,rams,ream,same,seam</solved_words>
+			<words>master,stream,tamers,smart,stare,tamer</words>
+			<additional_words>armets,ramets,armet,aster</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>,t,h,u,o,y</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>youth,thou,hot,hut,out,tho</words>
+			<additional_words>hoy,thy</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>w,e,t,e,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>sweet,ewes,stew,tees,west,ewe</words>
+			<additional_words>weest,tews,twee</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,e,n,t,c</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>cents,scent,cent,nest,nets,sent</words>
+			<additional_words>sect</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>c,h,e,a,p</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>peach,cheap,chap,each,heap,pace</words>
+			<additional_words>chape</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,n,d,o,u</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>sound,duos,nods,undo,don,duo</words>
+			<additional_words>nous</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>v,e,r,e,f</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>fever,ever,free,reef,eve,fee</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>,g,l,e,a,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>eagle,gale,glee,eel,gel,leg</words>
+			<additional_words>aglee,gae,gal,lag,lea,lee</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>r,g,e,a,t</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>great,grate,gate,gear,rage,rate</words>
+			<additional_words>targe,ager,geta,grat</additional_words>
+		</level>
+	</title>
+</category>
+<category name="Spicy Thai Delights"> 
+	<title title="Red Curry" maxletters="5">
+		<level bonus="no">
+			<letters>a,c,e,t,n</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>enact,cant,neat,net,tan,tea</words>
+			<additional_words>ante,etna,tace</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>c,o,s,r,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>cores,score,core,rose,sore,sec</words>
+			<additional_words>corse,cero</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>d,t,a,i,l,</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>tidal,dial,laid,tail,lad,lid</words>
+			<additional_words>adit,lati,ait</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>f,r,s,t,o</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>forts,frost,soft,sort,for,fro</words>
+			<additional_words>ors,ort,roe</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>m,e,a,n,t</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>meant,amen,neat,team,met,net</words>
+			<additional_words>ament,ante,etna,meta</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>p,e,r,a,l</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>paler,pearl,earl,leap,pale,reap</words>
+			<additional_words>parle,aper,lear</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>n,t,r,e,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>rents,stern,nest,nets,rest,sent</words>
+			<additional_words>nerts,erns,erst</additional_words>
+		</level>	
+		<level bonus="yes">
+			<letters>n,t,r,e,s</letters>
+			<additional_letters>e</additional_letters>
+			<solved_words>rents,stern,nest,nets,rest,sent</solved_words>
+			<words>enters,nester,resent,tenser,reset,sneer</words>
+			<additional_words>ernes,ester,sente,stere,terse</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,t,t,r,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>start,tarts,stat,tars,tart,tat</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>,g,h,t,i,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>girth,grith,right,girt,hit,rig</words>
+			<additional_words>git</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>w,t,i,c,h</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>witch,itch,with,hit,tic</words>
+			<additional_words>chit,chi</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>d,g,o,u,h</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>dough,dog,dug,hog,hug,ugh</words>
+			<additional_words>duh,hod</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>n,k,i,t,h</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>think,hint,knit,thin,nit,kin</words>
+			<additional_words>kith</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>m,a,g,e,i</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>image,game,mage,mega,gem,mag</words>
+			<additional_words>gae,gam</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>g,r,a,u,d</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>guard,drag,drug,grad,dug,rag</words>
+			<additional_words>dura,gaur,guar</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>r,g,o,a,n</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>organ,argon,groan,gnarl,gran,rang</words>
+			<additional_words>roan,gan</additional_words>
+		</level>
+	</title>
+	<title title="Fried Noodles" maxletters="5">
+		<level bonus="no">
+			<letters>p,e,s,e,l</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>peels,sleep,eels,else,peel,eel</words>
+			<additional_words>lees,pele</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>d,a,g,r,n,</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>grand,darn,drag,grad,gran,rang</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>t,e,o,u,r,</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>outer,route,euro,rote,rout,tour</words>
+			<additional_words>outre,roue,ore,ort,ret,roe,rue</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,t,o,r,m</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>storm,most,sort,rot,or,so</words>
+			<additional_words>mors,mor,mos,mot</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>c,n,e,r,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>crane,acre,earn,near,race,ace</words>
+			<additional_words>nacre,rance,carn,narc,ane</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>h,y,m,e,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>rhyme,hem,her,hey,rem,rye</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>c,o,l,a,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>coral,coal,cola,oral,orca,arc</words>
+			<additional_words>claro,arco,calo</additional_words>
+		</level>	
+		<level bonus="yes">
+			<letters>c,o,l,a,r</letters>
+			<additional_letters>l</additional_letters>
+			<solved_words>coral,coal,cola,oral,orca,arc</solved_words>
+			<words>collar,local,call,roll,all</words>
+			<additional_words>loral,olla</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,o,i,v,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>olive,evil,live,love,veil,vile</words>
+			<additional_words>voile</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>h,l,e,a,w</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>whale,hale,heal,wale,awe,law</words>
+			<additional_words>awl,haw,hew</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>b,a,v,e,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>brave,bare,bear,rave,verb,era</words>
+			<additional_words>vera,arb,ave,reb,rev,var</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>e,v,e,r,y</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>every,eery,ever,very,eve,eye</words>
+			<additional_words>veery,eyre</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,v,e,a,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>leave,eave,veal,ale,eel,eve</words>
+			<additional_words>vela</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>r,r,o,e,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>arrow,roar,oar,raw,row,war</words>
+			<additional_words>orra</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>c,n,o,a,b</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>bacon,ban,boa,cab,can,con</words>
+			<additional_words>banco</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>p,r,e,s,u</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>super,purse,pure,spur,sure,user</words>
+			<additional_words>sprue,purs,rues,ruse,spue,supe</additional_words>
+		</level>
+	</title>
+	<title title="Fried Rice" maxletters="5">
+		<level bonus="no">
+			<letters>r,w,o,n,b</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>brown,born,brow,worn,bow,own</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>g,l,b,e,o</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>globe,bogle,blog,lobe,beg,ego</words>
+			<additional_words>glob,loge</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>t,i,k,c,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>stick,ticks,cist,kits,sick,skit</words>
+			<additional_words>kist</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>c,t,h,u,o</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>touch,ouch,thou,cot,cut,hot</words>
+			<additional_words>couth</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,e,a,n,c</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>clean,clan,lean,lace, ace</words>
+			<additional_words>ane,cel,lac,lea</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,o,e,n,c</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>clone,cone,lone,noel,once,eon</words>
+			<additional_words>cole,enol,leno</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>t,e,r,m,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>meter,metre,meet,mere,term,tree</words>
+			<additional_words>retem,mete,rete</additional_words>
+		</level>	
+		<level bonus="yes">
+			<letters>t,e,r,m,e</letters>
+			<additional_letters>s</additional_letters>
+			<solved_words>meter,metre,meet,mere,term,tree</solved_words>
+			<words>merest,meters,metres,meets,steer,terms</words>
+			<additional_words>ester,metes,stere,emes</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,n,i,a,p</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>plain,lain,nail,pail,pain,plan</words>
+			<additional_words>anil,lipa,nipa,pial,pian</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,l,o,i,d</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>solid,idols,idol,lids,oils,olds</words>
+			<additional_words>soli,silo,slid</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>b,r,o,e,d</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>bored,orbed,robed,bore,bred,doer</words>
+			<additional_words>bode,dore</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>e,r,a,l,y</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>early,layer,relay,earl,lear,rely</words>
+			<additional_words>aery,aryl,eyra,rale,yare</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>v,d,e,o,i</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>video,dive,dove,void,die,vid</words>
+			<additional_words>vied</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>o,t,e,n,f</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>often,font,note,tone,foe,net</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>h,o,s,a,c</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>chaos,cash,cos,has,sac,as</words>
+			<additional_words>chao</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,n,i,e,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>aline,liane,lane,line,nail,lie</words>
+			<additional_words>anil,lien</additional_words>
+		</level>
+	</title>
+	<title title="Spicy Shrimp Soup" maxletters="5">
+		<level bonus="no">
+			<letters>p,r,t,a,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>apart,part,tarp,trap,pat,tap</words>
+			<additional_words>para,tapa</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>f,r,c,e,o</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>force,core,fore,fro,ref,roc</words>
+			<additional_words>cero,cor</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>t,r,u,s,t</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>trust,strut,rust,ruts,rut,us</words>
+			<additional_words>sturt</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>r,f,t,a,c</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>craft,cart,fact,frat,raft,rat</words>
+			<additional_words>aft,arf</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>r,d,e,o,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>order,doer,redo,rode,doe,ode</words>
+			<additional_words>dore,dorr,dor,err</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>h,i,n,e,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>shine,hens,hen,his,she,sin</words>
+			<additional_words>sine</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>o,a,s,r,c</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>oscar,orcas,arcs,cars,oars,orca</words>
+			<additional_words>arco,cors,ocas,osar,soca,sora</additional_words>
+		</level>	
+		<level bonus="yes">
+			<letters>o,a,s,r,c</letters>
+			<additional_letters>s</additional_letters>
+			<solved_words>oscar,orcas,arcs,cars,oars,orca</solved_words>
+			<words>oscars,across,cross,scars,soars,sos</words>
+			<additional_words>crass,saros,socas,soras,coss,ossa</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,t,a,n,d</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>stand,ants,sand,ads,and,ant</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>r,e,n,a,v</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>raven,earn,near,vane,era,ran</words>
+			<additional_words>vera,ane,ern,nae,rev</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,g,h,t,i</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>sight,gist,hits,sigh,this,git</words>
+			<additional_words>hist,sith,ghi</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>t,t,u,r,o</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>trout,tutor,rout,tour,tout,trot</words>
+			<additional_words>ort,rut,tot</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,t,a,e,g</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>stage,gates,gate,gets,stag,tags</words>
+			<additional_words>ates,etas,gaes,gast,gats,gest</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,v,e,d,i</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>devil,lived,dive,evil,idle,lied</words>
+			<additional_words>deil</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>o,n,w,l,c</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>clown,con,cow,low,now,owl</words>
+			<additional_words>col</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>,h,r,t,o,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>short,host,shot,sort,rot,tho</words>
+			<additional_words>horst,rhos,soth,tors,tosh</additional_words>
+		</level>
+	</title>
+	<title title="Green Chicken Curry" maxletters="5">
+		<level bonus="no">
+			<letters>g,n,o,m,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>genom,gnome,gone,omen,gem,neg</words>
+			<additional_words>nome</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,v,e,s,i</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>evils,lives,veils,evil,isle,lies</words>
+			<additional_words>leis,vies,vise</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>w,r,d,a,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>award,wars,draw,rad,raw,wad</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>c,s,a,u,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>sauce,cause,cues,cue,sac,use</words>
+			<additional_words>ecus,eau</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>o,p,i,c,t</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>topic,optic,cop,cot,opt,pic</words>
+			<additional_words>picot,otic</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,o,n,a,g</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>along,anglo,goal,loan,long,log</words>
+			<additional_words>agon,gaol</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,s,o,e,c</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>close,lose,sole,sec,sol,so</words>
+			<additional_words>socle,cols</additional_words>
+		</level>	
+		<level bonus="yes">
+			<letters>l,s,o,e,c</letters>
+			<additional_letters>r</additional_letters>
+			<solved_words>close,lose,sole,sec,sol,so</solved_words>
+			<words>closer,cores,loser,roles,score,core</words>
+			<additional_words>cresol,corse,cero</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>c,o,s,t,u</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>scout,cost,cots,cuts,outs,oust</words>
+			<additional_words>scut</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>r,s,e,o,w</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>worse,resow,swore,owes,sore,woes</words>
+			<additional_words>serow,owse</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>r,c,h,e,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>reach,arch,care,hare,hear,race</words>
+			<additional_words>hae,rah</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>g,t,i,a,n</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>giant,gain,gait,tang,ting,tag</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>h,r,k,a,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>shark,harks,arks,hark,rash,ark</words>
+			<additional_words>sark</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>f,r,s,i,t</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>first,rifts,firs,fist,fits,rifs</words>
+			<additional_words>frits,frit,sri</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>a,n,e,t,g</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>agent,gate,gent,neat,get,tag</words>
+			<additional_words>ante,atna,geta</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>g,p,e,a,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>grape,gaper,pager,gape,gear,page</words>
+			<additional_words>ager,peag</additional_words>
+		</level>
+	</title>
+</category>
+<category name="Tasty Mexican Fiesta"> 
+	<title title="Nachos" maxletters="5">
+		<level bonus="no">
+			<letters>w,o,n,g,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>wrong,grown,gown,grow,worn,nor</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>c,e,r,a,m</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>cream,macer,acme,came,mace,cam</words>
+			<additional_words>cram,marc</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,k,a,e,n</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>snake,sneak,sake,sane,sank,nae</words>
+			<additional_words>skean,anes</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>h,r,d,a,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>heard,dare,dear,hard,hear,read</words>
+			<additional_words>ahed,haed,herd</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,c,a,r,y</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>scary,cars,racy,rays,scar,cry</words>
+			<additional_words>cays,ryas,scry</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>g,o,n,y,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>agony,yang,yoga,any,nay,an</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,o,p,e,c</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>scope,copes,cope,cops,pose,cop</words>
+			<additional_words>copse</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>r,c,k,a,t</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>track,cart,kart,rack,tack,ark</words>
+			<additional_words></additional_words>
+		</level>	
+		<level bonus="yes">
+			<letters>r,c,k,a,t</letters>
+			<additional_letters>s</additional_letters>
+			<solved_words>track,cart,kart,rack,tack,ark</solved_words>
+			<words>tracks,carts,karts,racks,stack,stark</words>
+			<additional_words>carks,karst,kats,sark,scat,skat</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>c,r,o,n,w</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>crown,corn,crow,worn,con,cow</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>g,n,i,d,o</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>doing,ding,dino,dong,dig,din</words>
+			<additional_words>nodi</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>r,n,i,b,o</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>robin,born,iron,noir,bin,bio</words>
+			<additional_words>brin,brio</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,m,l,a,l</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>small,malls,mall,slam,all,lam</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>w,g,o,n,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>wagon,gnaw,gown,ago,nag,now</words>
+			<additional_words>agon</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>f,l,a,s,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>false,fleas,flea,leaf,safe</words>
+			<additional_words>feal,leas</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>r,n,g,a,i</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>grain,gain,grin,rain,rang,ring</words>
+			<additional_words>agin,airn,ragi,rani</additional_words>
+		</level>
+	</title>
+	<title title="Tacos" maxletters="5">
+		<level bonus="no">
+			<letters>b,a,h,t,i</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>habit,bait,bath,bat,bit,hat</words>
+			<additional_words>baht</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>t,e,r,w,o</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>tower,wrote,rote,tore,wore,owe</words>
+			<additional_words>trow,wert</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,r,t,a,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>stars,tsars,arts,rats,star,tsar</words>
+			<additional_words>trass,tass</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>b,d,a,i,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>abide,bade,bead,bide,idea,aid</words>
+			<additional_words>abed</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>r,c,h,b,i</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>birch,crib,rich,rib,hi</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>t,s,v,e,o</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>stove,votes,toes,vest,veto,vets</words>
+			<additional_words>voes</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>r,f,w,n,o</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>frown,frow,worn,for,fro,nor</words>
+			<additional_words>fon</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>d,a,y,e,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>ready,deary,dare,dyer,yard,dye</words>
+			<additional_words>deray,aery,dray</additional_words>
+		</level>	
+		<level bonus="yes">
+			<letters>d,a,y,e,r</letters>
+			<additional_letters>r</additional_letters>
+			<solved_words>ready,deary,dare,dyer,yard,dye</solved_words>
+			<words>dreary,drear,rared,redry,rare,rear</words>
+			<additional_words>derry,darer</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>b,a,s,t,l</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>blast,bats,labs,last,salt,stab</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>,t,t,a,e,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>treat,rate,tart,art,ate,tea</words>
+			<additional_words>tate,tret</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>h,g,s,t,o</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>ghost,gosh,hogs,host,shot,tosh</words>
+			<additional_words>shog,soth</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>b,r,t,a,o</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>abort,boar,boat,brat,orb,rob</words>
+			<additional_words>bort,bota,rato,rota,taro</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>r,t,o,u,c</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>court,tour,cot,cut,orc,our</words>
+			<additional_words>torc</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,o,o,d,f</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>flood,fold,food,fool,loof,old</words>
+			<additional_words>dol</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>x,t,r,a,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>extra,taxer,retax,axe,rex,tax</words>
+			<additional_words>eta,rax</additional_words>
+		</level>
+	</title>
+	<title title="Burritos" maxletters="5">
+		<level bonus="no">
+			<letters>r,i,c,e,p</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>price,epic,pier,rice,ripe,ice</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>r,s,h,e,f</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>fresh,hers,refs,serf,her,ref</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>h,s,e,t,c</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>chest,techs,etch,tech,sec,set</words>
+			<additional_words>echt,eths</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>t,c,h,a,m</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>match,chat,math,ham,hat,mac</words>
+			<additional_words>cham</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>m,i,c,r,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>crime,mice,mire,rice,rime,ice</words>
+			<additional_words>emic,merci</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>g,r,d,a,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>grade,raged,aged,gear,grad,rage</words>
+			<additional_words>ager,dreg,egad,gaed</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>m,d,e,o,l</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>model,demo,dome,mode,mold,mole</words>
+			<additional_words>lode</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,i,e,c,p</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>spice,epics,epic,ices,pics,pies</words>
+			<additional_words>sepic,ceps,pecs,pice</additional_words>
+		</level>	
+		<level bonus="yes">
+			<letters>s,i,e,c,p</letters>
+			<additional_letters>e</additional_letters>
+			<solved_words>spice,epics,epic,ices,pics,pies</solved_words>
+			<words>pieces,specie,piece,seep,cee,see</words>
+			<additional_words></additional_words>
+		</level>
+		<level bonus="no">
+			<letters>r,p,i,e,d</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>pride,riped,redip,dire,drip,pied</words>
+			<additional_words>pried,ped</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>m,a,i,s,h</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>aims,mash,sham,aim,ham,has</words>
+			<additional_words>ahis,hims</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>f,l,a,e,m</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>flame,fame,flea,lame,leaf,male</words>
+			<additional_words>alef,alme,flam</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,v,o,s,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>solve,loves,lose,love,sole,voes</words>
+			<additional_words>els,les,lev,sel,sol</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>t,r,e,d,i</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>tired,tried,diet,dire,dirt,edit</words>
+			<additional_words>dite,rei,ted</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>,f,f,e,r,o</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>offer,foe,for,fro,off,roe</words>
+			<additional_words>eff,fer</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>m,p,l,a,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>maple,ample,lame,lamp,leap,palm</words>
+			<additional_words>alme,lam,pam</additional_words>
+		</level>
+	</title>
+	<title title="Quesadillas" maxletters="5">
+		<level bonus="no">
+			<letters>r,p,d,o,u</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>proud,drop,pour,updo,pod,pro</words>
+			<additional_words>duro,roup,sor,dup</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>n,s,t,y,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>nasty,ants,stay,ant,say,sty</words>
+			<additional_words>tansy</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>p,e,r,h,y</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>hyper,hype,prey,hey,pry,rye</words>
+			<additional_words>pye,yeh</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>p,n,t,a,i</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>paint,pain,pant,pint,apt,pit</words>
+			<additional_words>patin,nipa,pian</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>g,r,e,e,d</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>greed,deer,edge,reed,red</words>
+			<additional_words>edger,dere,erg,ged</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>n,i,t,r,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>inter,inert,nitre,rent,rite,tire</words>
+			<additional_words>ern,ire,rei</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>l,f,t,u,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>flute,felt,fuel,left,elf,flu</words>
+			<additional_words>eft,fet</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>y,n,e,a,h</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>hyena,yeah,any,hay,hen,hey</words>
+			<additional_words>yean,aye,yen</additional_words>
+		</level>	
+		<level bonus="yes">
+			<letters>y,n,e,a,h</letters>
+			<additional_letters>s</additional_letters>
+			<solved_words>hyena,yeah,any,hay,hen,hey</solved_words>
+			<words>hyenas,ashy,hays,sane,say,shy</words>
+			<additional_words>ashen,anes</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>t,n,g,i,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>sting,gins,sign,sing,ting,tins</words>
+			<additional_words>gits,snit</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>b,d,r,i,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>birds,bids,bird,dibs,ribs,rib</words>
+			<additional_words>birs,bis</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>e,a,g,e,r</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>eager,agree,gear,rage,age,are,ear</words>
+			<additional_words>eger,gee</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>r,n,d,b,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>brand,band,bard,barn,bran,nab</words>
+			<additional_words>drab,arb,dan</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>o,e,r,t,t,</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>otter,tore,tote,trot,ore,roe</words>
+			<additional_words>rote,tret</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,r,v,e,e</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>serve,verse,sever,ever,eves,eve</words>
+			<additional_words>ress,sere</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>t,r,a,l,i</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>trail,trial,lair,liar,rail,tail</words>
+			<additional_words>airt,aril,tirl</additional_words>
+		</level>
+	</title>
+	<title title="Enchiladas" maxletters="5">
+		<level bonus="no">
+			<letters>t,c,h,e,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>teach,cheat,ache,chat,each,etch</words>
+			<additional_words>eath,echt,tace,tach</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,e,o,i,n</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>noise,eons,nose,ones,one,son</words>
+			<additional_words>ens,ins,nos</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>d,s,w,o,o</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>woods,wood,sow,woo,do,so</words>
+			<additional_words>dos,ods</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>r,n,a,i,d</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>drain,raid,rain,and,ran,rid</words>
+			<additional_words>dinar,nadir,ranid,airn,nard,rani,rand</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>t,n,g,a,o</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>tango,goat,tang,got,nag,ton</words>
+			<additional_words>agon,gan,goa,nog,tao</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>,k,a,e,r,m</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>maker,make,mare,mark,rake,ream</words>
+			<additional_words>merk,mae,mar,rem</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,c,k,a,n</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>snack,cans,sack,sank,scan,ask</words>
+			<additional_words>kas,ska</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>p,o,e,r,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>opera,pareo,aero,pear,pore,reap</words>
+			<additional_words>aper,prao,proa</additional_words>
+		</level>	
+		<level bonus="yes">
+			<letters>p,o,e,r,a</letters>
+			<additional_letters>s</additional_letters>
+			<solved_words>opera,pareo,aero,pear,pore,reap</solved_words>
+			<words>operas,pareos,arose,pears,pores,poser</words>
+			<additional_words>apers,apres,asper,pares,paseo,presa,proas,sapor</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>s,c,k,u,t</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>stuck,cuts,suck,tusk,cut,us</words>
+			<additional_words>cusk,suk</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>n,l,t,a,i</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>latin,lint,nail,tail,lit,tan</words>
+			<additional_words>alit,anil</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>w,t,i,n,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>twins,tins,twin,wins,wits,sin</words>
+			<additional_words>nits,wis</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>e,e,r,t,a</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>eater,rate,tear,tree,art,tee</words>
+			<additional_words>rete</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>c,r,d,a,s</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>cards,arcs,card,cars,scar,ads</words>
+			<additional_words>sard,scad</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>d,s,c,o,i</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>disco,disc,docs,cod,cos,do</words>
+			<additional_words>odic,dis,ids</additional_words>
+		</level>
+		<level bonus="no">
+			<letters>n,g,s,l,u</letters>
+			<additional_letters></additional_letters>
+			<solved_words></solved_words>
+			<words>lungs,slung,guns,slug,snug,sung</words>
+			<additional_words>gul,nus,uns</additional_words>
+		</level>
+	</title>
+</category>
+</xml>
+

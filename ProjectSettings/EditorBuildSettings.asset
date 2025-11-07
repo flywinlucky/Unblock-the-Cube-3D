@@ -6,6 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Splash.unity
+    guid: 2670f9c8c69ebc549858d1f4fd829d89
+  - enabled: 1
+    path: Assets/Scenes/MainScene.unity
+    guid: 83ee1112f05c8cd4c9af567fec20b8ad
+  - enabled: 1
+    path: Assets/Scenes/Level.unity
+    guid: 9d9d6db883cbb1f449310342636f3fc8
+  - enabled: 1
     path: Assets/Fly Studios Games/Try To Count The Boxes Brain Training/Scenes/Game
       Scene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab

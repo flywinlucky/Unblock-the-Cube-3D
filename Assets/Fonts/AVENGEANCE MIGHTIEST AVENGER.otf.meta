@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 1620643ce0e39df478bc795314f33c19
+timeCreated: 1504681223
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Avengeance Mightiest Avenger
+  fontNames:
+  - Avengeance Mightiest Avenger
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
