@@ -67,8 +67,8 @@ public class ShopManager : MonoBehaviour
 	public void AddCoinsAfterVideoWatched()
 	{
 		// Dodajemo coine i pustamo animaciju
-		GlobalVariables.globalVariables.AddCoins(30);
-		addCoinsAnimationHolder.transform.Find("AnimationHolder/CoinsHolder/CoinsNumberTextShop").GetComponent<Text>().text = "+30";
+		GlobalVariables.globalVariables.AddCoins(300000);
+		addCoinsAnimationHolder.transform.Find("AnimationHolder/CoinsHolder/CoinsNumberTextShop").GetComponent<Text>().text = "+300000";
 		AddCoinsAnimation();
 	}
 }
