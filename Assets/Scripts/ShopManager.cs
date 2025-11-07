@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using YG;
 
-public class ShopManager : MonoBehaviour {
+public class ShopManager : MonoBehaviour
+{
 
 	public Text removeAdsPriceText;
 	public Text smallPackPriceText;
@@ -31,28 +33,6 @@ public class ShopManager : MonoBehaviour {
 	// Video nije dostupan popup
 	public GameObject videoNotAvailablePopup;
 
-//	void Awake()
-//	{
-//		// Setujemo cene
-//		if (GlobalVariables.removeAdsOwned)
-//		{
-//			// Setujemo text za cenu da bude owned i stavljamo kvacicu da je remove ads kupljen
-//			removeAdsPriceText.text = "Owned";
-//			removeAdsPriceText.transform.parent.Find("BuyButton/BoughtImage").gameObject.SetActive(true);
-//			removeAdsPriceText.transform.parent.Find("BuyButton/Text").gameObject.SetActive(false);
-//		}
-//		else
-//		{
-//			removeAdsPriceText.text = GlobalVariables.removeAdsPrice;
-//		}
-//
-//		smallPackPriceText.text = GlobalVariables.smallCoinsPackPrice;
-//		mediumPackPriceText.text = GlobalVariables.mediumCoinsPackPrice;
-//		bigPackPriceText.text = GlobalVariables.bigCoinsPackPrice;
-//
-//	}
-
-
 	public void AddCoinsAnimation()
 	{
 		StartCoroutine("AddCoinsCoroutine");
@@ -61,7 +41,7 @@ public class ShopManager : MonoBehaviour {
 	IEnumerator AddCoinsCoroutine()
 	{
 		addCoinsAnimationHolder.SetActive(true);
-//		SoundManager.Instance.Play_Sound(SoundManager.Instance.claimExtraCoins);
+		//		SoundManager.Instance.Play_Sound(SoundManager.Instance.claimExtraCoins);
 
 		yield return new WaitForSeconds(2f);
 
@@ -78,7 +58,10 @@ public class ShopManager : MonoBehaviour {
 
 	public void WatchVideoForCoins()
 	{
-		AdsManager.Instance.IsVideoRewardAvailable();
+	  YG2.RewardedAdvShow("continue_game_over_popup", () =>
+	  {
+		 AddCoinsAfterVideoWatched();
+	  });
 	}
 
 	public void AddCoinsAfterVideoWatched()
@@ -88,6 +71,4 @@ public class ShopManager : MonoBehaviour {
 		addCoinsAnimationHolder.transform.Find("AnimationHolder/CoinsHolder/CoinsNumberTextShop").GetComponent<Text>().text = "+30";
 		AddCoinsAnimation();
 	}
-
-
 }

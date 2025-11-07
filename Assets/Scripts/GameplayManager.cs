@@ -965,10 +965,6 @@ public class GameplayManager : MonoBehaviour {
 
 			loadingHolder.transform.GetChild(0).GetComponent<Animator>().Play("LoadingArrive", 0, 0);
 
-			// Pustamo level finished interstitial
-			if (!GlobalVariables.removeAdsOwned)
-				AdsManager.Instance.ShowInterstitial();
-
 			yield return new WaitForSeconds(0.9f);
 
 			SceneManager.LoadScene("Level");
@@ -981,10 +977,6 @@ public class GameplayManager : MonoBehaviour {
 			GlobalVariables.playLoadingDepartAtTheBegining = true;
 
 			loadingHolder.transform.GetChild(0).GetComponent<Animator>().Play("LoadingArrive", 0, 0);
-
-			// Pustamo level finished interstitial
-//			if (!GlobalVariables.removeAdsOwned)
-			AdsManager.Instance.ShowInterstitial();
 
 			yield return new WaitForSeconds(0.9f);
 
@@ -1047,10 +1039,6 @@ public class GameplayManager : MonoBehaviour {
 		GlobalVariables.playLoadingDepartAtTheBegining = true;
 
 		loadingHolder.transform.GetChild(0).GetComponent<Animator>().Play("LoadingArrive", 0, 0);
-
-		// Pustamo interstitial
-//		if (!GlobalVariables.removeAdsOwned)
-		AdsManager.Instance.ShowInterstitial();
 
 		yield return new WaitForSeconds(0.9f);
 
