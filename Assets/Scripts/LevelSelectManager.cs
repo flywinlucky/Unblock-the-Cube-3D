@@ -56,7 +56,7 @@ public class LevelSelectManager : MonoBehaviour {
 
 	void Start()
 	{
-		//ShowWorldSelectMenu();
+		ShowWorldSelectMenu();
 	}
 
 	IEnumerator LoadingDepartCoroutine()
