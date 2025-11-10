@@ -117,7 +117,6 @@ namespace Tap_Away_Block_Puzzle_3D
 
             if (_currentStep >= tutorialSteps.Count)
             {
-                Debug.Log("All tutorial steps completed. Disabling tutorials.");
                 foreach (var stepObject in tutorialSteps)
                 {
                     if (stepObject != null) stepObject.SetActive(false);

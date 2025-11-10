@@ -4,7 +4,11 @@ using System.Linq;
 
 namespace Tap_Away_Block_Puzzle_3D
 {
+    /// <summary>
+    /// Direction a block can move.
+    /// </summary>
     public enum MoveDirection { Forward, Back, Up, Down, Left, Right }
+
     public enum Difficulty { Custom }
 
     [System.Serializable]
@@ -15,21 +19,23 @@ namespace Tap_Away_Block_Puzzle_3D
         public Quaternion randomVisualRotation;
     }
 
+    [CreateAssetMenu(fileName = "LevelData", menuName = "TapAway/LevelData")]
     public class LevelData : ScriptableObject
     {
+        #region Generation Settings
+
         [Header("Generation Settings")]
         [HideInInspector]
         [Range(2, 10)]
-        public int customGridLength = 3; // Lungimea nivelului
+        public int customGridLength = 3; // Grid length
 
         [HideInInspector]
         [Range(2, 10)]
-        public int customGridHeight = 3; // Înălțimea nivelului
+        public int customGridHeight = 3; // Grid height
 
         [HideInInspector]
         public int seed = 0;
 
-        // Make this field serialized so Unity stores it inside the asset
         [SerializeField]
         [HideInInspector]
         private List<BlockData> blocks = new List<BlockData>();
@@ -37,13 +43,15 @@ namespace Tap_Away_Block_Puzzle_3D
         private const int MinGridSize = 2;
         private const int MaxGridSize = 10;
 
+        #endregion
+
         public List<BlockData> GetBlocks() => blocks ?? (blocks = new List<BlockData>());
 
         public int GetGridLength() => Mathf.Clamp(customGridLength, MinGridSize, MaxGridSize);
         public int GetGridHeight() => Mathf.Clamp(customGridHeight, MinGridSize, MaxGridSize);
 
         /// <summary>
-        /// Punctul de intrare pentru generarea nivelului.
+        /// Entry point for level generation. Wraps generation in a try/catch to surface errors.
         /// </summary>
         public void Generate()
         {
@@ -58,8 +66,8 @@ namespace Tap_Away_Block_Puzzle_3D
         }
 
         /// <summary>
-        /// Algoritm nou care construiește o soluție de la primul la ultimul bloc, prevenind ciclurile.
-        /// Funcționează prin a găsi mai întâi blocurile care pot ieși, apoi pe cele care se pot muta în spațiile eliberate.
+        /// Builds a solvable level by constructing a forward "release" order, preventing cycles.
+        /// The algorithm finds blocks that can be released based on previously cleared positions.
         /// </summary>
         private void GenerateSolvableLevel()
         {
@@ -74,7 +82,7 @@ namespace Tap_Away_Block_Puzzle_3D
                 return;
             }
 
-            // 1. Creăm un bloc pentru fiecare celulă din grilă
+            // 1. Create a block for every cell in the grid
             List<BlockData> generatedBlocks = new List<BlockData>();
             int offsetLength = gridLength / 2;
             int offsetHeight = gridHeight / 2;
@@ -89,52 +97,45 @@ namespace Tap_Away_Block_Puzzle_3D
                 }
             }
 
-            // 2. Pregătim structurile de date pentru algoritmul "forward"
+            // 2. Prepare data structures for the forward pass algorithm
             List<BlockData> remainingBlocks = new List<BlockData>(generatedBlocks);
-            HashSet<Vector3Int> clearedPositions = new HashSet<Vector3Int>(); // Poziții considerate "libere" pentru mișcare
+            HashSet<Vector3Int> clearedPositions = new HashSet<Vector3Int>(); // positions considered "free"
 
-            // 3. Atribuim direcții în "pase", construind calea de rezolvare
-            // Acest lucru previne ciclurile, deoarece un bloc poate fi eliberat doar pe baza blocurilor eliberate în pasele ANTERIOARE.
+            // 3. Assign directions in passes, building the solution path (prevents cycles)
             while (remainingBlocks.Count > 0)
             {
                 List<BlockData> blocksClearedThisPass = new List<BlockData>();
 
-                // Amestecăm blocurile pentru a asigura că soluția nu este mereu aceeași
+                // Shuffle to avoid deterministic solutions
                 remainingBlocks = remainingBlocks.OrderBy(b => Random.value).ToList();
 
-                // Faza 1: Găsim TOATE blocurile care pot fi eliberate în acest pas, pe baza stării anterioare
+                // Phase 1: find ALL blocks that can be released this pass based on previous state
                 foreach (var currentBlock in remainingBlocks)
                 {
-                    // Căutăm o direcție în care blocul poate fi mișcat (spre exterior sau spre o poziție deja eliberată)
                     MoveDirection? possibleDirection = FindForwardPath(currentBlock.position, clearedPositions, gridLength);
 
                     if (possibleDirection.HasValue)
                     {
-                        // Atribuim temporar direcția și adăugăm blocul la lista pentru acest pas
                         currentBlock.direction = possibleDirection.Value;
                         blocksClearedThisPass.Add(currentBlock);
                     }
                 }
 
-
                 if (blocksClearedThisPass.Count == 0 && remainingBlocks.Count > 0)
                 {
-                    // Acest caz nu ar trebui să se întâmple cu noua logică, dar rămâne ca o siguranță.
-                    Debug.LogError($"Failed to generate a solvable level. A deadlock was detected with {remainingBlocks.Count} blocks left. This indicates a flaw in the generation logic.");
-                    break; // Ieșim pentru a preveni o buclă infinită
+                    Debug.LogError($"Failed to generate a solvable level. Deadlock detected with {remainingBlocks.Count} blocks left.");
+                    break;
                 }
 
-                // Faza 2: Validăm și actualizăm starea pentru toate blocurile găsite în acest pas
+                // Phase 2: commit cleared blocks for this pass
                 foreach (var block in blocksClearedThisPass)
                 {
                     clearedPositions.Add(block.position);
                     remainingBlocks.Remove(block);
                 }
-
             }
 
-
-            // 4. Setăm rotațiile vizuale aleatorii pentru estetică
+            // 4. Set random visual rotations for aesthetics
             foreach (var block in generatedBlocks)
             {
                 block.randomVisualRotation = Quaternion.Euler(
@@ -149,7 +150,7 @@ namespace Tap_Away_Block_Puzzle_3D
         }
 
         /// <summary>
-        /// Caută o cale de mișcare "înainte". O cale este validă dacă duce în afara grilei sau într-o locație deja eliberată.
+        /// Searches for a forward move. A valid path leads outside the grid (exit) or to an already cleared position.
         /// </summary>
         private MoveDirection? FindForwardPath(Vector3Int blockPos, HashSet<Vector3Int> clearedPositions, int gridSize)
         {
@@ -161,20 +162,20 @@ namespace Tap_Away_Block_Puzzle_3D
             {
                 Vector3Int targetPos = blockPos + GetVectorFromEnum(dir);
 
-                // O cale este validă dacă duce în afara grilei (spre ieșire)
+                // Valid if it goes outside the grid (an exit)
                 if (!IsInBounds(targetPos, gridSize))
                 {
                     return dir;
                 }
 
-                // Sau dacă duce într-o poziție care a fost deja eliberată de un alt bloc
+                // Or if it goes to a position already cleared
                 if (clearedPositions.Contains(targetPos))
                 {
                     return dir;
                 }
             }
 
-            return null; // Nicio cale de mișcare găsită în acest pas
+            return null;
         }
 
         #region Helper Functions

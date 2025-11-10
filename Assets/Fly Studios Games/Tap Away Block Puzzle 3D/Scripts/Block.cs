@@ -5,12 +5,35 @@ using System.Collections;
 
 namespace Tap_Away_Block_Puzzle_3D
 {
+    /// <summary>
+    /// Represents a single block in the level. Handles input, movement, visual effects and destruction.
+    /// Public API: Initialize, Smash, FlashHint.
+    /// </summary>
     public class Block : MonoBehaviour
     {
+        #region Inspector - Animation / Visuals
+
         [Header("Animation Settings")]
-        [Tooltip("Durata animației de dispariție (scale out) în secunde.")]
+        [Tooltip("Duration of the dissolve (scale-out) animation in seconds.")]
         [HideInInspector]
         public float dissolveDuration = 0.2f;
+
+        [Header("Default Data")]
+        [Tooltip("Default skin data used when no shop skin is selected.")]
+        public ShopSkinData defaultSkin; // Read default skin data from ShopSkinData
+
+        [HideInInspector]
+        public Color arrowCollor;
+
+        [Tooltip("Arrow renderers used to tint the direction arrows.")]
+        public MeshRenderer[] cubeArows;
+
+        [Tooltip("Main cube mesh renderer used to apply skins.")]
+        public MeshRenderer cubeMesh;
+
+        #endregion
+
+        #region Private Fields
 
         private MoveDirection _moveDirection;
         private LevelManager _levelManager;
@@ -22,19 +45,15 @@ namespace Tap_Away_Block_Puzzle_3D
         [HideInInspector]
         public bool _isInteractible;
 
-        [Header("Default Data")]
-        public ShopSkinData defaultSkin; // Citim datele implicite din ShopSkinData
-        [HideInInspector]
-        public Color arrowCollor;
-
-        public MeshRenderer[] cubeArows;
-        public MeshRenderer cubeMesh;
-
-        // NOU: Eveniment declanșat când blocul este activat
+        // Event invoked when this block is activated (clicked)
         public static event Action<Block> OnBlockActivated;
 
-        // NOU: păstrează poziția pe grid pentru refacere la undo
+        // Grid position cached for potential undo / bookkeeping
         private Vector3Int _gridPosition;
+
+        #endregion
+
+        #region MonoBehaviour
 
         private void Awake()
         {
@@ -42,6 +61,13 @@ namespace Tap_Away_Block_Puzzle_3D
             _isInteractible = true;
         }
 
+        #endregion
+
+        #region Initialization / Skinning
+
+        /// <summary>
+        /// Initialize the block with direction, level manager reference, grid size and grid position.
+        /// </summary>
         public void Initialize(MoveDirection dir, LevelManager manager, float gridUnitSize, Vector3Int gridPosition)
         {
             _moveDirection = dir;
@@ -49,37 +75,41 @@ namespace Tap_Away_Block_Puzzle_3D
             _gridUnitSize = gridUnitSize;
             _gridPosition = gridPosition;
 
-            // Aplicăm skin-ul curent sau valorile implicite dacă nu există skin selectat
+            // Apply currently selected skin or defaults
             if (_levelManager != null && _levelManager.shopManager != null && _levelManager.shopManager.selectedSkin != null)
             {
                 ShopSkinData currentSkin = _levelManager.shopManager.selectedSkin;
                 ApplySkin(currentSkin.material);
-                arrowCollor = currentSkin.arrowColor; // Setăm culoarea săgeții din skin
+                arrowCollor = currentSkin.arrowColor;
             }
             else if (defaultSkin != null)
             {
-                ApplySkin(defaultSkin.material); // Aplicăm materialul implicit din ShopSkinData
-                arrowCollor = defaultSkin.arrowColor; // Setăm culoarea săgeții implicită din ShopSkinData
+                ApplySkin(defaultSkin.material);
+                arrowCollor = defaultSkin.arrowColor;
             }
 
-            ApplyArrowColor(); // Aplicăm culoarea în shader
+            ApplyArrowColor();
         }
+
+        #endregion
+
+        #region Input Handling
 
         private void OnMouseUpAsButton()
         {
             if (_isMoving || !_isInteractible) return;
 
-            // Declanșăm evenimentul când blocul este activat
+            // Fire block activated event
             OnBlockActivated?.Invoke(this);
 
-            // DACA suntem in Remove-mode, confirmam remove pentru acest block si iesim
+            // If in remove mode, confirm removal and exit
             if (_levelManager != null && _levelManager.IsAwaitingRemove())
             {
                 _levelManager.ConfirmRemoveAtBlock(this);
                 return;
             }
 
-            // Redăm sunetul de block (dacă există AudioManager legat în LevelManager)
+            // Play click sound via AudioManager if available
             if (_levelManager != null && _levelManager.audioManager != null)
             {
                 _levelManager.audioManager.PlayBlockClick();
@@ -102,8 +132,8 @@ namespace Tap_Away_Block_Puzzle_3D
 
                 targetPosition = nextPosition;
 
-                // Check if the next position is out of bounds (optional, based on your grid limits)
-                if (Vector3.Distance(startPos, targetPosition) > 10f) // Example: limit to 10 grid units
+                // If we exceed a safety limit, treat as destroyed (keeps original behavior)
+                if (Vector3.Distance(startPos, targetPosition) > 10f) // Example safety limit of 10 grid units
                 {
                     shouldBeDestroyed = true;
                     break;
@@ -115,8 +145,8 @@ namespace Tap_Away_Block_Puzzle_3D
                 _isMoving = true;
                 if (shouldBeDestroyed)
                 {
-                    _collider.enabled = false;
-                    _levelManager.OnBlockRemoved(this);
+                    if (_collider != null) _collider.enabled = false;
+                    _levelManager?.OnBlockRemoved(this);
                 }
                 StartCoroutine(MoveWithDamping(targetPosition, shouldBeDestroyed));
             }
@@ -126,10 +156,14 @@ namespace Tap_Away_Block_Puzzle_3D
             }
 
             // Check for available moves after the block finishes moving
-            _levelManager.CheckForAvailableMoves();
+            _levelManager?.CheckForAvailableMoves();
         }
 
-        // ▼▼▼ MODIFICARE CHEIE AICI ▼▼▼
+        #endregion
+
+        #region Movement & Animations
+
+        // Movement coroutine - motion with damping/lerp. Behavior preserved.
         private IEnumerator MoveWithDamping(Vector3 targetPosition, bool shouldBeDestroyed)
         {
             Vector3 startPosition = transform.position;
@@ -145,13 +179,10 @@ namespace Tap_Away_Block_Puzzle_3D
 
             transform.position = targetPosition;
 
-            // Dacă blocul trebuie distrus, pornim animația de dizolvare.
             if (shouldBeDestroyed)
             {
-                // Așteptăm finalizarea noii animații, care se va ocupa și de distrugerea obiectului.
                 yield return StartCoroutine(ScaleOutAndDestroy());
             }
-            // Altfel, dacă doar lovește un alt bloc, facem animația de impact.
             else
             {
                 yield return StartCoroutine(ImpactBounce());
@@ -159,9 +190,8 @@ namespace Tap_Away_Block_Puzzle_3D
             }
         }
 
-        // ▼▼▼ FUNCȚIE NOUĂ ▼▼▼
         /// <summary>
-        /// Animație lină de micșorare a scării până la zero, urmată de distrugerea obiectului.
+        /// Smoothly scale the block to zero and destroy the GameObject.
         /// </summary>
         private IEnumerator ScaleOutAndDestroy()
         {
@@ -171,93 +201,13 @@ namespace Tap_Away_Block_Puzzle_3D
 
             while (elapsed < dissolveDuration)
             {
-                // Interpolăm scara de la cea originală la zero
                 transform.localScale = Vector3.Lerp(originalScale, targetScale, elapsed / dissolveDuration);
                 elapsed += Time.deltaTime;
                 yield return null;
             }
 
-            // La final, distrugem obiectul
             Destroy(gameObject);
         }
-
-        // NOU: folosit de LevelManager pentru Smash (shop / powerup)
-        public void Smash()
-        {
-            if (_isMoving) return;
-            _collider.enabled = false;
-            // Înregistrăm starea de distrugere pentru undo (dacă nu a fost deja înregistrată)
-            if (_levelManager != null)
-            {
-                _levelManager.OnBlockRemoved(this);
-            }
-            StartCoroutine(ScaleOutAndDestroy());
-        }
-
-        // NOU: evidențiază un block ca hint (apelabil din LevelManager)
-        public void FlashHint(float duration = 0.6f, float scaleFactor = 1.25f)
-        {
-            StartCoroutine(FlashHintCoroutine(duration, scaleFactor));
-        }
-
-        private IEnumerator FlashHintCoroutine(float duration, float scaleFactor)
-        {
-            Vector3 originalScale = transform.localScale;
-            Vector3 targetScale = originalScale * scaleFactor;
-            float half = duration * 0.5f;
-            float t = 0f;
-            while (t < half)
-            {
-                transform.localScale = Vector3.Lerp(originalScale, targetScale, t / half);
-                t += Time.deltaTime;
-                yield return null;
-            }
-            t = 0f;
-            while (t < half)
-            {
-                transform.localScale = Vector3.Lerp(targetScale, originalScale, t / half);
-                t += Time.deltaTime;
-                yield return null;
-            }
-            transform.localScale = originalScale;
-        }
-
-        public void ApplySkin(Material mat)
-        {
-            if (mat != null)
-            {
-                if (cubeMesh != null)
-                {
-                    cubeMesh.material = new Material(mat); // Creăm o instanță nouă a materialului pentru a evita conflictele globale
-                }
-            }
-
-            // Aplicăm culoarea săgeții
-            ApplyArrowColor();
-        }
-
-        public void ApplyArrowColor()
-        {
-            if (cubeArows != null && cubeArows.Length > 0)
-            {
-                foreach (var arrowRenderer in cubeArows)
-                {
-                    if (arrowRenderer != null)
-                    {
-                        if (arrowRenderer.material == null)
-                        {
-                            Debug.LogWarning("Arrow material is missing. Creating a new material instance.");
-                            arrowRenderer.material = new Material(Shader.Find("Custom/UnlitTransparentColor")); // Asigurăm că materialul există
-                        }
-
-                        arrowRenderer.material.SetColor("_Color", arrowCollor); // Setăm culoarea în shader-ul custom
-                        arrowRenderer.material.SetFloat("_Alpha", 1f); // Asigurăm că alfa este complet vizibil
-                    }
-                }
-            }
-        }
-
-        // --- Restul scriptului rămâne neschimbat ---
 
         private IEnumerator ShakeScale()
         {
@@ -309,6 +259,93 @@ namespace Tap_Away_Block_Puzzle_3D
             _isShaking = false;
         }
 
+        #endregion
+
+        #region Public API - Smash / Hints / Skin
+
+        /// <summary>
+        /// Instantly destroy this block with the dissolve animation. Used by Smash power-up.
+        /// </summary>
+        public void Smash()
+        {
+            if (_isMoving) return;
+            if (_collider != null) _collider.enabled = false;
+            _levelManager?.OnBlockRemoved(this);
+            StartCoroutine(ScaleOutAndDestroy());
+        }
+
+        /// <summary>
+        /// Visual hint: briefly scale the block to draw attention.
+        /// </summary>
+        public void FlashHint(float duration = 0.6f, float scaleFactor = 1.25f)
+        {
+            StartCoroutine(FlashHintCoroutine(duration, scaleFactor));
+        }
+
+        private IEnumerator FlashHintCoroutine(float duration, float scaleFactor)
+        {
+            Vector3 originalScale = transform.localScale;
+            Vector3 targetScale = originalScale * scaleFactor;
+            float half = duration * 0.5f;
+            float t = 0f;
+            while (t < half)
+            {
+                transform.localScale = Vector3.Lerp(originalScale, targetScale, t / half);
+                t += Time.deltaTime;
+                yield return null;
+            }
+            t = 0f;
+            while (t < half)
+            {
+                transform.localScale = Vector3.Lerp(targetScale, originalScale, t / half);
+                t += Time.deltaTime;
+                yield return null;
+            }
+            transform.localScale = originalScale;
+        }
+
+        /// <summary>
+        /// Apply a skin material to the block. Creates a new material instance to avoid global shared-material issues.
+        /// </summary>
+        public void ApplySkin(Material mat)
+        {
+            if (mat != null)
+            {
+                if (cubeMesh != null)
+                {
+                    cubeMesh.material = new Material(mat);
+                }
+            }
+
+            ApplyArrowColor();
+        }
+
+        /// <summary>
+        /// Apply the arrow color to arrow renderers. Creates material instances if missing.
+        /// </summary>
+        public void ApplyArrowColor()
+        {
+            if (cubeArows == null || cubeArows.Length == 0) return;
+
+            foreach (var arrowRenderer in cubeArows)
+            {
+                if (arrowRenderer == null) continue;
+
+                if (arrowRenderer.material == null)
+                {
+                    Debug.LogWarning("Arrow material is missing. Creating a new material instance.");
+                    arrowRenderer.material = new Material(Shader.Find("Custom/UnlitTransparentColor"));
+                }
+
+                arrowRenderer.material.SetColor("_Color", arrowCollor);
+                arrowRenderer.material.SetFloat("_Alpha", 1f);
+            }
+        }
+
+        #endregion
+
+        #region Debug / Helpers
+
         private Vector3 GetWorldDirection()
         {
             switch (_moveDirection)
@@ -339,5 +376,7 @@ namespace Tap_Away_Block_Puzzle_3D
                 Gizmos.DrawRay(transform.position, direction * 10f);
             }
         }
+
+        #endregion
     }
 }
