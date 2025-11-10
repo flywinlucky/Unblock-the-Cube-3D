@@ -4,25 +4,43 @@ using UnityEngine.UI;
 
 namespace Tap_Away_Block_Puzzle_3D
 {
+    /// <summary>
+    /// Automatically simulates clicks on blocks under levelTarget to "resolve" the level.
+    /// Useful for debugging or demo playback.
+    /// </summary>
     public class AutoResolveCube : MonoBehaviour
     {
+        #region Inspector
+
+        [Tooltip("Transform whose children (blocks) will be auto-clicked.")]
         public Transform levelTarget;
+
+        [Tooltip("Button to start auto-resolve.")]
         public Button playAutoLevelResolve_Button;
+
+        [Tooltip("Button to stop auto-resolve.")]
         public Button stopAutoLevelResolve_Button;
 
-        [Tooltip("Intervalul de timp (în secunde) între mișcările fiecărui bloc.")]
+        [Tooltip("Time interval (seconds) between each block move/click.")]
         public float moveInterval = 1.0f;
+
+        #endregion
 
         private bool _isResolving = false;
 
-        void Start()
+        private void Start()
         {
-            // Legăm butoanele la funcțiile corespunzătoare
-            playAutoLevelResolve_Button.onClick.AddListener(StartAutoResolve);
-            stopAutoLevelResolve_Button.onClick.AddListener(StopAutoResolve);
+            if (playAutoLevelResolve_Button != null)
+            {
+                playAutoLevelResolve_Button.onClick.AddListener(StartAutoResolve);
+            }
+            if (stopAutoLevelResolve_Button != null)
+            {
+                stopAutoLevelResolve_Button.onClick.AddListener(StopAutoResolve);
+            }
         }
 
-        void Update()
+        private void Update()
         {
             if (Input.GetKeyDown(KeyCode.S))
             {
@@ -35,7 +53,7 @@ namespace Tap_Away_Block_Puzzle_3D
         }
 
         /// <summary>
-        /// Pornește procesul de rezolvare automată a cubului.
+        /// Start auto-resolve coroutine (if not already running).
         /// </summary>
         public void StartAutoResolve()
         {
@@ -46,7 +64,7 @@ namespace Tap_Away_Block_Puzzle_3D
         }
 
         /// <summary>
-        /// Oprește procesul de rezolvare automată.
+        /// Stop auto-resolve immediately.
         /// </summary>
         public void StopAutoResolve()
         {
@@ -58,20 +76,20 @@ namespace Tap_Away_Block_Puzzle_3D
         {
             _isResolving = true;
 
-            while (levelTarget.childCount > 0) // Continuăm până când nu mai există copii în levelTarget
+            while (levelTarget != null && levelTarget.childCount > 0)
             {
                 for (int i = 0; i < levelTarget.childCount; i++)
                 {
                     Transform child = levelTarget.GetChild(i);
-                    Block block = child.GetComponent<Block>();
+                    if (child == null) continue;
 
+                    Block block = child.GetComponent<Block>();
                     if (block != null)
                     {
-                        // Simulăm un click pe bloc pentru a forța mișcarea
+                        // Simulate a click to force the block to move
                         block.SendMessage("OnMouseUpAsButton", SendMessageOptions.DontRequireReceiver);
                     }
 
-                    // Așteptăm intervalul specificat înainte de a trece la următorul bloc
                     yield return new WaitForSeconds(moveInterval);
                 }
             }

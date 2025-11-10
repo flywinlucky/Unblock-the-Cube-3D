@@ -3,26 +3,51 @@ using UnityEngine.UI;
 
 namespace Tap_Away_Block_Puzzle_3D
 {
+    /// <summary>
+    /// Manages the main UI: level text, progress slider, shop and power-up UI updates.
+    /// Keeps logic identical but improves inspector documentation and code organization.
+    /// </summary>
     public class UIManager : MonoBehaviour
     {
+        #region Inspector - General UI
+
         [Header("UI Components")]
-        [Tooltip("Textul care afișează numărul nivelului curent.")]
-        public Text currentLevelText; // Schimbat din TextMeshProUGUI în Text
+        [Tooltip("Text that displays the current level number.")]
+        public Text currentLevelText;
+
+        [Tooltip("Slider that displays current progress.")]
         public Slider currentProgresSlider;
 
+        [Tooltip("Panel shown when level is won.")]
         public GameObject levelWin_panel;
+
+        [Tooltip("Shop panel GameObject.")]
         public GameObject shop_panel;
+
+        [Tooltip("Safe area UI container (hidden when shop opens).")]
         public GameObject safeAreaUI;
 
-        // NOU: Text pentru soldul global de coins și pentru suma afișată în panelul de win
-        [Tooltip("Text care arată soldul global de coins.")]
+        #endregion
+
+        #region Inspector - Coins & Win UI
+
+        [Tooltip("Text showing the global coins balance.")]
         public Text globalCoinsText;
-        [Tooltip("Text afișat în level win panel cu suma câștigată la acel win (ex: +5).")]
+
+        [Tooltip("Text shown in the win panel indicating coins gained (e.g. +5).")]
         public Text winCoinsText;
 
+        #endregion
+
+        #region Inspector - PowerUp UI
+
         [Header("PowerUp UI")]
-        [Tooltip("Text care arată câte Smash avem.")]
+        [Tooltip("Text that shows how many Smash power-ups the player has.")]
         public Text smashCountText;
+
+        #endregion
+
+        #region Inspector - Shop Buttons / References
 
         [Header("Shop Buttons")]
         public Button buySmashButton;
@@ -31,27 +56,34 @@ namespace Tap_Away_Block_Puzzle_3D
         public Button useSmashButton;
 
         [Header("References")]
-        [Tooltip("Referință către LevelManager pentru a comanda cumpărări/folosiri.")]
+        [Tooltip("Reference to the LevelManager to forward buy/use requests.")]
         public LevelManager levelManager;
 
         [Header("Shop Price Labels")]
-        [Tooltip("Text care afișează prețul pentru Smash în shop.")]
+        [Tooltip("Text showing the Smash price in the shop.")]
         public Text buySmashPriceText;
 
         [Header("Shop Buttons (Open/Close)")]
-        [Tooltip("Buton care deschide shop panel-ul.")]
+        [Tooltip("Button that opens the shop panel.")]
         public Button openShopButton;
-        [Tooltip("Buton care închide shop panel-ul.")]
+
+        [Tooltip("Button that closes the shop panel.")]
         public Button closeShopButton;
 
-        // Smooth progress animation
+        #endregion
+
+        #region Private - Progress Animation
+
         private Coroutine _progressCoroutine;
-        private float _progressAnimDuration = 0.25f; // secunde
+        private float _progressAnimDuration = 0.25f;
+
+        #endregion
+
+        #region Public API - UI Updates
 
         /// <summary>
-        /// Actualizează textele pentru nivelul curent.
+        /// Updates the level display text.
         /// </summary>
-        /// <param name="levelNumber">Numărul nivelului curent.</param>
         public void UpdateLevelDisplay(int levelNumber)
         {
             if (currentLevelText != null)
@@ -60,7 +92,9 @@ namespace Tap_Away_Block_Puzzle_3D
             }
         }
 
-        // NOU: actualizări UI pentru coins
+        /// <summary>
+        /// Updates the global coins balance text.
+        /// </summary>
         public void UpdateGlobalCoinsDisplay(int totalCoins)
         {
             if (globalCoinsText != null)
@@ -69,6 +103,9 @@ namespace Tap_Away_Block_Puzzle_3D
             }
         }
 
+        /// <summary>
+        /// Updates the win panel coins text (prefixed with + when positive).
+        /// </summary>
         public void UpdateWinCoinsDisplay(int gainedCoins)
         {
             if (winCoinsText != null)
@@ -77,112 +114,116 @@ namespace Tap_Away_Block_Puzzle_3D
             }
         }
 
+        #endregion
+
+        #region MonoBehaviour - Setup
+
         private void Start()
         {
-            shop_panel.SetActive(false);
-            safeAreaUI.SetActive(true);
+            if (shop_panel != null) shop_panel.SetActive(false);
+            if (safeAreaUI != null) safeAreaUI.SetActive(true);
 
-            // Legăm butoanele shop la funcțiile din LevelManager (dacă sunt setate)
+            // Bind shop buy button
             if (buySmashButton != null && levelManager != null)
             {
                 buySmashButton.onClick.RemoveAllListeners();
                 buySmashButton.onClick.AddListener(() =>
                 {
-                    if (levelManager.BuySmash()) UpdatePowerUpCounts(levelManager.smashCount);
+                    if (levelManager.BuySmash())
+                        UpdatePowerUpCounts(levelManager.smashCount);
                 });
             }
 
-            // Legăm butoanele de folosire la funcțiile LevelManager
+            // Bind use button to start remove mode
             if (useSmashButton != null && levelManager != null)
             {
                 useSmashButton.onClick.RemoveAllListeners();
-                // apăsarea butonului pornește modul de selecție pentru a alege block-ul de distrus
-                useSmashButton.onClick.AddListener(() => { levelManager.StartRemoveMode(); UpdatePowerUpCounts(levelManager.smashCount); });
+                useSmashButton.onClick.AddListener(() =>
+                {
+                    levelManager.StartRemoveMode();
+                    UpdatePowerUpCounts(levelManager.smashCount);
+                });
             }
 
-            // Legăm butoanele de open/close shop (dacă sunt setate)
+            // Open/Close shop buttons
             if (openShopButton != null)
             {
                 openShopButton.onClick.RemoveAllListeners();
-                openShopButton.onClick.AddListener(() => OpenShopPanel());
+                openShopButton.onClick.AddListener(OpenShopPanel);
             }
             if (closeShopButton != null)
             {
                 closeShopButton.onClick.RemoveAllListeners();
-                closeShopButton.onClick.AddListener(() => CloseShopPanel());
+                closeShopButton.onClick.AddListener(CloseShopPanel);
             }
 
-            // inițializăm afișajul contorilor (doar smash)
-            if (levelManager != null)
-                UpdatePowerUpCounts(levelManager.smashCount);
-
-            // setăm prețurile pe butoane (dacă există)
+            // Initialize displays from LevelManager if present
             if (levelManager != null)
             {
+                UpdatePowerUpCounts(levelManager.smashCount);
                 if (buySmashPriceText != null) buySmashPriceText.text = levelManager.smashCost.ToString();
             }
         }
 
-        // NOU: actualizează textele power-up (doar smash)
+        #endregion
+
+        #region Public - Shop / PowerUp Helpers
+
         public void UpdatePowerUpCounts(int smash)
         {
             if (smashCountText != null) smashCountText.text = smash.ToString();
         }
 
-        // NOU: deschide shop panel-ul
         public void OpenShopPanel()
         {
             if (shop_panel != null) shop_panel.SetActive(true);
-            // sincronizare cu LevelManager (opțional)
             if (levelManager != null) levelManager.OpenShop();
-            safeAreaUI.SetActive(false);
-            levelManager.levelContainer.gameObject.SetActive(false);
+            if (safeAreaUI != null) safeAreaUI.SetActive(false);
+            if (levelManager != null && levelManager.levelContainer != null) levelManager.levelContainer.gameObject.SetActive(false);
         }
 
-        // NOU: închide shop panel-ul
         public void CloseShopPanel()
         {
             if (shop_panel != null) shop_panel.SetActive(false);
-            // sincronizare cu LevelManager (opțional)
             if (levelManager != null) levelManager.CloseShop();
-            safeAreaUI.SetActive(true);
-            levelManager.levelContainer.gameObject.SetActive(true);
+            if (safeAreaUI != null) safeAreaUI.SetActive(true);
+            if (levelManager != null && levelManager.levelContainer != null) levelManager.levelContainer.gameObject.SetActive(true);
         }
 
-        // NOU: initializează progresul la startul nivelului
+        /// <summary>
+        /// Initialize the progress slider for the level.
+        /// </summary>
         public void InitProgress(int maxBlocks)
         {
             if (currentProgresSlider == null) return;
             currentProgresSlider.wholeNumbers = false;
-            currentProgresSlider.maxValue = Mathf.Max(1, maxBlocks); // evităm zero ca max
+            currentProgresSlider.maxValue = Mathf.Max(1, maxBlocks);
             currentProgresSlider.value = 0;
-            // opțional: afișare inițială sau text asociat
         }
 
-        // NOU: actualizează progresul pe baza numerelor (mai robust decât increment local)
-        // totalBlocks = numărul inițial de blocuri din nivel
-        // remainingBlocks = câte blocuri mai sunt active în scenă
+        /// <summary>
+        /// Updates progress based on total and remaining block counts.
+        /// </summary>
         public void UpdateProgressByCounts(int totalBlocks, int remainingBlocks)
         {
             if (currentProgresSlider == null) return;
 
             int safeTotal = Mathf.Max(1, totalBlocks);
-            // calculează valoarea pe slider (câte blocuri au fost eliminate)
             float target = Mathf.Clamp(safeTotal - remainingBlocks, 0f, safeTotal);
-
-            // asigurăm maxValue corect (în caz că nu a fost apelat InitProgress)
             currentProgresSlider.maxValue = safeTotal;
-
             StartProgressAnimation(target);
         }
 
-        // NOU: setează instant valoarea slider-ului (fără animație)
         public void SetProgressImmediate(float value)
         {
             if (currentProgresSlider == null) return;
             if (_progressCoroutine != null) StopCoroutine(_progressCoroutine);
             currentProgresSlider.value = Mathf.Clamp(value, 0f, currentProgresSlider.maxValue);
         }
+
+        #endregion
+
+        #region Private - Progress Animation
 
         private void StartProgressAnimation(float targetValue)
         {
@@ -204,5 +245,7 @@ namespace Tap_Away_Block_Puzzle_3D
             currentProgresSlider.value = to;
             _progressCoroutine = null;
         }
+
+        #endregion
     }
 }

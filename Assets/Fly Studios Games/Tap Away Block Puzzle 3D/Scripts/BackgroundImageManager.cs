@@ -5,24 +5,34 @@ using UnityEngine.UI;
 
 namespace Tap_Away_Block_Puzzle_3D
 {
-
+    /// <summary>
+    /// Manages background images and switches them periodically based on level number.
+    /// </summary>
     public class BackgroundImageManager : MonoBehaviour
     {
-        public Sprite[] backgrounds; // Lista de sprite-uri pentru fundaluri
-        public int changeEveryLovelCount = 5; // La câte nivele să schimbăm fundalul
-        public Image backgroundImage; // Referință la componenta Image pentru fundal
+        #region Inspector
 
-        private int _currentLevel = 0; // Nivelul curent
-        private Sprite _lastBackground; // Ultimul fundal folosit
+        [Tooltip("Array of background sprites to choose from.")]
+        public Sprite[] backgrounds;
+
+        [Tooltip("Change background every N levels (e.g. 5).")]
+        public int changeEveryLovelCount = 5; // keep original public name to avoid inspector links
+
+        [Tooltip("UI Image component used for displaying the background.")]
+        public Image backgroundImage;
+
+        #endregion
+
+        private int _currentLevel = 0;
+        private Sprite _lastBackground;
 
         /// <summary>
-        /// Apelată pentru a actualiza fundalul în funcție de nivel.
+        /// Update background based on provided level number.
         /// </summary>
         public void UpdateBackground(int levelNumber)
         {
             _currentLevel = levelNumber;
 
-            // Verificăm dacă este timpul să schimbăm fundalul
             if (_currentLevel % changeEveryLovelCount == 0)
             {
                 Sprite newBackground = GetRandomBackground();
@@ -35,7 +45,7 @@ namespace Tap_Away_Block_Puzzle_3D
         }
 
         /// <summary>
-        /// Selectează aleatoriu un fundal din listă, evitând repetarea ultimului fundal.
+        /// Returns a random background avoiding immediate repetition of the last used sprite.
         /// </summary>
         private Sprite GetRandomBackground()
         {
@@ -47,13 +57,11 @@ namespace Tap_Away_Block_Puzzle_3D
 
             List<Sprite> availableBackgrounds = new List<Sprite>(backgrounds);
 
-            // Eliminăm ultimul fundal folosit pentru a evita repetarea
             if (_lastBackground != null)
             {
                 availableBackgrounds.Remove(_lastBackground);
             }
 
-            // Selectăm aleatoriu un fundal din lista rămasă
             if (availableBackgrounds.Count > 0)
             {
                 int randomIndex = Random.Range(0, availableBackgrounds.Count);

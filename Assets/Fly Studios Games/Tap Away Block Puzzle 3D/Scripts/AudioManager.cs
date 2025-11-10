@@ -4,25 +4,40 @@ using UnityEngine;
 
 namespace Tap_Away_Block_Puzzle_3D
 {
+	/// <summary>
+	/// Simple audio manager to control background music and UI/game SFX.
+	/// Preserves original behavior while improving inspector layout and code readability.
+	/// </summary>
 	public class AudioManager : MonoBehaviour
 	{
+		#region Inspector
+
 		[Header("Audio Sources")]
 		[Tooltip("Background music AudioSource (looping).")]
 		public AudioSource musicSource;
-		[Tooltip("AudioSource pentru sunetul de click al blocului (atașat direct cu clip).")]
-		public AudioSource blockClickSource; // redenumit din sfxSource
 
-		// Stări curente (cache)
+		[Tooltip("AudioSource used for block click sound (clip can be assigned here).")]
+		public AudioSource blockClickSource; // renamed in comment only
+
+		#endregion
+
+		#region State & Keys
+
+		// Cached states
 		private bool _musicEnabled = true;
 		private bool _soundEnabled = true;
 
-		// Chei PlayerPrefs (dacă dorești să le folosești din AudioManager direct)
+		// PlayerPrefs keys (optional usage)
 		public const string MusicPrefKey = "MusicEnabled";
 		public const string SoundPrefKey = "SoundEnabled";
 
+		#endregion
+
+		#region Unity Events
+
 		private void Start()
 		{
-			// Opțional: inițializăm din PlayerPrefs dacă nu setăm din exterior
+			// Optionally initialize values from PlayerPrefs
 			_musicEnabled = PlayerPrefs.GetInt(MusicPrefKey, 1) == 1;
 			_soundEnabled = PlayerPrefs.GetInt(SoundPrefKey, 1) == 1;
 
@@ -30,14 +45,20 @@ namespace Tap_Away_Block_Puzzle_3D
 			ApplySoundState();
 		}
 
-		// Play / Stop pentru muzica de background (Play păstrează comportamentul de start)
+		#endregion
+
+		#region Music Control
+
+		/// <summary>
+		/// Play or resume background music if enabled.
+		/// </summary>
 		public void PlayMusic()
 		{
 			if (musicSource == null) return;
 			if (!_musicEnabled) return;
 			if (!musicSource.isPlaying)
 			{
-				// Dacă a fost pus pe pauză, UnPause; altfel Play
+				// If paused and has progressed time, unpause; otherwise start playing
 				if (musicSource.time > 0f && musicSource.clip != null)
 				{
 					musicSource.UnPause();
@@ -49,47 +70,21 @@ namespace Tap_Away_Block_Puzzle_3D
 			}
 		}
 
+		/// <summary>
+		/// Stop background music and reset position.
+		/// </summary>
 		public void StopMusic()
 		{
 			if (musicSource == null) return;
 			if (musicSource.isPlaying)
 			{
-				musicSource.Stop(); // forțează oprirea și resetează poziția
+				musicSource.Stop();
 			}
 		}
 
-		// Redă sunetul de block click folosind clip-ul atașat pe blockClickSource
-		public void PlayBlockClick()
-		{
-			if (blockClickSource == null || !_soundEnabled) return;
-			AudioClip clip = blockClickSource.clip;
-			if (clip == null)
-			{
-				// fallback: încercăm Play() dacă nu este clip dar e configurat AudioSource
-				if (!blockClickSource.isPlaying) blockClickSource.Play();
-				return;
-			}
-			blockClickSource.PlayOneShot(clip);
-		}
-
-		// Setări enable/disable apelate din SettingsManager
-		public void SetMusicEnabled(bool enabled)
-		{
-			_musicEnabled = enabled;
-			PlayerPrefs.SetInt(MusicPrefKey, enabled ? 1 : 0);
-			PlayerPrefs.Save();
-			ApplyMusicState();
-		}
-
-		public void SetSoundEnabled(bool enabled)
-		{
-			_soundEnabled = enabled;
-			PlayerPrefs.SetInt(SoundPrefKey, enabled ? 1 : 0);
-			PlayerPrefs.Save();
-			ApplySoundState();
-		}
-
-		// NOU: Expuse direct pentru control explicit (opțional)
+		/// <summary>
+		/// Pause playback (keeps time position).
+		/// </summary>
 		public void PauseMusic()
 		{
 			if (musicSource == null) return;
@@ -99,37 +94,85 @@ namespace Tap_Away_Block_Puzzle_3D
 			}
 		}
 
+		/// <summary>
+		/// Resume music if paused.
+		/// </summary>
 		public void ResumeMusic()
 		{
 			if (musicSource == null) return;
-			// Resume doar dacă există clip și a fost pus pe pauză anterior
 			if (!musicSource.isPlaying && musicSource.clip != null)
 			{
 				musicSource.UnPause();
 			}
 		}
 
+		#endregion
+
+		#region SFX Control
+
+		/// <summary>
+		/// Play the block click sound using the clip assigned to blockClickSource.
+		/// </summary>
+		public void PlayBlockClick()
+		{
+			if (blockClickSource == null || !_soundEnabled) return;
+			AudioClip clip = blockClickSource.clip;
+			if (clip == null)
+			{
+				// Fallback: if no clip but AudioSource configured, try Play()
+				if (!blockClickSource.isPlaying) blockClickSource.Play();
+				return;
+			}
+			blockClickSource.PlayOneShot(clip);
+		}
+
+		#endregion
+
+		#region Settings API
+
+		/// <summary>
+		/// Enable or disable music and persist choice.
+		/// </summary>
+		public void SetMusicEnabled(bool enabled)
+		{
+			_musicEnabled = enabled;
+			PlayerPrefs.SetInt(MusicPrefKey, enabled ? 1 : 0);
+			PlayerPrefs.Save();
+			ApplyMusicState();
+		}
+
+		/// <summary>
+		/// Enable or disable sound effects and persist choice.
+		/// </summary>
+		public void SetSoundEnabled(bool enabled)
+		{
+			_soundEnabled = enabled;
+			PlayerPrefs.SetInt(SoundPrefKey, enabled ? 1 : 0);
+			PlayerPrefs.Save();
+			ApplySoundState();
+		}
+
+		#endregion
+
+		#region Internal Helpers
+
 		private void ApplyMusicState()
 		{
 			if (musicSource == null) return;
 
-			// Dacă muzica este activată -> reluăm (UnPause) sau pornim dacă nu a fost pornită
 			if (_musicEnabled)
 			{
 				musicSource.mute = false;
-				// Dacă sursa are clip și este într-o poziție > 0, reluăm; altfel pornim normal
 				if (musicSource.clip != null && musicSource.time > 0f)
 				{
 					musicSource.UnPause();
 				}
 				else
 				{
-					// Play va porni de la început dacă nu a fost pornită anterior
 					if (!musicSource.isPlaying)
 						musicSource.Play();
 				}
 			}
-			// Dacă muzica este dezactivată -> punem pe pauză (nu oprim complet, astfel păstrăm progresul)
 			else
 			{
 				if (musicSource.isPlaying)
@@ -145,5 +188,7 @@ namespace Tap_Away_Block_Puzzle_3D
 			if (blockClickSource == null) return;
 			blockClickSource.mute = !_soundEnabled;
 		}
+
+		#endregion
 	}
 }

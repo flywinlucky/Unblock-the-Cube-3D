@@ -8,61 +8,79 @@ namespace Tap_Away_Block_Puzzle_3D
 {
 	public class SettingsManager : MonoBehaviour
 	{
+		#region Inspector
+
 		[Header("UI References")]
-		[Tooltip("Butonul pentru sound (poate fi Button sau doar Image).")]
+		[Tooltip("Button used to toggle sound (may be a Button with an Image).")]
 		public Button soundButton;
-		[Tooltip("Butonul pentru music (poate fi Button sau doar Image).")]
+
+		[Tooltip("Button used to toggle music (may be a Button with an Image).")]
 		public Button musicButton;
+
+		[Tooltip("Button used to restart the current level/scene.")]
 		public Button restartButton;
+
+		[Tooltip("Button used to open/close the settings panel.")]
 		public Button openSoundPanelButton;
+
+		[Tooltip("Settings panel GameObject that will be shown/hidden.")]
 		public GameObject settingsPanel;
 
 		[Header("Sound Sprites")]
+		[Tooltip("Sprite used when sound is enabled.")]
 		public Sprite soundOnSprite;
+
+		[Tooltip("Sprite used when sound is disabled.")]
 		public Sprite soundOffSprite;
 
 		[Header("Music Sprites")]
+		[Tooltip("Sprite used when music is enabled.")]
 		public Sprite musicOnSprite;
+
+		[Tooltip("Sprite used when music is disabled.")]
 		public Sprite musicOffSprite;
 
 		[Header("Audio Integration")]
-		[Tooltip("Referință la AudioManager din scenă (opțional).")]
+		[Tooltip("Optional reference to an AudioManager in the scene.")]
 		public AudioManager audioManager;
 
-		// stările curente
+		[Header("Settings Button Icons")]
+		[Tooltip("Icon sprite used for the settings button when panel is closed (open icon).")]
+		public Sprite settingsIconSprite;
+
+		[Tooltip("Icon sprite used for the settings button when panel is open (close icon).")]
+		public Sprite closeIconSprite;
+
+		[Tooltip("Optional Image component (child) used for the settings button icon.")]
+		public Image openSoundPanelIcon;
+
+		#endregion
+
+		#region Private
+
 		private bool _soundEnabled = true;
 		private bool _musicEnabled = true;
 		private string soundKey = "SoundEnabled";
 		private string musicKey = "MusicEnabled";
 
-		// NOU: iconițe pentru butonul de open/close settings
-		[Header("Settings Button Icons")]
-		[Tooltip("Iconița implicită pentru butonul de settings (open).")]
-		public Sprite settingsIconSprite;
-		[Tooltip("Iconița pentru butonul de settings când panelul este deschis (close).")]
-		public Sprite closeIconSprite;
-
-		// NOU: referință la Image din child-ul butonului (folosită pentru icon)
-		[Tooltip("Image component din child-ul butonului openSoundPanelButton utilizată ca icon.")]
-		public Image openSoundPanelIcon;
+		#endregion
 
 		private void Start()
 		{
-			// Încarcă stările din PlayerPrefs (implicit ON)
+			// Load persisted states (default ON)
 			_soundEnabled = PlayerPrefs.GetInt(soundKey, 1) == 1;
 			_musicEnabled = PlayerPrefs.GetInt(musicKey, 1) == 1;
 
-			// Asigură referințele la Image dacă butoane sunt folosite
+			// Ensure Image references for buttons
 			EnsureButtonImages();
 
-			// Aplică sprite-urile inițiale
+			// Apply initial sprites
 			ApplySoundSprite();
 			ApplyMusicSprite();
 
-			// --- Adăugăm listeneri la butoane (dacă sunt setate) ---
+			// Bind listeners safely
 			if (soundButton != null)
 			{
-				// evităm adăugarea dublă
 				soundButton.onClick.RemoveListener(ToggleSound);
 				soundButton.onClick.AddListener(ToggleSound);
 			}
@@ -72,34 +90,33 @@ namespace Tap_Away_Block_Puzzle_3D
 				musicButton.onClick.AddListener(ToggleMusic);
 			}
 
-			// --- Aplicăm stările în AudioManager (dacă există) ---
+			// Apply states to AudioManager if available
 			if (audioManager != null)
 			{
 				audioManager.SetSoundEnabled(_soundEnabled);
 				audioManager.SetMusicEnabled(_musicEnabled);
 			}
 
-			// NOU: la start închidem settings panel
-			if (settingsPanel != null)
-				settingsPanel.SetActive(false);
+			// Start with settings panel closed
+			if (settingsPanel != null) settingsPanel.SetActive(false);
 
-			// NOU: legăm butonul pentru a deschide/închide panelul de setări
+			// Bind settings open/close button
 			if (openSoundPanelButton != null)
 			{
 				openSoundPanelButton.onClick.RemoveListener(ToggleSettingsPanel);
 				openSoundPanelButton.onClick.AddListener(ToggleSettingsPanel);
 			}
 
-			if (restartButton)
+			// Bind restart button
+			if (restartButton != null)
 			{
 				restartButton.onClick.RemoveListener(RestartCurrentScene);
 				restartButton.onClick.AddListener(RestartCurrentScene);
 			}
 
-			// NOU: setăm iconița inițială a butonului (settings) folosind Image copil prioritar
+			// Fallback: use button image as icon if a child icon wasn't assigned
 			if (openSoundPanelIcon == null && openSoundPanelButton != null)
 			{
-				// fallback: dacă nu avem Image copil detectat, încercăm să folosim image-ul butonului
 				if (openSoundPanelButton.image != null)
 					openSoundPanelIcon = openSoundPanelButton.image;
 			}
@@ -112,7 +129,7 @@ namespace Tap_Away_Block_Puzzle_3D
 
 		private void EnsureButtonImages()
 		{
-			// Dacă soundButton există, ne asigurăm că are Image și îl asignăm butonului
+			// Ensure buttons have Image components to swap sprites (maintains compatibility)
 			if (soundButton != null)
 			{
 				if (soundButton.image == null)
@@ -133,10 +150,8 @@ namespace Tap_Away_Block_Puzzle_3D
 				}
 			}
 
-			// NOU: asigurăm Image pentru openSoundPanelButton (buton) și detectăm Image copil pentru icon
 			if (openSoundPanelButton != null)
 			{
-				// dacă butonul însăși nu are image, ne asigurăm că are (păstrăm compatibilitatea)
 				if (openSoundPanelButton.image == null)
 				{
 					Image img = openSoundPanelButton.GetComponent<Image>();
@@ -144,7 +159,7 @@ namespace Tap_Away_Block_Puzzle_3D
 					openSoundPanelButton.image = img;
 				}
 
-				// Dacă nu s-a setat manual openSoundPanelIcon, încercăm să găsim un Image copil (exclude imaginea butonului)
+				// If no child icon assigned, try to find a child Image (excluding the button's own Image)
 				if (openSoundPanelIcon == null)
 				{
 					Image[] images = openSoundPanelButton.GetComponentsInChildren<Image>(true);
@@ -160,17 +175,17 @@ namespace Tap_Away_Block_Puzzle_3D
 			}
 		}
 
-		// Eliminăm listenerii la distrugere pentru siguranță
 		private void OnDestroy()
 		{
 			if (soundButton != null) soundButton.onClick.RemoveListener(ToggleSound);
 			if (musicButton != null) musicButton.onClick.RemoveListener(ToggleMusic);
-
-			// NOU: scoatem și listenerul pentru openSoundPanelButton
 			if (openSoundPanelButton != null) openSoundPanelButton.onClick.RemoveListener(ToggleSettingsPanel);
+			if (restartButton != null) restartButton.onClick.RemoveListener(RestartCurrentScene);
 		}
 
-		// Funcții publice pentru OnClick (legate din Inspector)
+		/// <summary>
+		/// Toggle sound enabled state and persist it.
+		/// </summary>
 		public void ToggleSound()
 		{
 			_soundEnabled = !_soundEnabled;
@@ -178,14 +193,13 @@ namespace Tap_Away_Block_Puzzle_3D
 			PlayerPrefs.Save();
 			ApplySoundSprite();
 
-			// Aplicăm imediat în AudioManager (dacă e setat)
-			if (audioManager != null)
-			{
-				audioManager.SetSoundEnabled(_soundEnabled);
-			}
-			// TODO: aici poți adăuga logică reală pentru a opri/porni sunetul global
+			if (audioManager != null) audioManager.SetSoundEnabled(_soundEnabled);
+			// TODO: Add global sound on/off behavior if needed
 		}
 
+		/// <summary>
+		/// Toggle music enabled state and persist it.
+		/// </summary>
 		public void ToggleMusic()
 		{
 			_musicEnabled = !_musicEnabled;
@@ -193,15 +207,10 @@ namespace Tap_Away_Block_Puzzle_3D
 			PlayerPrefs.Save();
 			ApplyMusicSprite();
 
-			// Aplicăm imediat în AudioManager (dacă e setat)
-			if (audioManager != null)
-			{
-				audioManager.SetMusicEnabled(_musicEnabled);
-			}
-			// TODO: aici poți adăuga logică reală pentru a opri/porni muzica
+			if (audioManager != null) audioManager.SetMusicEnabled(_musicEnabled);
+			// TODO: Add music start/stop behavior if needed
 		}
 
-		// Helpers pentru schimbat sprite pe buton / image
 		private void ApplySoundSprite()
 		{
 			if (soundButton != null && soundButton.image != null)
@@ -210,7 +219,6 @@ namespace Tap_Away_Block_Puzzle_3D
 			}
 			else
 			{
-				// fallback: căutăm o Image cu tag "SoundImage" (opțional)
 				Image img = TryFindImageByName("SoundImage");
 				if (img != null) img.sprite = _soundEnabled ? soundOnSprite : soundOffSprite;
 			}
@@ -229,7 +237,6 @@ namespace Tap_Away_Block_Puzzle_3D
 			}
 		}
 
-		// mic helper pentru fallback; returnează prima Image găsită cu numele dat
 		private Image TryFindImageByName(string name)
 		{
 			GameObject go = GameObject.Find(name);
@@ -237,14 +244,15 @@ namespace Tap_Away_Block_Puzzle_3D
 			return null;
 		}
 
-		// NOU: Toggle pentru settings panel (lege-l la butonul openSoundPanelButton)
+		/// <summary>
+		/// Toggle the settings panel open/close and update the settings button icon.
+		/// </summary>
 		public void ToggleSettingsPanel()
 		{
 			if (settingsPanel == null) return;
 			bool willBeActive = !settingsPanel.activeSelf;
 			settingsPanel.SetActive(willBeActive);
 
-			// Actualizăm iconița butonului în funcție de stare — folosim Image copil dacă există
 			Image imgToUse = openSoundPanelIcon != null ? openSoundPanelIcon : (openSoundPanelButton != null ? openSoundPanelButton.image : null);
 			if (imgToUse != null)
 			{
@@ -259,6 +267,9 @@ namespace Tap_Away_Block_Puzzle_3D
 			}
 		}
 
+		/// <summary>
+		/// Reloads the currently active scene.
+		/// </summary>
 		public void RestartCurrentScene()
 		{
 			Scene currentScene = SceneManager.GetActiveScene();

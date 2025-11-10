@@ -1,19 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Tap_Away_Block_Puzzle_3D
 {
+    /// <summary>
+    /// Simple rotation helper: rotates the transform each frame.
+    /// </summary>
     public class Rotator : MonoBehaviour
     {
-        public float rotationSpeed = 5f; // Viteza de rotație
+        [Header("Rotation Settings")]
+        [Tooltip("Rotation speed in degrees per second.")]
+        public float rotationSpeed = 5f;
 
-        // Update is called once per frame
-        void Update()
+        [Tooltip("Rotation axis. Default is -Z (Vector3.back).")]
+        public Vector3 rotationAxis = Vector3.back;
+
+        private void Update()
         {
-            // Rotim transformul pe axa -z
-            transform.Rotate(0f, 0f, -rotationSpeed * Time.deltaTime);
+            // Rotate by (axis * speed * deltaTime). Keeps original behavior (default -Z).
+            transform.Rotate(rotationAxis * rotationSpeed * Time.deltaTime);
         }
     }
-
 }

@@ -3371,7 +3371,7 @@ GameObject:
   - component: {fileID: 966279558}
   - component: {fileID: 966279557}
   - component: {fileID: 966279556}
-  - component: {fileID: 966279555}
+  - component: {fileID: 966279559}
   m_Layer: 5
   m_Name: Restart Button (1)
   m_TagString: Untagged
@@ -3399,18 +3399,6 @@ RectTransform:
   m_AnchoredPosition: {x: -300.1552, y: 0.00015783013}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &966279555
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 966279553}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfdc062210a3e4342a36667ea8f1d8e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &966279556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3455,9 +3443,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 966279555}
-        m_TargetAssemblyTypeName: RemoveAllPlayerPrefs, Assembly-CSharp
-        m_MethodName: RemoveAllPlayerPrefsData
+      - m_Target: {fileID: 966279559}
+        m_TargetAssemblyTypeName: Tap_Away_Block_Puzzle_3D.SceneReloader, Assembly-CSharp
+        m_MethodName: RestartCurrentScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3505,6 +3493,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 966279553}
   m_CullTransparentMesh: 1
+--- !u!114 &966279559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 966279553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f5dc4b3c06b965459225c8d0f0f7359, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &977771152
 GameObject:
   m_ObjectHideFlags: 0
@@ -3685,6 +3685,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ef65074df4eb344c988d1ccd5503e22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetRectTransform: {fileID: 0}
 --- !u!1 &1008209896
 GameObject:
   m_ObjectHideFlags: 0

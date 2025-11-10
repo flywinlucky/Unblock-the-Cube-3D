@@ -2,44 +2,67 @@ using UnityEngine;
 
 namespace Tap_Away_Block_Puzzle_3D
 {
-    [RequireComponent(typeof(RectTransform))] // Asigură că acest script este atașat doar la obiecte cu RectTransform
+    /// <summary>
+    /// Applies the device safe area to a RectTransform so UI fits notches and cutouts.
+    /// Attach to a GameObject with a RectTransform. Optionally assign a different RectTransform in the inspector.
+    /// </summary>
+    [RequireComponent(typeof(RectTransform))]
     public class SafeArea : MonoBehaviour
     {
-        private RectTransform _panel;
-        private Rect _lastSafeArea = new Rect(0, 0, 0, 0); // Stocăm ultima zonă sigură cunoscută pentru a evita actualizări inutile
+        #region Inspector
 
-        void Awake()
+        [Header("Safe Area Target")]
+        [Tooltip("Optional RectTransform to apply the safe area to. If null, the component's RectTransform will be used.")]
+        public RectTransform targetRectTransform;
+
+        #endregion
+
+        #region Private Fields
+
+        private RectTransform _panel;
+        private Rect _lastSafeArea = Rect.zero;
+
+        #endregion
+
+        #region MonoBehaviour
+
+        private void Awake()
         {
-            _panel = GetComponent<RectTransform>();
+            // Prefer an explicitly assigned RectTransform, otherwise fall back to the component's RectTransform.
+            _panel = targetRectTransform != null ? targetRectTransform : GetComponent<RectTransform>();
+
             if (_panel == null)
             {
-                Debug.LogError("Safe Area script requires a RectTransform component.", this);
-                this.enabled = false;
+                Debug.LogError("SafeArea requires a RectTransform reference.", this);
+                enabled = false;
                 return;
             }
 
-            // Aplicăm zona sigură de la început
+            // Apply safe area immediately on awake.
             ApplySafeArea();
         }
 
-        void Update()
+        private void Update()
         {
-            // Verificăm dacă zona sigură s-a schimbat (de ex., la rotirea ecranului)
-            // Această verificare este foarte rapidă și previne rularea logicii în fiecare frame
+            // Only re-apply when safe area changes (fast check).
             if (Screen.safeArea != _lastSafeArea)
             {
                 ApplySafeArea();
             }
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
-        /// Calculează și aplică ajustările necesare pentru a se potrivi în zona sigură.
+        /// Calculates and applies anchors to match the device's safe area (in normalized 0..1 space).
         /// </summary>
         private void ApplySafeArea()
         {
             Rect safeArea = Screen.safeArea;
 
-            // Convertim pixelii din zona sigură în valori normalizate (0-1) pentru ancore
+            // Convert safe area pixels to normalized anchor coordinates.
             Vector2 anchorMin = safeArea.position;
             Vector2 anchorMax = safeArea.position + safeArea.size;
 
@@ -48,12 +71,12 @@ namespace Tap_Away_Block_Puzzle_3D
             anchorMax.x /= Screen.width;
             anchorMax.y /= Screen.height;
 
-            // Setăm ancorele RectTransform-ului pentru a se potrivi exact cu zona sigură
             _panel.anchorMin = anchorMin;
             _panel.anchorMax = anchorMax;
 
-            // Actualizăm ultima zonă sigură cunoscută
             _lastSafeArea = safeArea;
         }
+
+        #endregion
     }
 }
