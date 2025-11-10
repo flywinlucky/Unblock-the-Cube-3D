@@ -265,5 +265,4 @@ namespace Tap_Away_Block_Puzzle_3D
 			SceneManager.LoadScene(currentScene.name);
 		}
 	}
-
 }

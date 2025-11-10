@@ -80,9 +80,6 @@ namespace Tap_Away_Block_Puzzle_3D
             FrameTarget();
         }
 
-        /// <summary>
-        /// MODIFICAT: LateUpdate apelează acum funcțiile separate de Input și Aplicare
-        /// </summary>
         void LateUpdate()
         {
             if (target)
@@ -148,11 +145,6 @@ namespace Tap_Away_Block_Puzzle_3D
             transform.position = _centerPoint - transform.forward * _currentDistance;
         }
 
-
-        /// <summary>
-        /// NOU: Funcție unificată care gestionează TOATE input-urile.
-        /// Prioritizează gesturile Touch peste cele de Mouse.
-        /// </summary>
         private void HandleInput()
         {
             // Prioritizăm input-ul de la touch
