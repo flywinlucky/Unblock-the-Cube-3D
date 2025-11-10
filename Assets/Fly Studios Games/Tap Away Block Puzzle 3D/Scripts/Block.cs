@@ -110,11 +110,6 @@ namespace Tap_Away_Block_Puzzle_3D
                 }
             }
 
-            if (_levelManager != null)
-            {
-                _levelManager.RegisterMove(this, startPos, targetPosition, shouldBeDestroyed, _gridPosition, _moveDirection, transform.localRotation, transform.localScale);
-            }
-
             if (Vector3.Distance(transform.position, targetPosition) > 0.1f)
             {
                 _isMoving = true;
@@ -194,7 +189,6 @@ namespace Tap_Away_Block_Puzzle_3D
             // Înregistrăm starea de distrugere pentru undo (dacă nu a fost deja înregistrată)
             if (_levelManager != null)
             {
-                _levelManager.RegisterMove(this, transform.position, transform.position, true, _gridPosition, _moveDirection, transform.localRotation, transform.localScale);
                 _levelManager.OnBlockRemoved(this);
             }
             StartCoroutine(ScaleOutAndDestroy());

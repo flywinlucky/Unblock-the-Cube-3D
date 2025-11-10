@@ -21,17 +21,13 @@ namespace Tap_Away_Block_Puzzle_3D
         public Text winCoinsText;
 
         [Header("PowerUp UI")]
-        [Tooltip("Text care arată câte Undo avem.")]
-        public Text undoCountText;
         [Tooltip("Text care arată câte Smash avem.")]
         public Text smashCountText;
 
         [Header("Shop Buttons")]
-        public Button buyUndoButton;
         public Button buySmashButton;
 
         [Header("Use Buttons")]
-        public Button useUndoButton;
         public Button useSmashButton;
 
         [Header("References")]
@@ -39,8 +35,6 @@ namespace Tap_Away_Block_Puzzle_3D
         public LevelManager levelManager;
 
         [Header("Shop Price Labels")]
-        [Tooltip("Text care afișează prețul pentru Undo în shop.")]
-        public Text buyUndoPriceText;
         [Tooltip("Text care afișează prețul pentru Smash în shop.")]
         public Text buySmashPriceText;
 
@@ -89,34 +83,21 @@ namespace Tap_Away_Block_Puzzle_3D
             safeAreaUI.SetActive(true);
 
             // Legăm butoanele shop la funcțiile din LevelManager (dacă sunt setate)
-            if (buyUndoButton != null && levelManager != null)
-            {
-                buyUndoButton.onClick.RemoveAllListeners();
-                buyUndoButton.onClick.AddListener(() =>
-                {
-                    if (levelManager.BuyUndo()) UpdatePowerUpCounts(levelManager.undoCount, levelManager.smashCount);
-                });
-            }
             if (buySmashButton != null && levelManager != null)
             {
                 buySmashButton.onClick.RemoveAllListeners();
                 buySmashButton.onClick.AddListener(() =>
                 {
-                    if (levelManager.BuySmash()) UpdatePowerUpCounts(levelManager.undoCount, levelManager.smashCount);
+                    if (levelManager.BuySmash()) UpdatePowerUpCounts(levelManager.smashCount);
                 });
             }
 
             // Legăm butoanele de folosire la funcțiile LevelManager
-            if (useUndoButton != null && levelManager != null)
-            {
-                useUndoButton.onClick.RemoveAllListeners();
-                useUndoButton.onClick.AddListener(() => { levelManager.UseUndo(); UpdatePowerUpCounts(levelManager.undoCount, levelManager.smashCount); });
-            }
             if (useSmashButton != null && levelManager != null)
             {
                 useSmashButton.onClick.RemoveAllListeners();
-                // schimbăm comportamentul: apăsarea butonului pornește modul de selecție pentru a alege block-ul de distrus
-                useSmashButton.onClick.AddListener(() => { levelManager.StartRemoveMode(); UpdatePowerUpCounts(levelManager.undoCount, levelManager.smashCount); });
+                // apăsarea butonului pornește modul de selecție pentru a alege block-ul de distrus
+                useSmashButton.onClick.AddListener(() => { levelManager.StartRemoveMode(); UpdatePowerUpCounts(levelManager.smashCount); });
             }
 
             // Legăm butoanele de open/close shop (dacă sunt setate)
@@ -131,22 +112,20 @@ namespace Tap_Away_Block_Puzzle_3D
                 closeShopButton.onClick.AddListener(() => CloseShopPanel());
             }
 
-            // inițializăm afișajul contorilor
+            // inițializăm afișajul contorilor (doar smash)
             if (levelManager != null)
-                UpdatePowerUpCounts(levelManager.undoCount, levelManager.smashCount);
+                UpdatePowerUpCounts(levelManager.smashCount);
 
             // setăm prețurile pe butoane (dacă există)
             if (levelManager != null)
             {
-                if (buyUndoPriceText != null) buyUndoPriceText.text = levelManager.undoCost.ToString();
                 if (buySmashPriceText != null) buySmashPriceText.text = levelManager.smashCost.ToString();
             }
         }
 
-        // NOU: actualizează textele power-up
-        public void UpdatePowerUpCounts(int undo, int smash)
+        // NOU: actualizează textele power-up (doar smash)
+        public void UpdatePowerUpCounts(int smash)
         {
-            if (undoCountText != null) undoCountText.text = undo.ToString();
             if (smashCountText != null) smashCountText.text = smash.ToString();
         }
 

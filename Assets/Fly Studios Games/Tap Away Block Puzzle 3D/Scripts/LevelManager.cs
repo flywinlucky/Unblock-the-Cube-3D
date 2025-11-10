@@ -49,33 +49,14 @@ namespace Tap_Away_Block_Puzzle_3D
         private const string LevelNumberKey = "PlayerLevelNumber"; // persistence key for global level counter
         private int _overallLevelNumber = 1; // persistent global level number shown to player
 
-        // NOU: Undo stack - păstrează ultimele mov-uri / distrugeri
-        private struct MoveRecord
-        {
-            public bool wasDestroyed;
-            public Vector3 startPos;
-            public Vector3 endPos;
-            public Vector3Int gridPos;
-            public MoveDirection direction;
-            public Quaternion rotation;
-            public Vector3 scale;
-        }
-        private Stack<MoveRecord> _undoStack = new Stack<MoveRecord>();
-        public int maxUndo = 20;
-
         // NOU: Power-up inventory & costs
         [Header("PowerUps")]
-        [Tooltip("Numărul curent de Undo disponibile.")]
-        public int undoCount = 0;
         [Tooltip("Numărul curent de Smash disponibile.")]
         public int smashCount = 0;
 
-        [Tooltip("Cost coins pentru a cumpăra un Undo.")]
-        public int undoCost = 5;
         [Tooltip("Cost coins pentru a cumpăra un Smash.")]
         public int smashCost = 10;
 
-        private const string UndoKey = "PlayerUndo";
         private const string SmashKey = "PlayerSmash";
 
         [Header("Random Cycle Settings")]
@@ -147,10 +128,9 @@ namespace Tap_Away_Block_Puzzle_3D
             // Actualizăm numărul curent de nivel
             UpdateCurrentLevelNumber();
 
-            // NOU: încărcăm powerup-urile persistente la start și actualizăm UI
-            undoCount = PlayerPrefs.GetInt(UndoKey, undoCount);
+            // NOU: încărcăm powerup-urile persistente la start și actualizăm UI (doar smash)
             smashCount = PlayerPrefs.GetInt(SmashKey, smashCount);
-            if (uiManager != null) uiManager.UpdatePowerUpCounts(undoCount, smashCount);
+            if (uiManager != null) uiManager.UpdatePowerUpCounts(smashCount);
 
             // Asigurăm starea inițială a rotației camerei (dacă există)
             if (cameraControler != null)
@@ -188,27 +168,13 @@ namespace Tap_Away_Block_Puzzle_3D
         }
 
         // NOU: cumpărare power-ups din shop
-        public bool BuyUndo()
-        {
-            if (SpendCoins(undoCost))
-            {
-                undoCount++;
-                PlayerPrefs.SetInt(UndoKey, undoCount);
-                if (uiManager != null) uiManager.UpdatePowerUpCounts(undoCount, smashCount);
-                return true;
-            }
-            // notificăm jucătorul că nu are fonduri suficiente
-            if (notificationManager != null) notificationManager.ShowNotification("Not enough coins", 2f);
-            return false;
-        }
-
         public bool BuySmash()
         {
             if (SpendCoins(smashCost))
             {
                 smashCount++;
                 PlayerPrefs.SetInt(SmashKey, smashCount);
-                if (uiManager != null) uiManager.UpdatePowerUpCounts(undoCount, smashCount);
+                if (uiManager != null) uiManager.UpdatePowerUpCounts(smashCount);
                 if (notificationManager != null) notificationManager.ShowNotification("Remover Buyed + 1", 2f);
                 return true;
             }
@@ -562,103 +528,6 @@ namespace Tap_Away_Block_Puzzle_3D
             return false;
         }
 
-        // NOU: Block-uri apelează asta înainte de a porni mutarea/distrugerea
-        public void RegisterMove(Block block, Vector3 startPos, Vector3 endPos, bool wasDestroyed, Vector3Int gridPos, MoveDirection dir, Quaternion rot, Vector3 scale)
-        {
-            MoveRecord rec = new MoveRecord
-            {
-                wasDestroyed = wasDestroyed,
-                startPos = startPos,
-                endPos = endPos,
-                gridPos = gridPos,
-                direction = dir,
-                rotation = rot,
-                scale = scale
-            };
-
-            _undoStack.Push(rec);
-            if (_undoStack.Count > maxUndo) // păstrăm doar ultimele N
-            {
-                // pierdem cel mai vechi (pop all to temp queue approach)
-                var arr = _undoStack.ToArray();
-                _undoStack.Clear();
-                for (int i = 0; i < Mathf.Min(arr.Length, maxUndo); i++) _undoStack.Push(arr[Mathf.Min(arr.Length - 1, i)]);
-            }
-        }
-
-        // NOU: Undo - inversează ultima acțiune (mișcare sau distrugere)
-        public void UseUndo()
-        {
-            // Verificăm dacă avem item Undo
-            if (undoCount <= 0)
-            {
-                if (notificationManager != null) notificationManager.ShowNotification("No undos available", 2f);
-                return;
-            }
-
-            // Verificăm dacă există ceva de refăcut în istoric
-            if (_undoStack == null || _undoStack.Count == 0)
-            {
-                if (notificationManager != null) notificationManager.ShowNotification("No moves to undo", 2f);
-                return;
-            }
-
-            // Consumăm Undo doar după ce știm că putem anula ceva
-            undoCount--;
-            PlayerPrefs.SetInt(UndoKey, undoCount);
-            if (uiManager != null) uiManager.UpdatePowerUpCounts(undoCount, smashCount);
-
-            MoveRecord rec = _undoStack.Pop();
-
-            // Calculează poziția locală bazată pe gridPos (independentă de rotația/poziția curentă a levelContainer)
-            Vector3 localPos = (Vector3)rec.gridPos * gridUnitSize;
-
-            if (rec.wasDestroyed)
-            {
-                // reacrea block (există deja în cod)
-                GameObject newBlockObj = Instantiate(singleBlockPrefab, levelContainer);
-                newBlockObj.transform.localPosition = localPos;
-                newBlockObj.transform.localRotation = rec.rotation;
-                newBlockObj.transform.localScale = rec.scale;
-
-                Block blockScript = newBlockObj.GetComponent<Block>();
-                blockScript.Initialize(rec.direction, this, gridUnitSize, rec.gridPos);
-                _activeBlocks.Add(blockScript);
-
-                // NOU: la refacere prin undo actualizăm progresul UI corect
-                if (uiManager != null)
-                {
-                    uiManager.UpdateProgressByCounts(_initialBlockCount, _activeBlocks.Count);
-                }
-            }
-            else
-            {
-                // găsim block-ul cel mai apropiat de endPos (fallback), dar setăm poziția în local space pe gridPos
-                Block closest = null;
-                float best = float.MaxValue;
-                foreach (var b in _activeBlocks)
-                {
-                    if (b == null) continue;
-                    float d = Vector3.Distance(b.transform.position, rec.endPos);
-                    if (d < best)
-                    {
-                        best = d;
-                        closest = b;
-                    }
-                }
-                if (closest != null)
-                {
-                    // setăm poziția locală și rotația locală (astfel va ține cont de rotația/poziția curentă a levelContainer)
-                    closest.transform.SetParent(levelContainer, true);
-                    closest.transform.localPosition = localPos;
-                    closest.transform.localRotation = rec.rotation;
-                }
-            }
-
-            // actualizăm UI coins etc. (dacă este cazul)
-            if (uiManager != null) uiManager.UpdateGlobalCoinsDisplay(GetCoins());
-        }
-
         // NOU: găsește un block pentru smash (folosim aceeași logică ca la hint) și îl distrugem
         public void UseSmashHint()
         {
@@ -692,7 +561,7 @@ namespace Tap_Away_Block_Puzzle_3D
             // Avem țintă -> consumăm item-ul și aplicăm efectul
             smashCount--;
             PlayerPrefs.SetInt(SmashKey, smashCount);
-            if (uiManager != null) uiManager.UpdatePowerUpCounts(undoCount, smashCount);
+            if (uiManager != null) uiManager.UpdatePowerUpCounts(smashCount);
 
             candidate.Smash();
         }
@@ -740,7 +609,7 @@ namespace Tap_Away_Block_Puzzle_3D
             // consumăm un Smash
             smashCount--;
             PlayerPrefs.SetInt(SmashKey, smashCount);
-            if (uiManager != null) uiManager.UpdatePowerUpCounts(undoCount, smashCount);
+            if (uiManager != null) uiManager.UpdatePowerUpCounts(smashCount);
 
             // înregistrare pentru undo (opțional) și distrugere
             // Block.Smash se ocupă de animatie și notificare OnBlockRemoved
