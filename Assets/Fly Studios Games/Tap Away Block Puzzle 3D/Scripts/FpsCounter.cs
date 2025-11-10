@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI; // Ensure Text component is available
-using System.Collections;
 
 namespace Tap_Away_Block_Puzzle_3D
 {

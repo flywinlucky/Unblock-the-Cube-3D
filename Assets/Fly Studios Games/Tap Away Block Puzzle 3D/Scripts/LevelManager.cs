@@ -366,7 +366,7 @@ namespace Tap_Away_Block_Puzzle_3D
         {
             if (_activeBlocks.Count == 0)
             {
-                Debug.Log($"Congratulations! You completed level {_currentLevelNumber}!");
+                Debug.Log($"You completed level {_currentLevelNumber}!");
 
                 if (isLevelEditorManager)
                 {
