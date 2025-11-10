@@ -1,9 +1,13 @@
 using UnityEngine;
 
-public class RemoveAllPlayerPrefs : MonoBehaviour
+namespace Tap_Away_Block_Puzzle_3D
 {
-    public void RemoveAllPlayerPrefsData()
+    public class RemoveAllPlayerPrefs : MonoBehaviour
     {
-        PlayerPrefs.DeleteAll();
+        public void RemoveAllPlayerPrefsData()
+        {
+            PlayerPrefs.DeleteAll();
+        }
     }
+
 }

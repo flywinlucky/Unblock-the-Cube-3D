@@ -1,22 +1,24 @@
-﻿using UnityEngine;
-using UnityEditor;
+﻿using UnityEditor;
 
-[CustomEditor(typeof(LevelData))]
-public class LevelDataEditor : Editor
+namespace Tap_Away_Block_Puzzle_3D
 {
-    public override void OnInspectorGUI()
+    [CustomEditor(typeof(LevelData))]
+    public class LevelDataEditor : Editor
     {
-        if (target == null) return;
-        serializedObject.Update();
-        SerializedProperty prop = serializedObject.GetIterator();
-        bool enterChildren = true;
-        while (prop.NextVisible(enterChildren))
+        public override void OnInspectorGUI()
         {
-            enterChildren = false;
-            if (prop.name == "blocks" || prop.name == "customGridLength" || prop.name == "customGridHeight" || prop.name == "seed") 
-                continue; // Sărim variabilele ascunse
-            EditorGUILayout.PropertyField(prop, true);
+            if (target == null) return;
+            serializedObject.Update();
+            SerializedProperty prop = serializedObject.GetIterator();
+            bool enterChildren = true;
+            while (prop.NextVisible(enterChildren))
+            {
+                enterChildren = false;
+                if (prop.name == "blocks" || prop.name == "customGridLength" || prop.name == "customGridHeight" || prop.name == "seed")
+                    continue; // Sărim variabilele ascunse
+                EditorGUILayout.PropertyField(prop, true);
+            }
+            serializedObject.ApplyModifiedProperties();
         }
-        serializedObject.ApplyModifiedProperties();
     }
 }

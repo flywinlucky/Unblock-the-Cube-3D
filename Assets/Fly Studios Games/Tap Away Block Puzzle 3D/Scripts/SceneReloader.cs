@@ -1,19 +1,23 @@
 using UnityEngine;
 using UnityEngine.SceneManagement; // Este necesar să incluzi acest namespace pentru a lucra cu scenele
 
-public class SceneReloader : MonoBehaviour
+namespace Tap_Away_Block_Puzzle_3D
 {
-    /// <summary>
-    /// Această metodă publică reîncarcă scena activă în prezent.
-    /// Poate fi apelată de la un buton UI sau din alt script.
-    /// </summary>
-    public void RestartCurrentScene()
+    public class SceneReloader : MonoBehaviour
     {
-        // Obține indexul de build al scenei curente.
-        // Folosirea indexului este o metodă robustă și eficientă.
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        /// <summary>
+        /// Această metodă publică reîncarcă scena activă în prezent.
+        /// Poate fi apelată de la un buton UI sau din alt script.
+        /// </summary>
+        public void RestartCurrentScene()
+        {
+            // Obține indexul de build al scenei curente.
+            // Folosirea indexului este o metodă robustă și eficientă.
+            int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
 
-        // Încarcă scena folosind indexul obținut, ceea ce duce la un restart.
-        SceneManager.LoadScene(currentSceneIndex);
+            // Încarcă scena folosind indexul obținut, ceea ce duce la un restart.
+            SceneManager.LoadScene(currentSceneIndex);
+        }
     }
+
 }
