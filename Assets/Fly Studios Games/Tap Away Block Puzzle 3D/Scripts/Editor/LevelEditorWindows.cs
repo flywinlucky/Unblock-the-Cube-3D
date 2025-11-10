@@ -35,7 +35,7 @@ public class LevelEditorWindow : EditorWindow
 
 	// ADĂUGAT: Căi către scenele proiectului (asigură că path-urile corespund proiectului tău)
 	private const string LevelEditorScenePath = "Assets/Fly Studios Games/Tap Away Block Puzzle 3D/Scenes/Level Editor.unity";
-	private const string GameScenePath = "Assets/Fly Studios Games/Tap Away Block Puzzle 3D/Scenes/Game Scene.unity";
+	private const string GameScenePath = "Assets/Fly Studios Games/Tap Away Block Puzzle 3D/Scenes/Game Demo Scene.unity";
 
 	// snapshot pentru detectarea modificărilor din scena editor
 	private List<BlockData> _lastSceneSnapshot = new List<BlockData>();
@@ -549,7 +549,7 @@ public class LevelEditorWindow : EditorWindow
 		_suppressSceneSync = false;
 	}
 
-	// Închide scena editor și revine la scena de joc (Game Scene.unity)
+	// Închide scena editor și revine la scena de joc (Game Demo Scene.unity)
 	private void CloseEditorScene()
 	{
 		if (!_editorSceneOpen) return;
@@ -589,13 +589,13 @@ public class LevelEditorWindow : EditorWindow
 			}
 			else
 			{
-				//Debug.LogWarning("Game scene not found at: " + GameScenePath);
+				//Debug.LogWarning("Game Demo Scene not found at: " + GameScenePath);
 				// Eliminăm fallback-ul pentru NewScene, deoarece nu este permis în timpul reîncărcării asamblării
 			}
 		}
 		catch (System.Exception ex)
 		{
-			//Debug.LogWarning("Failed to open game scene: " + ex.Message);
+			//Debug.LogWarning("Failed to open Game Demo Scene: " + ex.Message);
 		}
 
 		_editorSceneOpen = false;

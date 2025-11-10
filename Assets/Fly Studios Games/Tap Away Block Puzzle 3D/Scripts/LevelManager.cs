@@ -167,17 +167,6 @@ public class LevelManager : MonoBehaviour
 
     private void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-            //AddCoins(100);
-        //}
-
-        // Apasă F pentru a re-încadra instantaneu obiectul
-        //if (Input.GetKeyDown(KeyCode.F))
-        //{
-            //cameraControler.FrameTarget();
-        //}
-
         // Adăugăm verificare periodică a progresului pentru a corecta discrepanțele rare
         _progressCheckTimer += Time.deltaTime;
         if (_progressCheckTimer >= _progressCheckInterval)

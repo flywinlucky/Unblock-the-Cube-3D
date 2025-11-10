@@ -195,7 +195,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 59a9efb5e4aaf3e4cb9063894ad355f4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 04f347ebdd637674489910521d7e08b1, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5758,12 +5758,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   backgrounds:
-  - {fileID: 21300000, guid: 8bae91be17fe1d14da95d07c9435d151, type: 3}
-  - {fileID: 21300000, guid: 4d0478347556c5641bf2c9e52e1f4227, type: 3}
-  - {fileID: 21300000, guid: 808d9f46a65170e4998337f119f1a566, type: 3}
-  - {fileID: 21300000, guid: 59a9efb5e4aaf3e4cb9063894ad355f4, type: 3}
-  - {fileID: 21300000, guid: 310b9161201ee134584a4cde3f5b02b5, type: 3}
-  - {fileID: 21300000, guid: c203620e80052174b8ba27c2aab51045, type: 3}
+  - {fileID: 21300000, guid: ecfbbb365ca0c7c43b8e175f6f6dfa1c, type: 3}
+  - {fileID: 21300000, guid: 28b65daea64007048848c8c904b7c4cd, type: 3}
+  - {fileID: 21300000, guid: a0bf66978d2ef0f49b1193751290e510, type: 3}
+  - {fileID: 21300000, guid: 04f347ebdd637674489910521d7e08b1, type: 3}
+  - {fileID: 21300000, guid: 4a5c9312cda03ff45aca47928ced35ce, type: 3}
+  - {fileID: 21300000, guid: e9f05d98e4befc0448d41503495fc06a, type: 3}
   changeEveryLovelCount: 3
   backgroundImage: {fileID: 30882068}
 --- !u!1 &1540090166
@@ -7141,7 +7141,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 9ec59b94202f8eb4c97dd7d52914d077, type: 3}
+  m_audioClip: {fileID: 8300000, guid: ad179b8b7286dea4582be1597a1fb558, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -7421,7 +7421,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 5d93605b286a5ec4a862e82ceacbe96f, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 2acb9734241d6c24f8fa1da463b86866, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.4
   m_Pitch: 1
