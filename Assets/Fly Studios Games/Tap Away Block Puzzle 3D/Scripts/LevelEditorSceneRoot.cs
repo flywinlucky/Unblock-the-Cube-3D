@@ -35,7 +35,7 @@ namespace Tap_Away_Block_Puzzle_3D
             if (state == PlayModeStateChange.EnteredPlayMode)
             {
                 levelEditorLevelRoot.SetActive(false);
-                Debug.Log("Level Editor Root disabled (Play Mode)");
+                Debug.Log("Level Editor Root disabled (Enter On Play Mode)");
             }
 
             if (state == PlayModeStateChange.EnteredEditMode)
