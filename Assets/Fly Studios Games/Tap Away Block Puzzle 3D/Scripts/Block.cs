@@ -28,6 +28,7 @@ namespace Tap_Away_Block_Puzzle_3D
         public Color arrowCollor;
 
         public MeshRenderer[] cubeArows;
+        public MeshRenderer cubeMesh;
 
         // NOU: Eveniment declanșat când blocul este activat
         public static event Action<Block> OnBlockActivated;
@@ -231,10 +232,9 @@ namespace Tap_Away_Block_Puzzle_3D
         {
             if (mat != null)
             {
-                Renderer rend = GetComponent<Renderer>();
-                if (rend != null)
+                if (cubeMesh != null)
                 {
-                    rend.material = new Material(mat); // Creăm o instanță nouă a materialului pentru a evita conflictele globale
+                    cubeMesh.material = new Material(mat); // Creăm o instanță nouă a materialului pentru a evita conflictele globale
                 }
             }
 

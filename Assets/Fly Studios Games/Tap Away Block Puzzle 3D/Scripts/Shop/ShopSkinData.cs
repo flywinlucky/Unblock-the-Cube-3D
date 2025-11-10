@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Tap_Away_Block_Puzzle_3D
 {
-    [CreateAssetMenu(fileName = "NewShopSkin", menuName = "Tap Away Block Puzzle 3D/Skin")]
+    [CreateAssetMenu(fileName = "NewShopSkin", menuName = "Tap Away Block Puzzle 3D/New Skin")]
     public class ShopSkinData : ScriptableObject
     {
         public string id; // ID unic pentru skin

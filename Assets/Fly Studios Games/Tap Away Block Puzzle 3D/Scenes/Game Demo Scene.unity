@@ -4785,6 +4785,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9dbbabab4a466c547a1d1d780140fb53, type: 2}
   - {fileID: 11400000, guid: 82c64343b744bd445a33d734539c0c96, type: 2}
   - {fileID: 11400000, guid: 56d7dc32d553c834cb6939c0e0e90cad, type: 2}
+  - {fileID: 11400000, guid: d3352c98973c71340b1e36cafef21bf8, type: 2}
+  - {fileID: 11400000, guid: c9a63d9f376075741a7a608576080e56, type: 2}
+  - {fileID: 11400000, guid: f7044f16a7341eb4e85e00dfdeff74f6, type: 2}
   currentLevelIndex: 0
   singleBlockPrefab: {fileID: 8118699957492744284, guid: 7e4aea03383933a4494280f2a26b9efa, type: 3}
   levelContainer: {fileID: 1540090167}
@@ -5776,7 +5779,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1540090167}
   m_Layer: 0
-  m_Name: LevelTarget
+  m_Name: Root LevelTarget
   m_TagString: Untagged
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
