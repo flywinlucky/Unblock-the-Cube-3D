@@ -4,52 +4,74 @@ using UnityEngine;
 
 namespace Tap_Away_Block_Puzzle_3D
 {
-
+    /// <summary>
+    /// Manages tutorial steps. Steps are GameObjects (UI or indicators) that get activated in order.
+    /// Subscribes to Block activation and object rotation events to advance the tutorial.
+    /// Functionality preserved; refactored for clarity and inspector UX.
+    /// </summary>
     public class TutorialManager : MonoBehaviour
     {
-        [Header("Tutorial Steps")]
-        public List<GameObject> tutorialSteps; // Listă de pași pentru flexibilitate
-        public Transform levelTarget;
-        public int ignoreIndex; // Indexul copilului care va fi sărit
+        #region Inspector
 
+        [Header("Tutorial Steps")]
+        [Tooltip("List of tutorial step GameObjects. Steps will be activated in order.")]
+        public List<GameObject> tutorialSteps; // flexible list of steps
+
+        [Tooltip("Root transform containing the level blocks that tutorial will manipulate.")]
+        public Transform levelTarget;
+
+        [Tooltip("Index of the child to keep enabled during the current step (skipped/interactive).")]
+        public int ignoreIndex; // child index to keep active
+
+        [Tooltip("Reference to the CameraController used in some tutorial steps.")]
         public CameraControler cameraControler;
 
-        private const string TutorialStateKey = "TutorialState"; // Cheie pentru salvarea progresului în PlayerPrefs
+        #endregion
+
+        #region Persistence
+
+        private const string TutorialStateKey = "TutorialState"; // PlayerPrefs key for tutorial progress
         private int _currentStep = 0;
 
-        void Start()
+        #endregion
+
+        #region Unity Events
+
+        private void Start()
         {
-            // Citim progresul din PlayerPrefs
+            // Load tutorial progress
             _currentStep = PlayerPrefs.GetInt(TutorialStateKey, 0);
 
-            // Activăm pasul corespunzător
+            // Activate the saved/current step
             ActivateStep(_currentStep);
 
-            // Conectăm evenimentul OnBlockActivated
+            // Subscribe to block activation events
             Block.OnBlockActivated += OnBlockActivated;
 
-            // NOU: Conectăm evenimentul OnObjectRotated
+            // Subscribe to rotation event from CameraControler
             CameraControler.OnObjectRotated += OnObjectRotated;
         }
 
         private void OnDestroy()
         {
-            // Deconectăm evenimentul pentru a evita erorile
+            // Unsubscribe to avoid dangling listeners
             Block.OnBlockActivated -= OnBlockActivated;
-
-            // NOU: Deconectăm evenimentul OnObjectRotated
             CameraControler.OnObjectRotated -= OnObjectRotated;
         }
 
+        #endregion
+
+        #region Tutorial Flow
+
         private void ActivateStep(int step)
         {
-            // Dezactivăm toți pașii
+            // Deactivate all steps first
             foreach (var stepObject in tutorialSteps)
             {
                 if (stepObject != null) stepObject.SetActive(false);
             }
 
-            // Activăm pasul curent
+            // Activate the requested step
             if (step >= 0 && step < tutorialSteps.Count && tutorialSteps[step] != null)
             {
                 tutorialSteps[step].SetActive(true);
@@ -70,28 +92,29 @@ namespace Tap_Away_Block_Puzzle_3D
                 {
                     if (cameraControler != null)
                     {
-                        cameraControler.ResetRotationFlag(); // Resetăm flag-ul pentru rotație
+                        cameraControler.ResetRotationFlag();
                     }
                 }
             }
         }
 
-        // NOU: Corutină pentru delay înainte de ApplyDisableExcept
+        /// <summary>
+        /// Coroutine used to delay a small amount before disabling other blocks (gives frame to initialize).
+        /// </summary>
         private IEnumerator DelayedApplyDisableExcept()
         {
             yield return new WaitForSeconds(0.1f);
-            cameraControler.rotationEnabled = false;
+            if (cameraControler != null) cameraControler.rotationEnabled = false;
             ApplyDisableExcept();
         }
 
         private void CompleteCurrentStep()
         {
-            // Marcăm pasul curent ca finalizat și trecem la următorul
+            // Mark step complete and advance
             _currentStep++;
             PlayerPrefs.SetInt(TutorialStateKey, _currentStep);
             PlayerPrefs.Save();
 
-            // Dacă am terminat toate pașii, dezactivăm tutorialele
             if (_currentStep >= tutorialSteps.Count)
             {
                 Debug.Log("All tutorial steps completed. Disabling tutorials.");
@@ -102,24 +125,29 @@ namespace Tap_Away_Block_Puzzle_3D
                 return;
             }
 
-            // Activăm următorul pas
             ActivateStep(_currentStep);
         }
 
+        /// <summary>
+        /// Reset tutorial progress and activate the first step.
+        /// </summary>
         public void ResetTutorial()
         {
-            // Resetăm progresul tutorialului
             _currentStep = 0;
             PlayerPrefs.SetInt(TutorialStateKey, _currentStep);
             PlayerPrefs.Save();
 
-            // Activăm primul pas
             ActivateStep(_currentStep);
             Debug.Log("Tutorial has been reset.");
         }
 
-        // Dezactivează interactivitatea pentru toate Block-urile din levelTarget,
-        // cu excepția copilului cu index == ignore (dacă este valid).
+        #endregion
+
+        #region Block Interactivity Helpers
+
+        /// <summary>
+        /// Disable interactivity for all Block components under levelTarget except the child at ignoreIndex.
+        /// </summary>
         public void ApplyDisableExcept()
         {
             if (levelTarget == null)
@@ -139,33 +167,30 @@ namespace Tap_Away_Block_Puzzle_3D
                 }
 
                 Block block = child.GetComponent<Block>();
+                if (block == null) continue;
 
-                if (i == ignoreIndex)
-                {
-                    block._isInteractible = true;
-                }
-                else
-                {
-                    block._isInteractible = false;
-                }
+                block._isInteractible = (i == ignoreIndex);
             }
         }
 
         private void OnBlockActivated(Block block)
         {
-            // Verificăm dacă blocul activat este cel ignorat
+            // If the activated block is the one we were waiting for, advance the tutorial
             int childIndex = block.transform.GetSiblingIndex();
             if (childIndex == ignoreIndex)
             {
                 CompleteCurrentStep();
-                // NOU: Activăm toți copiii după ce blocul ignorat este activat
+
+                // Re-enable all blocks after completing this step
                 EnableAllBlocks();
 
-                cameraControler.rotationEnabled = true;
+                if (cameraControler != null) cameraControler.rotationEnabled = true;
             }
         }
 
-        // NOU: Activează interactivitatea pentru toate Block-urile din levelTarget
+        /// <summary>
+        /// Enable interactivity for all Block components under levelTarget.
+        /// </summary>
         private void EnableAllBlocks()
         {
             if (levelTarget == null)
@@ -195,7 +220,14 @@ namespace Tap_Away_Block_Puzzle_3D
             }
         }
 
-        // NOU: Avansăm la pasul 2 când obiectul este rotit
+        #endregion
+
+        #region External Event Handlers
+
+        /// <summary>
+        /// Called when the object is rotated (CameraControler raises this).
+        /// Advances tutorial from step 1 to step 2.
+        /// </summary>
         private void OnObjectRotated()
         {
             if (_currentStep == 1)
@@ -204,5 +236,7 @@ namespace Tap_Away_Block_Puzzle_3D
                 CompleteCurrentStep();
             }
         }
+
+        #endregion
     }
 }

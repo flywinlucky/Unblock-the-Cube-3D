@@ -5,29 +5,54 @@ using UnityEngine.UI;
 
 namespace Tap_Away_Block_Puzzle_3D
 {
+    /// <summary>
+    /// UI element for a single shop skin entry.
+    /// Responsible for updating visuals and forwarding clicks to ShopManager.
+    /// </summary>
     public class ShopSkinElement : MonoBehaviour
     {
-        public Text skinName;
-        public Text skinPrice;
-        public Image skinSprite;
-        public Button actionButton; // butonul principal (buy/select)
+        #region Inspector - UI References
 
-        // NOU: panel care afișează starea "locked" (lacăt)
+        [Header("UI References")]
+        [Tooltip("Text that displays the skin name.")]
+        public Text skinName;
+
+        [Tooltip("Text that displays the skin price or status.")]
+        public Text skinPrice;
+
+        [Tooltip("Icon image for the skin.")]
+        public Image skinSprite;
+
+        [Tooltip("Primary action button (Buy / Select).")]
+        public Button actionButton;
+
+        [Tooltip("Optional locked overlay panel shown when skin is not owned.")]
         public GameObject lockedPanel;
-        // NOU: iconă / obiect UI pentru afişarea costului (de ex. imagine monedă) — se ascunde când e cumpărat
+
+        [Tooltip("Icon or object indicating coin cost; hidden when owned.")]
         public GameObject coinIconImage;
 
-        // NOU: sprites pentru buton în funcție de stare
+        [Tooltip("Sprite used for button when this skin is selected.")]
         public Sprite selectedSkinButtonSprite;
+
+        [Tooltip("Sprite used for button when this skin is not selected.")]
         public Sprite deselectedSkinButtonSprite;
 
-        // starea curentă
+        #endregion
+
+        #region Internal State
+
         private string _skinId;
         private int _price;
         private bool _owned;
         private bool _selected;
         private ShopManager _manager;
 
+        #endregion
+
+        /// <summary>
+        /// Initialize the UI element.
+        /// </summary>
         public void Initialize(string id, string name, int price, Sprite icon, bool owned, bool selected, ShopManager manager)
         {
             _skinId = id;
@@ -47,13 +72,11 @@ namespace Tap_Away_Block_Puzzle_3D
                 actionButton.onClick.AddListener(OnClicked);
             }
 
-            // Asigurăm starea locked imediat la inițializare
             UpdateLocked();
         }
 
         private void UpdateUI()
         {
-            // folosim skinPrice pentru a afișa fie prețul, fie statusul "Owned"/"Selected"
             if (skinPrice != null)
             {
                 if (_owned)
@@ -62,12 +85,10 @@ namespace Tap_Away_Block_Puzzle_3D
                     skinPrice.text = _price.ToString();
             }
 
-            // opțional: dezactivăm butonul dacă este "Selected"
             if (actionButton != null)
             {
                 actionButton.interactable = !_selected;
 
-                // setăm sprite-ul butonului în funcție de stare (dacă s-au atribuit sprite-urile)
                 Image btnImg = actionButton.image;
                 if (btnImg != null)
                 {
@@ -75,25 +96,16 @@ namespace Tap_Away_Block_Puzzle_3D
                         btnImg.sprite = selectedSkinButtonSprite;
                     else if (deselectedSkinButtonSprite != null)
                         btnImg.sprite = deselectedSkinButtonSprite;
-                    // dacă nu sunt setate sprite-urile, păstrăm sprite-ul existent
                 }
             }
 
-            // actualizăm locked panel și iconița de coin în fiecare actualizare UI
             UpdateLocked();
         }
 
-        // NOU: actualizează activarea panelului locked și iconița de coin
         private void UpdateLocked()
         {
-            if (lockedPanel != null)
-            {
-                lockedPanel.SetActive(!_owned);
-            }
-            if (coinIconImage != null)
-            {
-                coinIconImage.SetActive(!_owned);
-            }
+            if (lockedPanel != null) lockedPanel.SetActive(!_owned);
+            if (coinIconImage != null) coinIconImage.SetActive(!_owned);
         }
 
         private void OnClicked()

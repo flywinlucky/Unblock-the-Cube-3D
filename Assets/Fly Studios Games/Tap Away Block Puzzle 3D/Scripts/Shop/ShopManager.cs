@@ -1,23 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Tap_Away_Block_Puzzle_3D
 {
+    /// <summary>
+    /// Manages the in-game skin shop: populates UI elements, handles purchases and selection,
+    /// and applies the selected skin to active blocks.
+    /// Functionality is preserved; this file is refactored for readability and Asset Store standards.
+    /// </summary>
     public class ShopManager : MonoBehaviour
     {
+        #region Inspector Fields
+
         [Header("Shop Setup")]
-        public GameObject shopSkinElementPrefab; // Prefab pentru elementele din shop
-        public Transform contentRoot; // Unde vom instanția elementele UI
-        public List<ShopSkinData> skins = new List<ShopSkinData>(); // Lista de ScriptableObjects
+        [Tooltip("Prefab used to create each shop UI element.")]
+        public GameObject shopSkinElementPrefab;
+
+        [Tooltip("Parent transform where shop elements will be instantiated.")]
+        public Transform contentRoot;
+
+        [Tooltip("List of available skins (ScriptableObjects).")]
+        public List<ShopSkinData> skins = new List<ShopSkinData>();
 
         [Header("References")]
-        public LevelManager levelManager; // Referință pentru a aplica skin la blocuri
+        [Tooltip("Reference to LevelManager to apply skins to blocks and perform coin transactions.")]
+        public LevelManager levelManager;
+
+        #endregion
+
+        #region Persistence & State
 
         private const string SelectedSkinKey = "SelectedSkin";
         private HashSet<string> _owned = new HashSet<string>();
         [HideInInspector] public ShopSkinData selectedSkin;
+
+        #endregion
+
+        #region Unity Events
 
         private void Start()
         {
@@ -25,6 +45,10 @@ namespace Tap_Away_Block_Puzzle_3D
             LoadSelected();
             PopulateShop();
         }
+
+        #endregion
+
+        #region Shop Logic
 
         private void LoadOwned()
         {
@@ -44,11 +68,14 @@ namespace Tap_Away_Block_Puzzle_3D
             selectedSkin = skins.Find(skin => skin.id == selectedSkinId);
         }
 
+        /// <summary>
+        /// Populate the shop UI by instantiating ShopSkinElement prefabs.
+        /// </summary>
         private void PopulateShop()
         {
             if (shopSkinElementPrefab == null || contentRoot == null) return;
 
-            // Curățăm conținutul
+            // Clear previous content
             for (int i = contentRoot.childCount - 1; i >= 0; i--)
             {
                 DestroyImmediate(contentRoot.GetChild(i).gameObject);
@@ -67,7 +94,10 @@ namespace Tap_Away_Block_Puzzle_3D
             }
         }
 
-        // apelat din element UI când jucătorul apasă butonul
+        /// <summary>
+        /// Called by UI element when a skin item is clicked.
+        /// If the skin is already owned it will be selected, otherwise attempt purchase.
+        /// </summary>
         public void OnElementClicked(string skinId, int price, bool owned)
         {
             ShopSkinData skin = skins.Find(s => s.id == skinId);
@@ -91,7 +121,6 @@ namespace Tap_Away_Block_Puzzle_3D
             }
             else
             {
-                // notificare via LevelManager.NotificationManager dacă e legat
                 if (levelManager.notificationManager != null)
                     levelManager.notificationManager.ShowNotification("Not enough coins", 2f);
             }
@@ -103,10 +132,15 @@ namespace Tap_Away_Block_Puzzle_3D
             PlayerPrefs.SetInt("SkinOwned_" + skin.id, 1);
             PlayerPrefs.Save();
             PopulateShop();
-            // imediat selectăm cumpăratul
+
+            // Immediately select the purchased skin
             SelectSkin(skin);
         }
 
+        /// <summary>
+        /// Selects the given skin and applies it to all active blocks.
+        /// Persists selection.
+        /// </summary>
         public void SelectSkin(ShopSkinData skin)
         {
             selectedSkin = skin;
@@ -114,7 +148,6 @@ namespace Tap_Away_Block_Puzzle_3D
             PlayerPrefs.Save();
             PopulateShop();
 
-            // Aplicăm skin-ul și culoarea săgeții la toate blocurile din scenă
             if (levelManager != null)
             {
                 foreach (var block in levelManager.GetActiveBlocks())
@@ -122,22 +155,21 @@ namespace Tap_Away_Block_Puzzle_3D
                     if (block != null)
                     {
                         block.ApplySkin(skin.material);
-                        block.arrowCollor = skin.arrowColor; // Transmitem culoarea săgeții
-                        block.ApplyArrowColor(); // Aplicăm culoarea în shader-ul custom
+                        block.arrowCollor = skin.arrowColor;
+                        block.ApplyArrowColor();
                     }
                 }
             }
         }
 
         /// <summary>
-        /// Returnează materialul skin-ului selectat.
+        /// Returns the Material for the currently selected skin or null.
         /// </summary>
         public Material selectedMaterial
         {
-            get
-            {
-                return selectedSkin != null ? selectedSkin.material : null;
-            }
+            get { return selectedSkin != null ? selectedSkin.material : null; }
         }
+
+        #endregion
     }
 }
