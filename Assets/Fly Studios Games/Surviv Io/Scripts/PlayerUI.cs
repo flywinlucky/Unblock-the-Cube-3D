@@ -8,6 +8,10 @@ public class PlayerUI : MonoBehaviour
 	public PlayerHealth playerHealth; // assign în Inspector (sau găsește în child)
 	public Slider healthSlider;       // slider UI (value 0..1)
 	public Slider armorSlider;        // slider pentru armor
+	[Space]
+	public EquipmentIventorySlot helment_Slot;
+	public EquipmentIventorySlot vest_Slot;
+
 	
 	private void Reset()
 	{
