@@ -7,6 +7,7 @@ public class PlayerUI : MonoBehaviour
 	[Header("References")]
 	public PlayerHealth playerHealth; // assign în Inspector (sau găsește în child)
 	public Slider healthSlider;       // slider UI (value 0..1)
+	public Slider armorSlider;        // slider pentru armor
 	
 	private void Reset()
 	{
@@ -14,10 +15,11 @@ public class PlayerUI : MonoBehaviour
 		if (playerHealth == null)
 			playerHealth = FindObjectOfType<PlayerHealth>();
 
-		if (healthSlider == null)
+		if (healthSlider == null || armorSlider == null)
 		{
-			// cautăm un Slider în copii
-			healthSlider = GetComponentInChildren<Slider>();
+			var sliders = GetComponentsInChildren<Slider>();
+			if (sliders.Length > 0 && healthSlider == null) healthSlider = sliders[0];
+			if (sliders.Length > 1 && armorSlider == null) armorSlider = sliders[1];
 		}
 	}
 
@@ -29,40 +31,31 @@ public class PlayerUI : MonoBehaviour
 		if (playerHealth != null)
 		{
 			// abonăm la event pentru actualizări ulterioare
-			playerHealth.OnHealthChanged += UpdateHealthUI;
+			playerHealth.OnStatsChanged += UpdateUI;
 
-			// inizializare sigură a slider-ului (așteptăm un frame ca UI să fie gata)
-			StartCoroutine(EnsureSliderInitialized());
+			// inizializare sigură a slider-elor
+			UpdateUI(playerHealth.CurrentHealth, playerHealth.MaxHealth, playerHealth.CurrentArmor, playerHealth.MaxArmor);
 		}
 	}
 
 	private void OnDisable()
 	{
 		if (playerHealth != null)
-			playerHealth.OnHealthChanged -= UpdateHealthUI;
+			playerHealth.OnStatsChanged -= UpdateUI;
 	}
 
-	private void UpdateHealthUI(float current, float max)
+	private void UpdateUI(float currentHealth, float maxHealth, float currentArmor, float maxArmor)
 	{
 		if (healthSlider != null)
 		{
-			// asigurăm maxValue actualizat (în caz că se schimbă în runtime)
-			healthSlider.maxValue = max > 0f ? max : healthSlider.maxValue;
-			healthSlider.value = Mathf.Clamp(current, 0f, max);
+			healthSlider.maxValue = maxHealth > 0f ? maxHealth : healthSlider.maxValue;
+			healthSlider.value = Mathf.Clamp(currentHealth, 0f, maxHealth);
 		}
-	}
 
-	private IEnumerator EnsureSliderInitialized()
-	{
-		// așteptăm sfârșitul frame-ului pentru a ne asigura că UI e construit
-		yield return new WaitForEndOfFrame();
-
-		if (playerHealth == null || healthSlider == null) yield break;
-
-		// Forțăm update-ul layout-ului UI înainte de a seta valorile
-		Canvas.ForceUpdateCanvases();
-
-		healthSlider.maxValue = playerHealth.MaxHealth > 0f ? playerHealth.MaxHealth : 1f;
-		healthSlider.value = Mathf.Clamp(playerHealth.CurrentHealth, 0f, playerHealth.MaxHealth);
+		if (armorSlider != null)
+		{
+			armorSlider.maxValue = maxArmor > 0f ? maxArmor : armorSlider.maxValue;
+			armorSlider.value = Mathf.Clamp(currentArmor, 0f, maxArmor);
+		}
 	}
 }
