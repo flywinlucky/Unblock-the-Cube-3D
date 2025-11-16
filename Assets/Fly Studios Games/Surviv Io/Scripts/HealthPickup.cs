@@ -2,13 +2,7 @@ using UnityEngine;
 
 public class HealthPickup : MonoBehaviour
 {
-	public enum PickupType { Health, Armor }
-
-	[Tooltip("Tipul pickup-ului: Health sau Armor.")]
-	public PickupType pickupType = PickupType.Health;
-
-	[Tooltip("Câtă viață sau armură adaugă acest pickup.")]
-	public float amount = 3f;
+	public float amount;
 
 	private void OnTriggerEnter2D(Collider2D other)
 	{
@@ -26,14 +20,7 @@ public class HealthPickup : MonoBehaviour
 		var ph = other.GetComponentInChildren<PlayerHealth>();
 		if (ph == null) return;
 
-		if (pickupType == PickupType.Health)
-		{
-			ph.Heal(amount);
-		}
-		else if (pickupType == PickupType.Armor)
-		{
-			ph.AddArmor(amount);
-		}
+		ph.Heal(amount);
 
 		// efecte vizuale / sunet pot fi adăugate aici
 		Destroy(gameObject);
