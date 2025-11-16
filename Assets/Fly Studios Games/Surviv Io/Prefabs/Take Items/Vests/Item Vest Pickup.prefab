@@ -200,4 +200,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   equipmentData: {fileID: 11400000, guid: a3c6ef802fbe9e544a1eaa36cff39eba, type: 2}
+  item_color: {fileID: 3351132329152215142}
   armor_icon: {fileID: 3351132328519048522}

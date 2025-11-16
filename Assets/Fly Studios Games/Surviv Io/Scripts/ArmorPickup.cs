@@ -6,14 +6,15 @@ using UnityEngine.UI;
 public class ArmorPickup : MonoBehaviour
 {
     public EquipmentData equipmentData; // ScriptableObject containing armor data
+    public SpriteRenderer item_color;
     public SpriteRenderer armor_icon;
-
     private void Start()
     {
         // Set the armor_icon sprite from EquipmentData
         if (armor_icon != null && equipmentData != null)
         {
             armor_icon.sprite = equipmentData.equipmentSpriteIcon;
+            item_color.color = equipmentData.equipament_Color;
         }
     }
 

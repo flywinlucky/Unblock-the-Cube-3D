@@ -14,4 +14,5 @@ public class EquipmentData : ScriptableObject
     public Sprite equipmentSpriteIcon;    // Icon for the equipment
     public int equipmentLevel;            // Level of the equipment
     public float damageReduction;         // Damage reduction provided by the equipment
+    public Color equipament_Color;
 }

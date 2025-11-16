@@ -16,3 +16,4 @@ MonoBehaviour:
   equipmentSpriteIcon: {fileID: 21300000, guid: 0580a6c89146c4047a579ffc245efb61, type: 3}
   equipmentLevel: 4
   damageReduction: 60
+  equipament_Color: {r: 0.9529412, g: 0.23137252, b: 0.47169217, a: 1}
