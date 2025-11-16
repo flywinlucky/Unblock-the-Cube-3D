@@ -50,6 +50,18 @@ public class PlayerHealth : MonoBehaviour
 		OnStatsChanged?.Invoke(_currentHealth, maxHealth, _currentArmor, maxArmor);
 	}
 
+	// Set the player's armor to a new maximum value and apply damage reduction
+	public void SetArmor(float maxArmorValue)
+	{
+		maxArmor = maxArmorValue; // Update the maximum armor value
+		_currentArmor = maxArmor; // Set current armor to the new maximum
+		ApplyDamageReduction(maxArmorValue); // Apply damage reduction based on the new armor
+
+		Debug.Log($"Armor set to max: {maxArmor}, Current Armor: {_currentArmor}, Damage Reduction: {_damageReductionPercentage}%");
+
+		OnStatsChanged?.Invoke(_currentHealth, maxHealth, _currentArmor, maxArmor);
+	}
+
 	[Button]
 	public void TakeDamage(float amount)
 	{

@@ -45,11 +45,10 @@ public class ArmorPickup : MonoBehaviour
             playerUI.vest_Slot.RefreshEquipamentSlot(equipmentData.equipmentSpriteIcon, equipmentData.equipmentLevel);
         }
 
-        // Apply damage reduction and armor to the player
-        playerHealth.ApplyDamageReduction(equipmentData.damageReduction);
-        playerHealth.AddArmor(equipmentData.damageReduction);
+        // Replace the player's current armor with the new maximum armor
+        playerHealth.SetArmor(equipmentData.damageReduction);
 
-        Debug.Log($"Armor pickup applied: {equipmentData.equipmentType}, Damage Reduction: {equipmentData.damageReduction}, Armor Added: {equipmentData.damageReduction}");
+        Debug.Log($"Armor pickup applied: {equipmentData.equipmentType}, Max Armor: {equipmentData.damageReduction}, Damage Reduction: {equipmentData.damageReduction}%");
 
         // Destroy the pickup after applying
         Destroy(gameObject);
