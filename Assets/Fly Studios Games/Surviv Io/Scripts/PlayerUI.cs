@@ -28,15 +28,11 @@ public class PlayerUI : MonoBehaviour
 
 		if (playerHealth != null)
 		{
-			// setăm maxValue și valoarea inițială a sliderului
-			if (healthSlider != null)
-			{
-				healthSlider.maxValue = playerHealth.MaxHealth > 0f ? playerHealth.MaxHealth : 1f;
-				healthSlider.value = Mathf.Clamp(playerHealth.CurrentHealth, 0f, playerHealth.MaxHealth);
-			}
-
 			// abonăm la event pentru actualizări ulterioare
 			playerHealth.OnHealthChanged += UpdateHealthUI;
+
+			// inizializare sigură a slider-ului (așteptăm un frame ca UI să fie gata)
+			StartCoroutine(EnsureSliderInitialized());
 		}
 	}
 
@@ -54,5 +50,19 @@ public class PlayerUI : MonoBehaviour
 			healthSlider.maxValue = max > 0f ? max : healthSlider.maxValue;
 			healthSlider.value = Mathf.Clamp(current, 0f, max);
 		}
+	}
+
+	private IEnumerator EnsureSliderInitialized()
+	{
+		// așteptăm sfârșitul frame-ului pentru a ne asigura că UI e construit
+		yield return new WaitForEndOfFrame();
+
+		if (playerHealth == null || healthSlider == null) yield break;
+
+		// Forțăm update-ul layout-ului UI înainte de a seta valorile
+		Canvas.ForceUpdateCanvases();
+
+		healthSlider.maxValue = playerHealth.MaxHealth > 0f ? playerHealth.MaxHealth : 1f;
+		healthSlider.value = Mathf.Clamp(playerHealth.CurrentHealth, 0f, playerHealth.MaxHealth);
 	}
 }
