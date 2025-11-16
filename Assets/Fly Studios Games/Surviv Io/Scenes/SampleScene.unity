@@ -4882,6 +4882,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3351132329152215140, guid: 4e30a7d9ea389da41a7c1753eed146ef, type: 3}
+      propertyPath: equipmentData
+      value: 
+      objectReference: {fileID: 11400000, guid: f93512d580cf0a040980ca501c4a2b38, type: 2}
     - target: {fileID: 3351132329152215143, guid: 4e30a7d9ea389da41a7c1753eed146ef, type: 3}
       propertyPath: m_RootOrder
       value: 20
@@ -7367,6 +7371,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3351132329152215140, guid: 4e30a7d9ea389da41a7c1753eed146ef, type: 3}
+      propertyPath: equipmentData
+      value: 
+      objectReference: {fileID: 11400000, guid: a6f447c5b977e494b9dcf13e39641141, type: 2}
     - target: {fileID: 3351132329152215143, guid: 4e30a7d9ea389da41a7c1753eed146ef, type: 3}
       propertyPath: m_RootOrder
       value: 22
@@ -8241,6 +8249,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3351132329152215140, guid: 4e30a7d9ea389da41a7c1753eed146ef, type: 3}
+      propertyPath: equipmentData
+      value: 
+      objectReference: {fileID: 11400000, guid: 3401e14ad41b1da418ba2471c6377c5b, type: 2}
     - target: {fileID: 3351132329152215143, guid: 4e30a7d9ea389da41a7c1753eed146ef, type: 3}
       propertyPath: m_RootOrder
       value: 21

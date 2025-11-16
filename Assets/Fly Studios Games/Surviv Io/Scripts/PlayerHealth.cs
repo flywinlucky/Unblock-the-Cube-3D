@@ -9,9 +9,8 @@ public class PlayerHealth : MonoBehaviour
 	private float _currentHealth;
 
 	[Header("Armor")]
-	public float maxArmor;
-	private float _currentArmor;
-
+	public float maxArmor = 100f; // Maximum armor the player can have
+	private float _currentArmor = 0f; // Player starts with no armor
 	private float _damageReductionPercentage = 0f; // Current damage reduction percentage
 
 	// Event invocat când health sau armor se schimbă: (currentHealth, maxHealth, currentArmor, maxArmor)
@@ -26,7 +25,7 @@ public class PlayerHealth : MonoBehaviour
 	{
 		// Initialize health and armor to their maximum values
 		_currentHealth = Mathf.Clamp(maxHealth, 0f, 100f);
-		_currentArmor = Mathf.Clamp(maxArmor, 0f, 100f);
+		_currentArmor = 0f; // Start with no armor
 
 		// Trigger the stats changed event to update any listeners (e.g., UI)
 		OnStatsChanged?.Invoke(_currentHealth, maxHealth, _currentArmor, maxArmor);
@@ -36,6 +35,19 @@ public class PlayerHealth : MonoBehaviour
 	public void ApplyDamageReduction(float reductionPercentage)
 	{
 		_damageReductionPercentage = Mathf.Clamp(reductionPercentage, 0f, 100f);
+		Debug.Log($"Damage reduction applied: {_damageReductionPercentage}%");
+	}
+
+	// Add armor to the player
+	public void AddArmor(float amount)
+	{
+		if (amount <= 0f) return;
+
+		float previousArmor = _currentArmor;
+		_currentArmor = Mathf.Min(maxArmor, _currentArmor + amount);
+		Debug.Log($"Armor added: {amount}. Previous Armor: {previousArmor}, Current Armor: {_currentArmor}");
+
+		OnStatsChanged?.Invoke(_currentHealth, maxHealth, _currentArmor, maxArmor);
 	}
 
 	[Button]
@@ -60,6 +72,8 @@ public class PlayerHealth : MonoBehaviour
 			_currentHealth = Mathf.Max(0f, _currentHealth - reducedDamage);
 		}
 
+		Debug.Log($"Damage taken: {amount}. Reduced Damage: {reducedDamage}. Current Health: {_currentHealth}, Current Armor: {_currentArmor}");
+
 		OnStatsChanged?.Invoke(_currentHealth, maxHealth, _currentArmor, maxArmor);
 
 		if (_currentHealth <= 0f)
@@ -73,24 +87,12 @@ public class PlayerHealth : MonoBehaviour
 	public void Heal(float amount)
 	{
 		if (amount <= 0f) return;
+
+		float previousHealth = _currentHealth;
 		_currentHealth = Mathf.Min(maxHealth, _currentHealth + amount);
-		OnStatsChanged?.Invoke(_currentHealth, maxHealth, _currentArmor, maxArmor);
-	}
 
-	[Button]
-	public void AddArmor(float amount)
-	{
-		if (amount <= 0f) return;
-		_currentArmor = Mathf.Min(maxArmor, _currentArmor + amount);
-		OnStatsChanged?.Invoke(_currentHealth, maxHealth, _currentArmor, maxArmor);
-	}
+		Debug.Log($"Healed: {amount}. Previous Health: {previousHealth}, Current Health: {_currentHealth}");
 
-	// Utility: set health and armor directly (ex: debug)
-	[Button]
-	public void SetStats(float health, float armor)
-	{
-		_currentHealth = Mathf.Clamp(health, 0f, maxHealth);
-		_currentArmor = Mathf.Clamp(armor, 0f, maxArmor);
 		OnStatsChanged?.Invoke(_currentHealth, maxHealth, _currentArmor, maxArmor);
 	}
 }
