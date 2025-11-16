@@ -1,10 +1,11 @@
 using System;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
 	[Header("Health")]
-	public float maxHealth = 10f;
+	public float maxHealth;
 	private float _currentHealth;
 
 	// Event invocat când health se schimbă: (current, max)
@@ -18,6 +19,7 @@ public class PlayerHealth : MonoBehaviour
 		_currentHealth = maxHealth;
 	}
 
+[Button]
 	public void TakeDamage(float amount)
 	{
 		if (amount <= 0f) return;
@@ -29,7 +31,7 @@ public class PlayerHealth : MonoBehaviour
 			Destroy(gameObject);
 		}
 	}
-
+[Button]
 	public void Heal(float amount)
 	{
 		if (amount <= 0f) return;
@@ -38,6 +40,7 @@ public class PlayerHealth : MonoBehaviour
 	}
 
 	// Utility: set health direct (ex: debug)
+	[Button]
 	public void SetHealth(float value)
 	{
 		_currentHealth = Mathf.Clamp(value, 0f, maxHealth);
