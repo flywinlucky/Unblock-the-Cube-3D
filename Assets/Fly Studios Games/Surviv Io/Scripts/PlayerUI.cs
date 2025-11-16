@@ -62,4 +62,18 @@ public class PlayerUI : MonoBehaviour
 			armorSlider.value = Mathf.Clamp(currentArmor, 0f, maxArmor);
 		}
 	}
+
+	public void ApplyEquipment(EquipmentData equipmentData)
+	{
+		if (equipmentData == null) return;
+
+		if (equipmentData.equipmentType == EquipmentData.EquipmentType.Helmets)
+		{
+			helment_Slot.RefreshEquipamentSlot(equipmentData.equipmentSpriteIcon, equipmentData.equipmentLevel);
+		}
+		else if (equipmentData.equipmentType == EquipmentData.EquipmentType.Vests)
+		{
+			vest_Slot.RefreshEquipamentSlot(equipmentData.equipmentSpriteIcon, equipmentData.equipmentLevel);
+		}
+	}
 }

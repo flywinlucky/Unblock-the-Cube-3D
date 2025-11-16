@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 621eb2230f7cf7648b1c2ec82d57751d, type: 3}
   m_Name: Level 2
   m_EditorClassIdentifier: 
+  equipmentType: 1
   equipmentSpriteIcon: {fileID: 21300000, guid: 36164bc30dd513f40898875565a8e7fe, type: 3}
   equipmentLevel: 2
   damageReduction: 38

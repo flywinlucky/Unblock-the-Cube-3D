@@ -12,6 +12,8 @@ public class PlayerHealth : MonoBehaviour
 	public float maxArmor;
 	private float _currentArmor;
 
+	private float _damageReductionPercentage = 0f; // Current damage reduction percentage
+
 	// Event invocat când health sau armor se schimbă: (currentHealth, maxHealth, currentArmor, maxArmor)
 	public event Action<float, float, float, float> OnStatsChanged;
 
@@ -30,23 +32,32 @@ public class PlayerHealth : MonoBehaviour
 		OnStatsChanged?.Invoke(_currentHealth, maxHealth, _currentArmor, maxArmor);
 	}
 
+	// Apply damage reduction from equipment
+	public void ApplyDamageReduction(float reductionPercentage)
+	{
+		_damageReductionPercentage = Mathf.Clamp(reductionPercentage, 0f, 100f);
+	}
+
 	[Button]
 	public void TakeDamage(float amount)
 	{
 		if (amount <= 0f) return;
 
+		// Reduce damage based on the current damage reduction percentage
+		float reducedDamage = amount * (1f - _damageReductionPercentage / 100f);
+
 		// Damage is first absorbed by armor
 		if (_currentArmor > 0f)
 		{
-			float remainingDamage = Mathf.Max(0f, amount - _currentArmor);
-			_currentArmor = Mathf.Max(0f, _currentArmor - amount);
-			amount = remainingDamage;
+			float remainingDamage = Mathf.Max(0f, reducedDamage - _currentArmor);
+			_currentArmor = Mathf.Max(0f, _currentArmor - reducedDamage);
+			reducedDamage = remainingDamage;
 		}
 
 		// Remaining damage is applied to health
-		if (amount > 0f)
+		if (reducedDamage > 0f)
 		{
-			_currentHealth = Mathf.Max(0f, _currentHealth - amount);
+			_currentHealth = Mathf.Max(0f, _currentHealth - reducedDamage);
 		}
 
 		OnStatsChanged?.Invoke(_currentHealth, maxHealth, _currentArmor, maxArmor);
