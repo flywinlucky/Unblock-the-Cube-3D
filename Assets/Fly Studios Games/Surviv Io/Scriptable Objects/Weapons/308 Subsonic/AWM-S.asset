@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: AWM-S
   weaponSpriteIcon: {fileID: 21300000, guid: ad1c2fa884dc8d9468b5a962f543fecb, type: 3}
-  weapon_Color: {r: 0.4552704, g: 1, b: 0, a: 1}
+  weapon_Color: {r: 0.84705883, g: 0, b: 0.9411765, a: 1}
   bulletPrefab: {fileID: 1938297612736354981, guid: a54eb1c62382a0344b4b9cc9ef05de32, type: 3}
   bulletSpeed: 30
   damage: 1
