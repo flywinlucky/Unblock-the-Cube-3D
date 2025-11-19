@@ -3170,6 +3170,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7098393736748054934, guid: 0fc7c02ccc38ad448a3bed53abbe65f4, type: 3}
   m_PrefabInstance: {fileID: 593804581}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &593804585 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2136136190566788601, guid: 0fc7c02ccc38ad448a3bed53abbe65f4, type: 3}
+  m_PrefabInstance: {fileID: 593804581}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1907a68de6c5e2f4993002112c8c9820, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &613771818
 GameObject:
   m_ObjectHideFlags: 0
@@ -3691,7 +3702,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 3
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 0.9686275, g: 0.7725491, b: 0.454902, a: 1}
   m_FlipX: 0
@@ -4935,6 +4946,13 @@ MonoBehaviour:
   weaponNameText: {fileID: 0}
   ammoText: {fileID: 0}
   refreshInterval: 0.15
+  weaponIventorySlotUIs:
+  - {fileID: 1543072241}
+  - {fileID: 1155047379}
+  - {fileID: 2040374912}
+  - {fileID: 593804585}
+  currentAmoInSelectedWeapon: {fileID: 6052612028092036296}
+  currentTotalAmoInSelectedWeapon: {fileID: 6555813227617459894}
 --- !u!1 &1041593849
 GameObject:
   m_ObjectHideFlags: 0
@@ -5436,6 +5454,17 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1155047379 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2136136190566788601, guid: 0fc7c02ccc38ad448a3bed53abbe65f4, type: 3}
+  m_PrefabInstance: {fileID: 666236304}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1907a68de6c5e2f4993002112c8c9820, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1165520850
 GameObject:
   m_ObjectHideFlags: 0
@@ -6809,7 +6838,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
@@ -7780,6 +7809,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1543072241 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2136136190566788601, guid: 0fc7c02ccc38ad448a3bed53abbe65f4, type: 3}
+  m_PrefabInstance: {fileID: 7098393736933683550}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1907a68de6c5e2f4993002112c8c9820, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1557512619
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8490,7 +8530,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1689533760
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8567,7 +8607,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1698551382
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10149,6 +10189,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2040374912 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2136136190566788601, guid: 0fc7c02ccc38ad448a3bed53abbe65f4, type: 3}
+  m_PrefabInstance: {fileID: 46764925}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1907a68de6c5e2f4993002112c8c9820, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2087216312
 GameObject:
   m_ObjectHideFlags: 0
@@ -10852,7 +10903,7 @@ GameObject:
   - component: {fileID: 5581848562523615385}
   - component: {fileID: 5581848562523615386}
   m_Layer: 5
-  m_Name: Inventory Slot (4)
+  m_Name: Weapon Current Amo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10951,7 +11002,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 2
+  m_Text: '{0}'
 --- !u!1001 &6260653882836851532
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11086,7 +11137,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 17
+  m_Text: '{0}'
 --- !u!1001 &7098393736933683550
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11114,6 +11165,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0.000045776367
       objectReference: {fileID: 0}
+    - target: {fileID: 7098393736396548853, guid: 0fc7c02ccc38ad448a3bed53abbe65f4, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 1f70227596df64a40a97ba6056c2b30e, type: 3}
     - target: {fileID: 7098393736748054934, guid: 0fc7c02ccc38ad448a3bed53abbe65f4, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

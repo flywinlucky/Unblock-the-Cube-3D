@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +13,12 @@ public class WeaponUI : MonoBehaviour
 	[Header("Update")]
 	[Tooltip("Cât de des actualizăm UI (s) pentru a nu pune presiune la Update()")]
 	public float refreshInterval = 0.15f;
+
+    [Space]
+    public List<WeaponIventorySlotUI> weaponIventorySlotUIs;
+	[Space]
+	public Text currentAmoInSelectedWeapon;
+	public Text currentTotalAmoInSelectedWeapon;
 
 	private Coroutine _updateRoutine;
 
