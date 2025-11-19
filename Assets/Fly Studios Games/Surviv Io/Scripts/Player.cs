@@ -86,6 +86,10 @@ public class Player : MonoBehaviour
                 if (Input.GetMouseButtonDown(0))
                     weaponController.Fire();
             }
+
+            // Manual reload (R) if magazine is not full and reserve > 0
+            if (Input.GetKeyDown(KeyCode.R))
+                weaponController.Reload();
         }
     }
 

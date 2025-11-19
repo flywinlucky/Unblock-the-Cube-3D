@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 9mm
   m_EditorClassIdentifier: 
   ammoName: 9mm
-  ammoCount: 30
+  ammoCount: 100
   ammoIcon: {fileID: 21300000, guid: c94c1dc2d2efcc74b91fe269c0b70178, type: 3}
   ammoColor: {r: 0.9490197, g: 0.64705884, b: 0, a: 1}
   compatibleWeapons:

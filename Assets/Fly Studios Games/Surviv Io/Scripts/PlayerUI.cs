@@ -15,9 +15,12 @@ public class PlayerUI : MonoBehaviour
 	public GameObject FtoSellect;     // container UI prompt
 	public Text fToSelect_Text;       // text unde afișăm numele itemului
 	[Header("Reloading")]
-	public GameObject FreloadingUI;     // container UI prompt
+	public GameObject FreloadingUI;   
 	public Text reloadingTimer_Text;
-	   
+
+	// Optional: referință la WeaponControler (dacă nu e setată, o găsim automat)
+	public WeaponControler weaponController;
+
 	private void Reset()
 	{
 		// fallback: încercăm să găsim automat dacă nu sunt setate
@@ -30,6 +33,8 @@ public class PlayerUI : MonoBehaviour
 			if (sliders.Length > 0 && healthSlider == null) healthSlider = sliders[0];
 			if (sliders.Length > 1 && armorSlider == null) armorSlider = sliders[1];
 		}
+		if (weaponController == null)
+			weaponController = FindObjectOfType<WeaponControler>();
 	}
 
 	private void OnEnable()
@@ -47,12 +52,35 @@ public class PlayerUI : MonoBehaviour
 		}
 		// asigurăm promptul ascuns la activare
 		if (FtoSellect != null) FtoSellect.SetActive(false);
+
+		// subscribe la event-uri de reload
+		if (weaponController == null)
+			weaponController = FindObjectOfType<WeaponControler>();
+		if (weaponController != null)
+		{
+			weaponController.OnReloadStarted -= HandleReloadStarted;
+			weaponController.OnReloadStarted += HandleReloadStarted;
+			weaponController.OnReloadProgress -= HandleReloadProgress;
+			weaponController.OnReloadProgress += HandleReloadProgress;
+			weaponController.OnReloadFinished -= HandleReloadFinished;
+			weaponController.OnReloadFinished += HandleReloadFinished;
+		}
+
+		// ascunde UI de reloading la start
+		if (FreloadingUI != null) FreloadingUI.SetActive(false);
+		if (reloadingTimer_Text != null) reloadingTimer_Text.text = "";
 	}
 
 	private void OnDisable()
 	{
 		if (playerHealth != null)
 			playerHealth.OnStatsChanged -= UpdateUI;
+		if (weaponController != null)
+		{
+			weaponController.OnReloadStarted -= HandleReloadStarted;
+			weaponController.OnReloadProgress -= HandleReloadProgress;
+			weaponController.OnReloadFinished -= HandleReloadFinished;
+		}
 	}
 
 	private void UpdateUI(float currentHealth, float maxHealth, float currentArmor, float maxArmor)
@@ -93,5 +121,28 @@ public class PlayerUI : MonoBehaviour
 	public void HideFtoSellect()
 	{
 		if (FtoSellect != null) FtoSellect.SetActive(false);
+	}
+
+	private void HandleReloadStarted(float duration)
+	{
+		if (FreloadingUI != null) FreloadingUI.SetActive(duration > 0f);
+		if (reloadingTimer_Text != null)
+			reloadingTimer_Text.text = duration > 0f ? duration.ToString("0.00") : "";
+	}
+
+	private void HandleReloadProgress(float remaining)
+	{
+		if (FreloadingUI == null || reloadingTimer_Text == null) return;
+		if (remaining > 0f)
+		{
+			FreloadingUI.SetActive(true);
+			reloadingTimer_Text.text = remaining.ToString("0.00");
+		}
+	}
+
+	private void HandleReloadFinished()
+	{
+		if (FreloadingUI != null) FreloadingUI.SetActive(false);
+		if (reloadingTimer_Text != null) reloadingTimer_Text.text = "";
 	}
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,6 +21,12 @@ public class WeaponControler : MonoBehaviour
 	public int CurrentMagazine => _currentMagazine;
 	public int ReserveAmmo => _reserveAmmo;
 	public bool IsReloading => _isReloading;
+
+	// Reload events + remaining time
+	public event Action<float> OnReloadStarted;   // duration (seconds)
+	public event Action<float> OnReloadProgress;  // remaining (seconds)
+	public event Action OnReloadFinished;
+	public float ReloadRemainingTime { get; private set; } = 0f;
 
 	private void Start()
 	{
@@ -84,9 +91,15 @@ public class WeaponControler : MonoBehaviour
 		}
 
 		_currentMagazine = Mathf.Max(0, _currentMagazine - 1);
+
+		// auto-reload dacă magazinul a ajuns la 0 după împușcare și există rezervă
+		if (_currentMagazine <= 0 && _reserveAmmo > 0)
+		{
+			Reload();
+		}
 	}
 
-	// Reload: transferă din rezervă în magazin (simple instant reload)
+	// Reload: transferă din rezervă în magazin după un delay (weapon.reloadTime)
 	public void Reload()
 	{
 		if (_weapon == null) return;
@@ -94,29 +107,45 @@ public class WeaponControler : MonoBehaviour
 		if (_currentMagazine >= _weapon.magazineSize) return;
 		if (_reserveAmmo <= 0) return;
 
-		_isReloading = true;
-		// instant reload (dacă vrei delay folosește coroutine și _weapon.reloadTime)
 		int needed = _weapon.magazineSize - _currentMagazine;
 		int toLoad = Mathf.Min(needed, _reserveAmmo);
 
+		// dacă nu există timp de reload -> instant
+		if (_weapon.reloadTime <= 0f)
+		{
+			_currentMagazine += toLoad;
+			_reserveAmmo -= toLoad;
+			_isReloading = false;
+			OnReloadStarted?.Invoke(0f);
+			OnReloadProgress?.Invoke(0f);
+			OnReloadFinished?.Invoke();
+			return;
+		}
+
+		_isReloading = true;
+		StartCoroutine(ReloadRoutine(toLoad, _weapon.reloadTime));
+	}
+
+	private IEnumerator ReloadRoutine(int toLoad, float duration)
+	{
+		ReloadRemainingTime = duration;
+		OnReloadStarted?.Invoke(duration);
+
+		while (ReloadRemainingTime > 0f)
+		{
+			OnReloadProgress?.Invoke(ReloadRemainingTime);
+			yield return null;
+			ReloadRemainingTime -= Time.deltaTime;
+		}
+
+		// finalizează: aplică transferul de ammo abia acum
 		_currentMagazine += toLoad;
 		_reserveAmmo -= toLoad;
 
-		// minimal delay simulation: dacă reloadTime > 0 poți folosi coroutine
-		if (_weapon.reloadTime > 0f)
-		{
-			StartCoroutine(ReloadDelayRoutine(_weapon.reloadTime));
-		}
-		else
-		{
-			_isReloading = false;
-		}
-	}
-
-	private IEnumerator ReloadDelayRoutine(float time)
-	{
-		yield return new WaitForSeconds(time);
 		_isReloading = false;
+		ReloadRemainingTime = 0f;
+		OnReloadProgress?.Invoke(0f);
+		OnReloadFinished?.Invoke();
 	}
 
 	// Adaugă muniție în rezervă (folosit de AmmoPickup). Returnează cât a fost adăugat

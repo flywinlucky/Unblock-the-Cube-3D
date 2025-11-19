@@ -1203,7 +1203,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.5019608}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.6}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2094,7 +2094,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.5019608}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.6}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2468,18 +2468,18 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: da05befe423fc4fd787bd16a716f59d9, type: 3}
-    m_FontSize: 51
+    m_FontSize: 41
     m_FontStyle: 0
     m_BestFit: 1
     m_MinSize: 0
-    m_MaxSize: 129
+    m_MaxSize: 87
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 1.2
+  m_Text: 1
 --- !u!222 &393625936
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4839,7 +4839,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 773970a270a03d240bb2b72d271bd408, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingWeapon: {fileID: 11400000, guid: 6ed3c7686644d994b99ec77a507a2e61, type: 2}
+  startingWeapon: {fileID: 0}
   muzzle: {fileID: 588872546}
 --- !u!114 &1039426374
 MonoBehaviour:
@@ -4862,6 +4862,7 @@ MonoBehaviour:
   fToSelect_Text: {fileID: 1027338337}
   FreloadingUI: {fileID: 1256391091}
   reloadingTimer_Text: {fileID: 393625935}
+  weaponController: {fileID: 1039426373}
 --- !u!114 &1039426375
 MonoBehaviour:
   m_ObjectHideFlags: 0
