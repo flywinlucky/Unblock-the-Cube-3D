@@ -27,6 +27,10 @@ public class WeaponUI : MonoBehaviour
 	private List<WeaponEntry> _entries = new List<WeaponEntry>();
 	private int _selectedIndex = -1;
 
+	// Pending ammo bank
+	private Dictionary<WeaponData, int> _pendingAmmoBank = new Dictionary<WeaponData, int>();
+	private int _pendingUniversalAmmo = 0;
+
 	private void Reset()
 	{
 		if (weaponController == null)
@@ -60,6 +64,8 @@ public class WeaponUI : MonoBehaviour
 			else
 			{
 				_selectedIndex = Mathf.Max(0, FindIndexOf(w));
+				// aplicăm pending ammo dacă există
+				TryApplyPendingToIndex(_selectedIndex);
 			}
 		}
 	}
@@ -189,10 +195,12 @@ public class WeaponUI : MonoBehaviour
 		if (data == null) return;
 		EnsureInventorySize();
 
-		// already have it? just select
+		// already have it? just select (și aplicăm pending)
 		int existing = FindIndexOf(data);
 		if (existing != -1)
 		{
+			// aplică pending ammo întâi
+			TryApplyPendingToIndex(existing);
 			if (select) SelectSlotIndex(existing);
 			Debug.Log($"[WeaponUI] Weapon '{data.weaponName}' already in slot {existing + 1}. Selected={select}");
 			return;
@@ -208,7 +216,10 @@ public class WeaponUI : MonoBehaviour
 		if (idx < 0) idx = (_selectedIndex >= 0 ? _selectedIndex : 0); // replace current if full
 
 		_entries[idx] = new WeaponEntry { data = data, mag = mag, reserve = reserve };
-		Debug.Log($"[WeaponUI] Put weapon '{data.weaponName}' into slot {idx + 1} (mag={mag}, reserve={reserve}).");
+
+		// Aplicăm pending ammo (inclusiv universal) pe acest entry
+		int added = TryApplyPendingToIndex(idx);
+		Debug.Log($"[WeaponUI] Put weapon '{data.weaponName}' into slot {idx + 1} (mag={mag}, reserve={reserve} + pending {added}).");
 
 		if (select)
 		{
@@ -240,13 +251,191 @@ public class WeaponUI : MonoBehaviour
 
 		_selectedIndex = idx;
 
+		// Înainte de echipare, aplicăm pending ammo pe entry-ul selectat
+		int addedFromPending = TryApplyPendingToIndex(idx);
+
 		// equip selected with stored ammo
 		if (weaponController != null)
 		{
+			// dacă am adăugat pending și arma era deja echipată, AddAmmo ar fi suficient; dar re-echipăm pentru siguranță:
 			weaponController.EquipWeapon(entry.data, entry.mag, entry.reserve);
-			Debug.Log($"[WeaponUI] Selected slot {idx + 1}: '{entry.data.weaponName}' (mag={entry.mag}, reserve={entry.reserve}).");
+			if (addedFromPending > 0)
+			{
+				var info = weaponController.GetAmmoInfo();
+				entry.mag = info.mag;
+				entry.reserve = info.reserve;
+			}
+			Debug.Log($"[WeaponUI] Selected slot {idx + 1}: '{entry.data.weaponName}' (mag={entry.mag}, reserve={entry.reserve}, +pending {addedFromPending}).");
 		}
 
 		RefreshUI();
+	}
+
+	// Colectare ammo din pickup (poate fi pentru arme pe care nu le avem încă)
+	public void CollectAmmo(BulletAmmoData ammoData)
+	{
+		if (ammoData == null) return;
+		int amount = Mathf.Max(0, ammoData.ammoCount);
+		if (amount <= 0) return;
+
+		EnsureInventorySize();
+
+		// 1) universal ammo (compatibil cu orice armă)
+		if (ammoData.compatibleWeapons == null || ammoData.compatibleWeapons.Count == 0)
+		{
+			// dacă arma selectată există -> aplicăm direct
+			if (_selectedIndex >= 0 && _selectedIndex < _entries.Count && _entries[_selectedIndex]?.data != null)
+			{
+				AddAmmoToEntry(_selectedIndex, amount, applyToControllerIfSelected: true);
+			}
+			else
+			{
+				_pendingUniversalAmmo += amount;
+			}
+			RefreshUI();
+			return;
+		}
+
+		// 2) ammo pentru o listă de arme specifice
+		// preferăm slotul selectat dacă este compatibil
+		if (_selectedIndex >= 0 && _selectedIndex < _entries.Count)
+		{
+			var sel = _entries[_selectedIndex];
+			if (sel != null && sel.data != null && ammoData.compatibleWeapons.Contains(sel.data))
+			{
+				AddAmmoToEntry(_selectedIndex, amount, applyToControllerIfSelected: true);
+				RefreshUI();
+				return;
+			}
+		}
+
+		// 3) găsim orice armă compatibilă deja deținută
+		for (int i = 0; i < _entries.Count; i++)
+		{
+			var e = _entries[i];
+			if (e != null && e.data != null && ammoData.compatibleWeapons.Contains(e.data))
+			{
+				bool applyNow = (i == _selectedIndex);
+				AddAmmoToEntry(i, amount, applyToControllerIfSelected: applyNow);
+				RefreshUI();
+				return;
+			}
+		}
+
+		// 4) nu deținem încă arme compatibile -> stocăm pe prima din listă în pending
+		var target = ammoData.compatibleWeapons[0];
+		if (target != null)
+		{
+			if (_pendingAmmoBank.ContainsKey(target)) _pendingAmmoBank[target] += amount;
+			else _pendingAmmoBank[target] = amount;
+			Debug.Log($"[WeaponUI] Stored {amount} pending ammo for '{target.weaponName}'.");
+		}
+
+		RefreshUI();
+	}
+
+	// Adaugă ammo la entry; dacă este slotul selectat și arma e echipată, împinge în WeaponControler
+	private void AddAmmoToEntry(int idx, int amount, bool applyToControllerIfSelected)
+	{
+		if (idx < 0 || idx >= _entries.Count) return;
+		var entry = _entries[idx];
+		if (entry == null || entry.data == null || amount <= 0) return;
+
+		// dacă slotul este selectat și arma echipată -> adaugă prin controller pentru a păstra sincron
+		if (applyToControllerIfSelected && weaponController != null && weaponController.CurrentWeapon == entry.data)
+		{
+			int added = weaponController.AddAmmo(amount);
+			// sync înapoi în entry
+			var info = weaponController.GetAmmoInfo();
+			entry.mag = info.mag;
+			entry.reserve = info.reserve;
+
+			// overflow (dacă nu s-a adăugat tot) -> pending pe arma asta
+			int overflow = amount - Mathf.Max(0, added);
+			if (overflow > 0)
+			{
+				if (_pendingAmmoBank.ContainsKey(entry.data)) _pendingAmmoBank[entry.data] += overflow;
+				else _pendingAmmoBank[entry.data] = overflow;
+			}
+			return;
+		}
+
+		// Non-selectat: creștem doar reserve în entry, până la limită
+		int maxReserve = entry.data.maxReserveAmmo;
+		int newReserve = Mathf.Clamp(entry.reserve + amount, 0, maxReserve);
+		int applied = newReserve - entry.reserve;
+		entry.reserve = newReserve;
+
+		// overflow -> pending pe arma asta
+		int overflowNonSel = amount - Mathf.Max(0, applied);
+		if (overflowNonSel > 0)
+		{
+			if (_pendingAmmoBank.ContainsKey(entry.data)) _pendingAmmoBank[entry.data] += overflowNonSel;
+			else _pendingAmmoBank[entry.data] = overflowNonSel;
+		}
+	}
+
+	// Aplică pending ammo (arma specifică + universal) pe entry-ul dat; returnează cât s-a adăugat în reserve
+	private int TryApplyPendingToIndex(int idx)
+	{
+		if (idx < 0 || idx >= _entries.Count) return 0;
+		var entry = _entries[idx];
+		if (entry == null || entry.data == null) return 0;
+
+		int addedTotal = 0;
+
+		// 1) pending specific pentru arma aceasta
+		int pendingForWeapon = 0;
+		_pendingAmmoBank.TryGetValue(entry.data, out pendingForWeapon);
+
+		// 2) universal pending
+		int pendingUniversal = _pendingUniversalAmmo;
+
+		// Capacitate rămasă în rezervă
+		int capacity = Mathf.Max(0, entry.data.maxReserveAmmo - entry.reserve);
+		if (capacity <= 0)
+		{
+			return 0;
+		}
+
+		// Aplicăm întâi pending specific
+		int takeFromWeapon = Mathf.Min(capacity, pendingForWeapon);
+		entry.reserve += takeFromWeapon;
+		addedTotal += takeFromWeapon;
+		capacity -= takeFromWeapon;
+		if (takeFromWeapon > 0)
+		{
+			_pendingAmmoBank[entry.data] = pendingForWeapon - takeFromWeapon;
+			if (_pendingAmmoBank[entry.data] <= 0) _pendingAmmoBank.Remove(entry.data);
+		}
+
+		// Apoi universal
+		if (capacity > 0 && pendingUniversal > 0)
+		{
+			int takeFromUniversal = Mathf.Min(capacity, pendingUniversal);
+			entry.reserve += takeFromUniversal;
+			addedTotal += takeFromUniversal;
+			_pendingUniversalAmmo -= takeFromUniversal;
+		}
+
+		// dacă slotul este selectat și arma echipată, împingem în controller
+		if (addedTotal > 0 && weaponController != null && _selectedIndex == idx && weaponController.CurrentWeapon == entry.data)
+		{
+			int actuallyAdded = weaponController.AddAmmo(addedTotal);
+			// sync înapoi în entry
+			var info = weaponController.GetAmmoInfo();
+			entry.mag = info.mag;
+			entry.reserve = info.reserve;
+
+			// dacă nu s-a putut adăuga tot în controller (unlikely, dar protejăm), reîntoarcem surplusul în pending
+			int overflow = addedTotal - Mathf.Max(0, actuallyAdded);
+			if (overflow > 0)
+			{
+				if (_pendingAmmoBank.ContainsKey(entry.data)) _pendingAmmoBank[entry.data] += overflow;
+				else _pendingAmmoBank[entry.data] = overflow;
+			}
+		}
+
+		return addedTotal;
 	}
 }

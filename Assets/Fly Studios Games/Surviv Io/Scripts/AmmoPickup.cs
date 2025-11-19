@@ -60,27 +60,19 @@ public class AmmoPickup : MonoBehaviour
 	private void ApplyPickup(GameObject other)
 	{
 		if (other == null || bulletAmmoData == null) return;
-		var wc = other.GetComponentInChildren<WeaponControler>();
-		var playerUI = other.GetComponentInChildren<PlayerUI>();
-		if (wc == null) return;
 
-		// compatibilitate
-		if (!bulletAmmoData.IsCompatible(wc.CurrentWeapon))
+		var weaponUI = other.GetComponentInChildren<WeaponUI>();
+		var playerUI = other.GetComponentInChildren<PlayerUI>();
+		if (weaponUI == null)
 		{
-			Debug.Log($"[AmmoPickup] '{bulletAmmoData.ammoName}' nu este compatibil cu arma curentă.");
+			Debug.Log("[AmmoPickup] Player WeaponUI missing; cannot store ammo.");
 			return;
 		}
 
-		int added = wc.AddAmmo(bulletAmmoData.ammoCount);
-		if (added > 0)
-		{
-			Debug.Log($"[AmmoPickup] Adăugat {added} ammo din '{bulletAmmoData.ammoName}'.");
-			if (playerUI != null) playerUI.HideFtoSellect();
-			Destroy(gameObject);
-		}
-		else
-		{
-			Debug.Log($"[AmmoPickup] Rezervă plină, nimic adăugat din '{bulletAmmoData.ammoName}'.");
-		}
+		// Colectăm ammo — WeaponUI va decide dacă se aplică pe arma curentă sau se stochează pending
+		weaponUI.CollectAmmo(bulletAmmoData);
+
+		if (playerUI != null) playerUI.HideFtoSellect();
+		Destroy(gameObject);
 	}
 }
