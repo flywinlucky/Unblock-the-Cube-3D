@@ -14,7 +14,10 @@ public class PlayerUI : MonoBehaviour
 	[Header("F To Select UI")]
 	public GameObject FtoSellect;     // container UI prompt
 	public Text fToSelect_Text;       // text unde afișăm numele itemului
-
+	[Header("Reloading")]
+	public GameObject FreloadingUI;     // container UI prompt
+	public Text reloadingTimer_Text;
+	   
 	private void Reset()
 	{
 		// fallback: încercăm să găsim automat dacă nu sunt setate

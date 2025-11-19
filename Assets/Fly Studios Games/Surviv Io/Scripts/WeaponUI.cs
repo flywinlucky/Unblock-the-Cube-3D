@@ -120,7 +120,8 @@ public class WeaponUI : MonoBehaviour
 
 				// current ammo texts
 				if (currentAmoInSelectedWeapon != null) currentAmoInSelectedWeapon.text = sel.mag.ToString();
-				if (currentTotalAmoInSelectedWeapon != null) currentTotalAmoInSelectedWeapon.text = (sel.mag + sel.reserve).ToString();
+				// Show only reserve so it updates on reload/pickups, not on each shot
+				if (currentTotalAmoInSelectedWeapon != null) currentTotalAmoInSelectedWeapon.text = sel.reserve.ToString();
 			}
 		}
 

@@ -22,5 +22,5 @@ MonoBehaviour:
   automatic: 0
   magazineSize: 30
   maxReserveAmmo: 250
-  startingReserveAmmo: 3
+  startingReserveAmmo: 30
   reloadTime: 1

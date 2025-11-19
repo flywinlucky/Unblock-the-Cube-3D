@@ -4839,7 +4839,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 773970a270a03d240bb2b72d271bd408, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingWeapon: {fileID: 11400000, guid: 37e7c6073f02aba47b0c0b472eb6e78c, type: 2}
+  startingWeapon: {fileID: 11400000, guid: 6ed3c7686644d994b99ec77a507a2e61, type: 2}
   muzzle: {fileID: 588872546}
 --- !u!114 &1039426374
 MonoBehaviour:
@@ -4860,6 +4860,8 @@ MonoBehaviour:
   vest_Slot: {fileID: 1394110380}
   FtoSellect: {fileID: 1445187527}
   fToSelect_Text: {fileID: 1027338337}
+  FreloadingUI: {fileID: 1256391091}
+  reloadingTimer_Text: {fileID: 393625935}
 --- !u!114 &1039426375
 MonoBehaviour:
   m_ObjectHideFlags: 0
