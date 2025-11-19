@@ -15,5 +15,5 @@ MonoBehaviour:
   ammoName: 5.56mm
   ammoCount: 100
   ammoIcon: {fileID: 21300000, guid: c94c1dc2d2efcc74b91fe269c0b70178, type: 3}
-  ammoColor: {r: 0, g: 0.92, b: 0.9183953, a: 1}
+  ammoColor: {r: 0.011764706, g: 0.5882353, b: 0, a: 1}
   compatibleWeapons: []

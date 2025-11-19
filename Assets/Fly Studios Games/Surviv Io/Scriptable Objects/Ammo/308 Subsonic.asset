@@ -15,5 +15,5 @@ MonoBehaviour:
   ammoName: 308 Subsonic
   ammoCount: 100
   ammoIcon: {fileID: 21300000, guid: c94c1dc2d2efcc74b91fe269c0b70178, type: 3}
-  ammoColor: {r: 0.9490196, g: 0.5702635, b: 0, a: 1}
+  ammoColor: {r: 0.8469283, g: 0, b: 0.9411765, a: 1}
   compatibleWeapons: []
