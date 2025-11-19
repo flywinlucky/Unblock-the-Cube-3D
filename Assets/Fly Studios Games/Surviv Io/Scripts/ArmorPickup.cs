@@ -8,6 +8,10 @@ public class ArmorPickup : MonoBehaviour
     public EquipmentData equipmentData; // ScriptableObject containing armor data
     public SpriteRenderer item_color;
     public SpriteRenderer armor_icon;
+
+    // cache UI referință pentru a închide promptul corect
+    private PlayerUI _currentPlayerUI;
+
     private void Start()
     {
         // Set the armor_icon sprite from EquipmentData
@@ -20,15 +24,54 @@ public class ArmorPickup : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        TryApplyPickup(other.gameObject);
+        ShowPrompt(other.gameObject);
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+            ApplyPickup(other.gameObject);
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        HidePrompt(other.gameObject);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        TryApplyPickup(other.gameObject);
+        ShowPrompt(other.gameObject);
     }
 
-    private void TryApplyPickup(GameObject other)
+    private void OnTriggerStay(Collider other)
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+            ApplyPickup(other.gameObject);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        HidePrompt(other.gameObject);
+    }
+
+    private void ShowPrompt(GameObject other)
+    {
+        if (other == null || equipmentData == null) return;
+        var playerUI = other.GetComponentInChildren<PlayerUI>();
+        if (playerUI == null) return;
+
+        playerUI.ShowFtoSellect(equipmentData.itemName);
+        _currentPlayerUI = playerUI;
+    }
+
+    private void HidePrompt(GameObject other)
+    {
+        var ui = other != null ? other.GetComponentInChildren<PlayerUI>() : _currentPlayerUI;
+        if (ui != null) ui.HideFtoSellect();
+        if (ui == _currentPlayerUI) _currentPlayerUI = null;
+    }
+
+    private void ApplyPickup(GameObject other)
     {
         if (other == null || equipmentData == null) return;
 
@@ -36,7 +79,7 @@ public class ArmorPickup : MonoBehaviour
         var playerHealth = other.GetComponentInChildren<PlayerHealth>();
         if (playerUI == null || playerHealth == null) return;
 
-        // Apply equipment data to the appropriate slot
+        // Apply equipment data to the appropriate slot and stochează numele în slot
         if (equipmentData.equipmentType == EquipmentData.EquipmentType.Helmets)
         {
             playerUI.helment_Slot.RefreshEquipamentSlot(equipmentData.equipmentSpriteIcon, equipmentData.equipmentLevel);
@@ -51,7 +94,8 @@ public class ArmorPickup : MonoBehaviour
 
         Debug.Log($"Armor pickup applied: {equipmentData.equipmentType}, Max Armor: {equipmentData.damageReduction}, Damage Reduction: {equipmentData.damageReduction}%");
 
-        // Destroy the pickup after applying
+        // ascunde promptul și distruge pickup-ul
+        if (playerUI != null) playerUI.HideFtoSellect();
         Destroy(gameObject);
     }
 }

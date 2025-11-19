@@ -3,6 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewEquipmentData", menuName = "SurvivIo/Equipment Data")]
 public class EquipmentData : ScriptableObject
 {
+    public string itemName;
     public enum EquipmentType
     {
         Helmets,

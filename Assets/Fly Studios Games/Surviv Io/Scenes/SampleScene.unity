@@ -4662,12 +4662,12 @@ MonoBehaviour:
     m_FontStyle: 0
     m_BestFit: 1
     m_MinSize: 0
-    m_MaxSize: 56
+    m_MaxSize: 40
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
-    m_VerticalOverflow: 1
+    m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: '{Item Name}'
 --- !u!222 &1027338338
@@ -4842,6 +4842,8 @@ MonoBehaviour:
   armorSlider: {fileID: 1473975233}
   helment_Slot: {fileID: 43328837}
   vest_Slot: {fileID: 1394110380}
+  FtoSellect: {fileID: 1445187527}
+  fToSelect_Text: {fileID: 1027338337}
 --- !u!114 &1039426375
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7518,7 +7520,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1445187528
 RectTransform:
   m_ObjectHideFlags: 0

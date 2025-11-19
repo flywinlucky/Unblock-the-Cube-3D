@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 621eb2230f7cf7648b1c2ec82d57751d, type: 3}
   m_Name: Level 3
   m_EditorClassIdentifier: 
+  itemName: Level 3 Vest
   equipmentType: 1
   equipmentSpriteIcon: {fileID: 21300000, guid: 0580a6c89146c4047a579ffc245efb61, type: 3}
   equipmentLevel: 3

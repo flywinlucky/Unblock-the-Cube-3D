@@ -11,8 +11,10 @@ public class PlayerUI : MonoBehaviour
 	[Space]
 	public EquipmentIventorySlot helment_Slot;
 	public EquipmentIventorySlot vest_Slot;
+	[Header("F To Select UI")]
+	public GameObject FtoSellect;     // container UI prompt
+	public Text fToSelect_Text;       // text unde afișăm numele itemului
 
-	
 	private void Reset()
 	{
 		// fallback: încercăm să găsim automat dacă nu sunt setate
@@ -40,6 +42,8 @@ public class PlayerUI : MonoBehaviour
 			// inizializare sigură a slider-elor
 			UpdateUI(playerHealth.CurrentHealth, playerHealth.MaxHealth, playerHealth.CurrentArmor, playerHealth.MaxArmor);
 		}
+		// asigurăm promptul ascuns la activare
+		if (FtoSellect != null) FtoSellect.SetActive(false);
 	}
 
 	private void OnDisable()
@@ -75,5 +79,16 @@ public class PlayerUI : MonoBehaviour
 		{
 			vest_Slot.RefreshEquipamentSlot(equipmentData.equipmentSpriteIcon, equipmentData.equipmentLevel);
 		}
+	}
+
+	// Helpers pentru promptul "F to Select"
+	public void ShowFtoSellect(string itemName)
+	{
+		if (fToSelect_Text != null) fToSelect_Text.text = itemName;
+		if (FtoSellect != null) FtoSellect.SetActive(true);
+	}
+	public void HideFtoSellect()
+	{
+		if (FtoSellect != null) FtoSellect.SetActive(false);
 	}
 }

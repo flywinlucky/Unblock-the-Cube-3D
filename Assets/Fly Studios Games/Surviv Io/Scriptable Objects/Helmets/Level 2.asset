@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 621eb2230f7cf7648b1c2ec82d57751d, type: 3}
   m_Name: Level 2
   m_EditorClassIdentifier: 
+  itemName: Level 2 Helmet
   equipmentType: 0
   equipmentSpriteIcon: {fileID: 21300000, guid: c4361477f251b5446b41a5ab15d8f10e, type: 3}
   equipmentLevel: 2
