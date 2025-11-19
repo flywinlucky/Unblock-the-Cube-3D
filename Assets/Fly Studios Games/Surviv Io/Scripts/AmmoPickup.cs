@@ -2,40 +2,105 @@ using UnityEngine;
 
 public class AmmoPickup : MonoBehaviour
 {
-	[Tooltip("Câtă muniție dă acest pickup.")]
-	public int ammoAmount = 6;
+	[Tooltip("ScriptableObject ce definește tipul de ammo.")]
+	public BulletAmmoData bulletAmmoData;
 
-	[Tooltip("Dacă este setat, se va adăuga doar la arma corespunzătoare (opțional).")]
-	public WeaponData forWeapon;
+	[Header("Visual (Optional)")]
+	public SpriteRenderer item_color;
+	public SpriteRenderer ammo_icon;
 
-	// Trigger 2D
+	private PlayerUI _currentPlayerUI;
+
+	private void Start()
+	{
+		if (bulletAmmoData != null)
+		{
+			if (ammo_icon != null) ammo_icon.sprite = bulletAmmoData.ammoIcon;
+			if (item_color != null) item_color.color = bulletAmmoData.ammoColor;
+		}
+	}
+
 	private void OnTriggerEnter2D(Collider2D other)
 	{
-		TryGiveAmmo(other.gameObject);
+		ShowPrompt(other.gameObject);
 	}
 
-	// Trigger 3D
+	private void OnTriggerStay2D(Collider2D other)
+	{
+		if (Input.GetKeyDown(KeyCode.F))
+			ApplyPickup(other.gameObject);
+	}
+
+	private void OnTriggerExit2D(Collider2D other)
+	{
+		HidePrompt(other.gameObject);
+	}
+
 	private void OnTriggerEnter(Collider other)
 	{
-		TryGiveAmmo(other.gameObject);
+		ShowPrompt(other.gameObject);
 	}
 
-	private void TryGiveAmmo(GameObject other)
+	private void OnTriggerStay(Collider other)
 	{
-		if (other == null) return;
+		if (Input.GetKeyDown(KeyCode.F))
+			ApplyPickup(other.gameObject);
+	}
 
-		// căutăm WeaponControler pe jucător (sau pe obiectul care ridică pickup-ul)
+	private void OnTriggerExit(Collider other)
+	{
+		HidePrompt(other.gameObject);
+	}
+
+	private void OnDisable()
+	{
+		if (_currentPlayerUI != null)
+		{
+			_currentPlayerUI.HideFtoSellect();
+			_currentPlayerUI = null;
+		}
+	}
+
+	private void ShowPrompt(GameObject other)
+	{
+		if (other == null || bulletAmmoData == null) return;
+
 		var wc = other.GetComponentInChildren<WeaponControler>();
 		if (wc == null) return;
 
-		// dacă pickup-ul este legat de o anumită armă, verificăm
-		if (forWeapon != null && wc.CurrentWeapon != forWeapon) return;
+		// Afișăm promptul numai dacă compatibil (sau universal)
+		if (!bulletAmmoData.IsCompatible(wc.CurrentWeapon)) return;
 
-		int added = wc.AddAmmo(ammoAmount);
+		var playerUI = other.GetComponentInChildren<PlayerUI>();
+		if (playerUI == null) return;
+
+		playerUI.ShowFtoSellect(bulletAmmoData.ammoName);
+		_currentPlayerUI = playerUI;
+	}
+
+	private void HidePrompt(GameObject other)
+	{
+		var ui = other != null ? other.GetComponentInChildren<PlayerUI>() : _currentPlayerUI;
+		if (ui != null) ui.HideFtoSellect();
+		if (ui == _currentPlayerUI) _currentPlayerUI = null;
+	}
+
+	private void ApplyPickup(GameObject other)
+	{
+		if (other == null || bulletAmmoData == null) return;
+
+		var wc = other.GetComponentInChildren<WeaponControler>();
+		var playerUI = other.GetComponentInChildren<PlayerUI>();
+		if (wc == null) return;
+
+		// Dacă arma curentă nu e compatibilă nu facem nimic
+		if (!bulletAmmoData.IsCompatible(wc.CurrentWeapon)) return;
+
+		int added = wc.AddAmmo(bulletAmmoData.ammoCount);
 		if (added > 0)
 		{
-			// poți adăuga efecte vizuale / sunet aici
-			Destroy(this.gameObject);
+			if (playerUI != null) playerUI.HideFtoSellect();
+			Destroy(gameObject);
 		}
 	}
 }

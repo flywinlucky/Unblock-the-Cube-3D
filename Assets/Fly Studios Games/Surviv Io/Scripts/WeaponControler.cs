@@ -40,6 +40,18 @@ public class WeaponControler : MonoBehaviour
 		_isReloading = false;
 	}
 
+	// OVERLOAD: echipăm arma cu muniție explicită (folosită de UI inventory la switch)
+	public void EquipWeapon(WeaponData data, int currentMag, int reserve)
+	{
+		_weapon = data;
+		if (_weapon == null) return;
+
+		_currentMagazine = Mathf.Clamp(currentMag, 0, _weapon.magazineSize);
+		_reserveAmmo = Mathf.Clamp(reserve, 0, _weapon.maxReserveAmmo);
+		_nextFireTime = 0f;
+		_isReloading = false;
+	}
+
 	// Fire folosește datele din WeaponData; dacă ammo 0 nu trage
 	public void Fire()
 	{

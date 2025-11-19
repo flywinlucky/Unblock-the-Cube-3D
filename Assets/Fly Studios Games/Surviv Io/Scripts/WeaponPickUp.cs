@@ -90,10 +90,14 @@ public class WeaponPickUp : MonoBehaviour
 
         var wc = other.GetComponentInChildren<WeaponControler>();
         var playerUI = other.GetComponentInChildren<PlayerUI>();
+        var weaponUI = other.GetComponentInChildren<WeaponUI>();
         if (wc == null) return;
 
         // echipăm arma din ScriptableObject
         wc.EquipWeapon(weaponData);
+
+        // adaugă în inventory UI și selectează
+        if (weaponUI != null) weaponUI.AddWeaponToInventory(weaponData, select: true);
 
         if (playerUI != null) playerUI.HideFtoSellect();
         Destroy(gameObject);
