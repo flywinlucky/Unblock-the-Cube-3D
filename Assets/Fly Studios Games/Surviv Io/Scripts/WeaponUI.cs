@@ -19,7 +19,7 @@ public class WeaponUI : MonoBehaviour
 	[Space]
 	public Text currentAmoInSelectedWeapon;
 	public Text currentTotalAmoInSelectedWeapon;
-
+public GameObject weaponCurrentAmoPanel;
 	private Coroutine _updateRoutine;
 
 	// INVENTORY STATE (aliniat cu weaponIventorySlotUIs)
@@ -68,6 +68,7 @@ public class WeaponUI : MonoBehaviour
 				TryApplyPendingToIndex(_selectedIndex);
 			}
 		}
+		if (weaponCurrentAmoPanel != null) weaponCurrentAmoPanel.SetActive(false);
 	}
 
 	private void OnDisable()
@@ -138,6 +139,25 @@ public class WeaponUI : MonoBehaviour
 
 		// refresh slot UIs
 		RefreshSlotsUI();
+
+		// ammo panel visibility control
+		bool hasSelectedWeapon =
+			_selectedIndex >= 0 &&
+			_selectedIndex < _entries.Count &&
+			_entries[_selectedIndex] != null &&
+			_entries[_selectedIndex].data != null &&
+			weaponController != null &&
+			weaponController.CurrentWeapon == _entries[_selectedIndex].data;
+
+		if (weaponCurrentAmoPanel != null)
+		{
+			weaponCurrentAmoPanel.SetActive(hasSelectedWeapon);
+			if (!hasSelectedWeapon)
+			{
+				if (currentAmoInSelectedWeapon != null) currentAmoInSelectedWeapon.text = "";
+				if (currentTotalAmoInSelectedWeapon != null) currentTotalAmoInSelectedWeapon.text = "";
+			}
+		}
 	}
 
 	private void RefreshSlotsUI()
