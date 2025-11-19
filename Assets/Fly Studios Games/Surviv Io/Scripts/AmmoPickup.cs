@@ -20,37 +20,13 @@ public class AmmoPickup : MonoBehaviour
 		}
 	}
 
-	private void OnTriggerEnter2D(Collider2D other)
-	{
-		ShowPrompt(other.gameObject);
-	}
+	private void OnTriggerEnter2D(Collider2D other) { ShowPrompt(other.gameObject); }
+	private void OnTriggerStay2D(Collider2D other) { if (Input.GetKeyDown(KeyCode.F)) ApplyPickup(other.gameObject); }
+	private void OnTriggerExit2D(Collider2D other) { HidePrompt(other.gameObject); }
 
-	private void OnTriggerStay2D(Collider2D other)
-	{
-		if (Input.GetKeyDown(KeyCode.F))
-			ApplyPickup(other.gameObject);
-	}
-
-	private void OnTriggerExit2D(Collider2D other)
-	{
-		HidePrompt(other.gameObject);
-	}
-
-	private void OnTriggerEnter(Collider other)
-	{
-		ShowPrompt(other.gameObject);
-	}
-
-	private void OnTriggerStay(Collider other)
-	{
-		if (Input.GetKeyDown(KeyCode.F))
-			ApplyPickup(other.gameObject);
-	}
-
-	private void OnTriggerExit(Collider other)
-	{
-		HidePrompt(other.gameObject);
-	}
+	private void OnTriggerEnter(Collider other) { ShowPrompt(other.gameObject); }
+	private void OnTriggerStay(Collider other) { if (Input.GetKeyDown(KeyCode.F)) ApplyPickup(other.gameObject); }
+	private void OnTriggerExit(Collider other) { HidePrompt(other.gameObject); }
 
 	private void OnDisable()
 	{
@@ -64,16 +40,12 @@ public class AmmoPickup : MonoBehaviour
 	private void ShowPrompt(GameObject other)
 	{
 		if (other == null || bulletAmmoData == null) return;
-
 		var wc = other.GetComponentInChildren<WeaponControler>();
 		if (wc == null) return;
-
-		// Afișăm promptul numai dacă compatibil (sau universal)
-		if (!bulletAmmoData.IsCompatible(wc.CurrentWeapon)) return;
-
 		var playerUI = other.GetComponentInChildren<PlayerUI>();
 		if (playerUI == null) return;
 
+		// Afișăm promptul indiferent; compatibilitatea verificată la pickup
 		playerUI.ShowFtoSellect(bulletAmmoData.ammoName);
 		_currentPlayerUI = playerUI;
 	}
@@ -88,19 +60,27 @@ public class AmmoPickup : MonoBehaviour
 	private void ApplyPickup(GameObject other)
 	{
 		if (other == null || bulletAmmoData == null) return;
-
 		var wc = other.GetComponentInChildren<WeaponControler>();
 		var playerUI = other.GetComponentInChildren<PlayerUI>();
 		if (wc == null) return;
 
-		// Dacă arma curentă nu e compatibilă nu facem nimic
-		if (!bulletAmmoData.IsCompatible(wc.CurrentWeapon)) return;
+		// compatibilitate
+		if (!bulletAmmoData.IsCompatible(wc.CurrentWeapon))
+		{
+			Debug.Log($"[AmmoPickup] '{bulletAmmoData.ammoName}' nu este compatibil cu arma curentă.");
+			return;
+		}
 
 		int added = wc.AddAmmo(bulletAmmoData.ammoCount);
 		if (added > 0)
 		{
+			Debug.Log($"[AmmoPickup] Adăugat {added} ammo din '{bulletAmmoData.ammoName}'.");
 			if (playerUI != null) playerUI.HideFtoSellect();
 			Destroy(gameObject);
+		}
+		else
+		{
+			Debug.Log($"[AmmoPickup] Rezervă plină, nimic adăugat din '{bulletAmmoData.ammoName}'.");
 		}
 	}
 }
