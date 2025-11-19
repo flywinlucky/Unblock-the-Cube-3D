@@ -25,7 +25,7 @@ public class DestroyableEntity : MonoBehaviour
 	public virtual void OnHitByBullet(Bullet bullet)
 	{
 		if (bullet == null) return;
-		TakeDamage(bullet.damage);
+		TakeDamage(bullet.GetDamage());
 	}
 
 	// Aplica damage și micșorează scale-ul curent multiplicativ; distruge când health <= 0

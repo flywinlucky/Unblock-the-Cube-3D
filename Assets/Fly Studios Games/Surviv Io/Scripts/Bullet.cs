@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-	public float speed = 15f;
-	public float lifeTime = 5f;
-	public float damage = 1f; // damage aplicat când lovește un DestroyableEntity
-
 	private Rigidbody2D rb2;
 	private Vector3 _direction = Vector3.right; // default
+	private Vector3 _startPos;
+
+	// internal state set from WeaponData via Init()
+	private float _speed;
+	private float _damage;
+	private float _maxDistance;
 
 	void Awake()
 	{
@@ -18,7 +20,7 @@ public class Bullet : MonoBehaviour
 
 	void Start()
 	{
-		Destroy(gameObject, lifeTime);
+		_startPos = transform.position;
 
 		// Inițializare direcție din transform (fallback)
 		_direction = transform.right;
@@ -26,11 +28,19 @@ public class Bullet : MonoBehaviour
 		// Dacă avem Rigidbody2D, setăm viteza prin fizică 2D
 		if (rb2 != null)
 		{
-			rb2.velocity = (Vector2)_direction.normalized * speed;
+			rb2.velocity = (Vector2)_direction.normalized * _speed;
 			return;
 		}
 
 		// Dacă nu există Rigidbody2D, vom muta manual în Update
+	}
+
+	// Inițializează parametrii din WeaponData
+	public void Init(float damage, float speed, float range)
+	{
+		_damage = damage;
+		_speed = speed;
+		_maxDistance = range;
 	}
 
 	// Metodă publică pentru a seta direcția din WeaponControler imediat după Instantiate
@@ -45,7 +55,7 @@ public class Bullet : MonoBehaviour
 
 		if (rb2 != null)
 		{
-			rb2.velocity = (Vector2)_direction * speed;
+			rb2.velocity = (Vector2)_direction * _speed;
 		}
 	}
 
@@ -54,7 +64,13 @@ public class Bullet : MonoBehaviour
 		// Fallback: dacă nu există Rigidbody2D, mutăm proiectilul manual
 		if (rb2 == null)
 		{
-			transform.position += _direction * speed * Time.deltaTime;
+			transform.position += _direction * _speed * Time.deltaTime;
+		}
+
+		// distrugem după ce depășește distanța (range)
+		if (_maxDistance > 0f && Vector3.Distance(_startPos, transform.position) >= _maxDistance)
+		{
+			Destroy(gameObject);
 		}
 	}
 
@@ -66,9 +82,16 @@ public class Bullet : MonoBehaviour
 		var dest = collision.collider.GetComponent<DestroyableEntity>();
 		if (dest != null)
 		{
+			// pasăm damage-ul curent
 			dest.OnHitByBullet(this);
 		}
 
 		Destroy(gameObject);
+	}
+
+	// Helper pentru accesarea damage-ului curent de către ținte
+	public float GetDamage()
+	{
+		return _damage;
 	}
 }

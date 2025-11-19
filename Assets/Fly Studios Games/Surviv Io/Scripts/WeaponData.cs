@@ -13,6 +13,8 @@ public class WeaponData : ScriptableObject
 	public GameObject bulletPrefab;
 	public float bulletSpeed = 15f;
 	public float damage = 1f;
+	[Tooltip("Distanța maximă (unități) pe care o poate parcurge glonțul.")]
+	public float range = 15f;
 
 	[Header("Fire")]
 	public float fireRate = 0.18f;

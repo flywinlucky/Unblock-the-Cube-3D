@@ -84,9 +84,8 @@ public class WeaponControler : MonoBehaviour
 			float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 			inst.transform.rotation = Quaternion.Euler(0f, 0f, angle);
 
-			// setăm parametrii proiectilului din WeaponData
-			bulletComp.damage = _weapon.damage;
-			bulletComp.speed = _weapon.bulletSpeed;
+			// setăm parametrii proiectilului din WeaponData (+ range)
+			bulletComp.Init(_weapon.damage, _weapon.bulletSpeed, _weapon.range);
 			bulletComp.SetDirection(dir);
 		}
 
