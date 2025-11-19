@@ -5,6 +5,10 @@ public class WeaponData : ScriptableObject
 {
 	public string weaponName = "New Weapon";
 
+	[Header("Visual")]
+	public Sprite weaponSpriteIcon;
+	public Color weapon_Color = Color.white;
+
 	[Header("Projectile")]
 	public GameObject bulletPrefab;
 	public float bulletSpeed = 15f;
