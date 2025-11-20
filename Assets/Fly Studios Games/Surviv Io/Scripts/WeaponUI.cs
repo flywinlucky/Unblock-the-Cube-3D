@@ -7,8 +7,6 @@ public class WeaponUI : MonoBehaviour
 {
 	[Header("References")]
 	public WeaponControler weaponController; // assign in Inspector (sau Find)
-	public Text weaponNameText;
-	public Text ammoText; // ex: "6 / 24"
 
 	[Header("Update")]
 	[Tooltip("Cât de des actualizăm UI (s) pentru a nu pune presiune la Update()")]
@@ -35,13 +33,6 @@ public GameObject weaponCurrentAmoPanel;
 	{
 		if (weaponController == null)
 			weaponController = FindObjectOfType<WeaponControler>();
-
-		if (weaponNameText == null || ammoText == null)
-		{
-			var texts = GetComponentsInChildren<Text>(true);
-			if (texts.Length > 0 && weaponNameText == null) weaponNameText = texts[0];
-			if (texts.Length > 1 && ammoText == null) ammoText = texts.Length > 1 ? texts[1] : ammoText;
-		}
 	}
 
 	private void OnEnable()
@@ -124,17 +115,6 @@ public GameObject weaponCurrentAmoPanel;
 				// Show only reserve so it updates on reload/pickups, not on each shot
 				if (currentTotalAmoInSelectedWeapon != null) currentTotalAmoInSelectedWeapon.text = sel.reserve.ToString();
 			}
-		}
-
-		// header texts
-		var w = weaponController.CurrentWeapon;
-		if (weaponNameText != null)
-			weaponNameText.text = (w != null) ? w.weaponName : "No Weapon";
-
-		if (ammoText != null)
-		{
-			var info = weaponController.GetAmmoInfo();
-			ammoText.text = $"{info.mag} / {info.reserve}";
 		}
 
 		// refresh slot UIs
