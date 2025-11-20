@@ -21,7 +21,7 @@ MonoBehaviour:
   range: 40
   fireRate: 0.3
   automatic: 0
-  magazineSize: 6
+  magazineSize: 30
   maxReserveAmmo: 250
   startingReserveAmmo: 30
   reloadTime: 1.2
