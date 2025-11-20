@@ -34,6 +34,7 @@ public class Player : MonoBehaviour
     public bool weaponFlipped = false; // true dacă arma este întoarsă (X=180)
     private float _weaponInitialY;
     private float _weaponInitialZ;
+    private Vector3 _weaponInitialLocalPos;
 
     [Header("Weapon Recoil (DOTween)")]
     public float recoilDistance = 0.15f;
@@ -57,6 +58,7 @@ public class Player : MonoBehaviour
             var e = weaponRootPosition.localEulerAngles;
             _weaponInitialY = e.y;
             _weaponInitialZ = e.z;
+            _weaponInitialLocalPos = weaponRootPosition.localPosition; // cache local start
         }
     }
 
@@ -171,26 +173,27 @@ public class Player : MonoBehaviour
         if (_recoilSequence != null && _recoilSequence.IsActive())
             _recoilSequence.Kill();
 
+        // hard reset to initial each shot (elimină drift)
+        weaponRootPosition.localPosition = _weaponInitialLocalPos;
+
         float dir = weaponFlipped ? 1f : -1f;
-        Vector3 startPos = weaponRootPosition.localPosition;
-        float backTargetX = startPos.x + dir * recoilDistance;
+        float backTargetX = _weaponInitialLocalPos.x + dir * recoilDistance;
 
         _recoilSequence = DOTween.Sequence()
-            .Append(weaponRootPosition.DOLocalMoveX(backTargetX, recoilDuration * 0.5f).SetEase(recoilEase))
-            .Append(weaponRootPosition.DOLocalMoveX(startPos.x, recoilDuration * 0.5f).SetEase(Ease.OutQuad));
-
-        if (recoilVibrato > 0)
-        {
-            _recoilSequence.Join(
-                weaponRootPosition.DOShakePosition(recoilDuration, new Vector3(recoilDistance * 0.4f, 0f, 0f), recoilVibrato, 0f, false, true)
-            );
-        }
+            .Append(weaponRootPosition.DOLocalMoveX(backTargetX, recoilDuration * 0.4f).SetEase(recoilEase))
+            .Append(weaponRootPosition.DOLocalMoveX(_weaponInitialLocalPos.x, recoilDuration * 0.6f).SetEase(Ease.OutQuad))
+            .OnComplete(() =>
+            {
+                weaponRootPosition.localPosition = _weaponInitialLocalPos; // ensure exact reset
+            });
     }
 
     private void OnDestroy()
     {
         if (_recoilSequence != null && _recoilSequence.IsActive())
             _recoilSequence.Kill();
+        if (weaponRootPosition != null)
+            weaponRootPosition.localPosition = _weaponInitialLocalPos;
     }
 
     void OnDrawGizmos()
