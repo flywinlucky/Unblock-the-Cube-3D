@@ -21,12 +21,10 @@ public class CameraFolow : MonoBehaviour
         if (_cam == null) _cam = Camera.main;
     }
 
-    void LateUpdate()
+    void FixedUpdate()
     {
         if (playerPosition == null)
-        {
             return;
-        }
 
         Vector3 desiredPosition = new Vector3(
             playerPosition.position.x,
@@ -34,14 +32,12 @@ public class CameraFolow : MonoBehaviour
             _cameraZPosition
         );
 
-        // Clamp inside arena bounds (orthographic only)
         if (arenaBounds != null && _cam != null && _cam.orthographic)
         {
             Bounds b = arenaBounds.bounds;
             float halfH = _cam.orthographicSize;
             float halfW = halfH * _cam.aspect;
 
-            // If bounds smaller than view, lock to center
             float minX = b.min.x + halfW;
             float maxX = b.max.x - halfW;
             float minY = b.min.y + halfH;
@@ -65,4 +61,5 @@ public class CameraFolow : MonoBehaviour
             smoothTime
         );
     }
+
 }
