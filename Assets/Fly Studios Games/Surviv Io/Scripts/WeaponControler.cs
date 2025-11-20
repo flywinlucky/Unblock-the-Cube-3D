@@ -11,8 +11,7 @@ public class WeaponControler : MonoBehaviour
 
 	[Header("Default Melee")]
 	public HandsMele defaultMelee;
-	public Transform weaponsRoot; // root pentru modele (opțional)
-
+    public Transform weaponRootPosition;
 	// state
 	private WeaponData _weapon;
 	private int _currentMagazine = 0;
@@ -44,6 +43,9 @@ public class WeaponControler : MonoBehaviour
 	{
 		if (defaultMelee != null)
 			defaultMelee.EnableHands(enable);
+
+		if (weaponRootPosition != null)
+			weaponRootPosition.gameObject.SetActive(!enable);
 	}
 
 	// Echipăm o armă (încărcăm magazinul și rezervă)
