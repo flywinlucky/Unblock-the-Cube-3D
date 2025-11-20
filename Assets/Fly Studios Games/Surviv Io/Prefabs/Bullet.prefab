@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.21509439, g: 0.21509439, b: 0.21509439, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -137,9 +137,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70c47337a24834c4c90277aa78033651, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 40
-  lifeTime: 5
-  damage: 1
 --- !u!1 &2827588826146458061
 GameObject:
   m_ObjectHideFlags: 0
@@ -165,7 +162,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2827588826146458061}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.07, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -223,7 +220,7 @@ TrailRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.21068561
+        value: 0.2849654
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -232,7 +229,7 @@ TrailRenderer:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1
-        value: 0.091430664
+        value: 0.08572073
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -260,8 +257,8 @@ TrailRenderer:
       ctime5: 0
       ctime6: 0
       ctime7: 0
-      atime0: 0
-      atime1: 43407
+      atime0: 14109
+      atime1: 47879
       atime2: 0
       atime3: 0
       atime4: 0
