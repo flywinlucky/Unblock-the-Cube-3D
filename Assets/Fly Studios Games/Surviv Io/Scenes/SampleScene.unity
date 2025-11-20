@@ -4317,13 +4317,14 @@ GameObject:
   m_Component:
   - component: {fileID: 613771819}
   - component: {fileID: 613771820}
+  - component: {fileID: 613771821}
   m_Layer: 0
   m_Name: Hands Root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &613771819
 Transform:
   m_ObjectHideFlags: 0
@@ -4351,12 +4352,36 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.00000025495225, y: 0.2}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &613771821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 613771818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce62b9598795f4c4691c81b37566a4a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LeftHandPosition: {fileID: 1507998897}
+  RightHandPosition: {fileID: 298880802}
+  handColider2D: {fileID: 613771820}
+  meleeDamage: 1
+  attackCooldown: 0.35
+  activeHitDuration: 0.12
+  punchDistance: 0.15
+  punchDuration: 0.1
+  hitMask:
+    serializedVersion: 2
+    m_Bits: 55
+  useBothHandsForScan: 0
 --- !u!1 &620606403
 GameObject:
   m_ObjectHideFlags: 0
@@ -6782,7 +6807,7 @@ Transform:
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1250429733}
+  - {fileID: 1495468751}
   - {fileID: 613771819}
   - {fileID: 1258915890}
   m_Father: {fileID: 0}
@@ -6865,6 +6890,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingWeapon: {fileID: 0}
   muzzle: {fileID: 0}
+  defaultMelee: {fileID: 613771821}
+  weaponsRoot: {fileID: 1495468751}
 --- !u!114 &1039426374
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9291,12 +9318,12 @@ GameObject:
   - component: {fileID: 1250429733}
   - component: {fileID: 1250429734}
   m_Layer: 0
-  m_Name: Weapon Root Point
+  m_Name: Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1250429733
 Transform:
   m_ObjectHideFlags: 0
@@ -9306,13 +9333,13 @@ Transform:
   m_GameObject: {fileID: 1250429732}
   m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_LocalScale: {x: 0.8000001, y: 0.8000001, z: 0.8}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 588872546}
   - {fileID: 1605647989}
   - {fileID: 1032675985}
-  m_Father: {fileID: 1039426368}
+  m_Father: {fileID: 1495468751}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
 --- !u!114 &1250429734
@@ -10919,6 +10946,38 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &1495468750
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1495468751}
+  m_Layer: 0
+  m_Name: Weapon Root Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1495468751
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1495468750}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1250429733}
+  m_Father: {fileID: 1039426368}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1507998896
 GameObject:
   m_ObjectHideFlags: 0

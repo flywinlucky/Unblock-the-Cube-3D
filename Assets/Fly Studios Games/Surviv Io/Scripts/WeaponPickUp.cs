@@ -93,6 +93,10 @@ public class WeaponPickUp : MonoBehaviour
         var weaponUI = other.GetComponentInChildren<WeaponUI>();
         if (wc == null) return;
 
+        // dezactivează melee default dacă există
+        if (wc.defaultMelee != null)
+            wc.defaultMelee.EnableHands(false);
+
         // echipăm arma din ScriptableObject
         wc.EquipWeapon(weaponData);
 

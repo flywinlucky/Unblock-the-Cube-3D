@@ -9,6 +9,10 @@ public class WeaponControler : MonoBehaviour
 	public WeaponData startingWeapon; // setezi ScriptableObject în inspector
 	public Transform muzzle; // where bullets are spawned
 
+	[Header("Default Melee")]
+	public HandsMele defaultMelee;
+	public Transform weaponsRoot; // root pentru modele (opțional)
+
 	// state
 	private WeaponData _weapon;
 	private int _currentMagazine = 0;
@@ -32,13 +36,26 @@ public class WeaponControler : MonoBehaviour
 	{
 		if (startingWeapon != null)
 			EquipWeapon(startingWeapon);
+		else
+			EnableMelee(true);
+	}
+
+	private void EnableMelee(bool enable)
+	{
+		if (defaultMelee != null)
+			defaultMelee.EnableHands(enable);
 	}
 
 	// Echipăm o armă (încărcăm magazinul și rezervă)
 	public void EquipWeapon(WeaponData data)
 	{
 		_weapon = data;
-		if (_weapon == null) return;
+		if (_weapon == null)
+		{
+			EnableMelee(true);
+			return;
+		}
+		EnableMelee(false);
 
 		// initialize magazine and reserve: umple magazinul și pune restul în rezervă
 		_currentMagazine = Mathf.Min(_weapon.magazineSize, _weapon.startingReserveAmmo);
@@ -51,7 +68,12 @@ public class WeaponControler : MonoBehaviour
 	public void EquipWeapon(WeaponData data, int currentMag, int reserve)
 	{
 		_weapon = data;
-		if (_weapon == null) return;
+		if (_weapon == null)
+		{
+			EnableMelee(true);
+			return;
+		}
+		EnableMelee(false);
 
 		_currentMagazine = Mathf.Clamp(currentMag, 0, _weapon.magazineSize);
 		_reserveAmmo = Mathf.Clamp(reserve, 0, _weapon.maxReserveAmmo);
@@ -62,6 +84,14 @@ public class WeaponControler : MonoBehaviour
 	// Fire folosește datele din WeaponData; dacă ammo 0 nu trage
 	public void Fire()
 	{
+		// Melee fallback
+		if (_weapon == null)
+		{
+			if (defaultMelee != null && defaultMelee.CanAttack)
+				defaultMelee.Attack(flipped: false); // flip logic poate fi extins din Player (injectat dacă e nevoie)
+			return;
+		}
+
 		if (_weapon == null || muzzle == null) return;
 		if (Time.time < _nextFireTime) return;
 		if (_isReloading) return;
