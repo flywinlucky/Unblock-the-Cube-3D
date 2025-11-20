@@ -710,7 +710,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 5
-  scaleReduction: 0.1
+  scaleReduction: 0.2
   minScale: 0.05
 --- !u!50 &82213981
 Rigidbody2D:
@@ -1003,7 +1003,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 10
-  scaleReduction: 0.1
+  scaleReduction: 0.2
   minScale: 0.05
 --- !u!1 &113960996
 GameObject:
@@ -6808,6 +6808,14 @@ MonoBehaviour:
   weaponRootPosition: {fileID: 1250429733}
   weaponController: {fileID: 1039426373}
   holdToFire: 1
+  weaponFlipped: 0
+  recoilDistance: 0.15
+  recoilDuration: 0.08
+  recoilEase: 5
+  recoilVibrato: 1
+  recoilOscillationDuration: 0.12
+  recoilOscillationVibrato: 6
+  recoilOscillationStrengthFactor: 0.35
 --- !u!50 &1039426372
 Rigidbody2D:
   serializedVersion: 4
@@ -7922,7 +7930,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 3
-  scaleReduction: 0.3
+  scaleReduction: 0.2
   minScale: 0.05
 --- !u!1001 &1178554044
 PrefabInstance:
@@ -14600,7 +14608,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 5
-  scaleReduction: 0.1
+  scaleReduction: 0.2
   minScale: 0.05
 --- !u!58 &2095000022
 CircleCollider2D:

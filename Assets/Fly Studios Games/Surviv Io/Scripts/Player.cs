@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Player : MonoBehaviour
 {
@@ -33,6 +34,13 @@ public class Player : MonoBehaviour
     public bool weaponFlipped = false; // true dacă arma este întoarsă (X=180)
     private float _weaponInitialY;
     private float _weaponInitialZ;
+
+    [Header("Weapon Recoil (DOTween)")]
+    public float recoilDistance = 0.15f;
+    public float recoilDuration = 0.08f;
+    public Ease recoilEase = Ease.OutQuad;
+    public int recoilVibrato = 0;
+    private Sequence _recoilSequence; // was Tween _recoilTween
 
     void Start()
     {
@@ -78,12 +86,22 @@ public class Player : MonoBehaviour
             if (holdToFire)
             {
                 if (Input.GetMouseButton(0))
+                {
+                    int beforeMag = weaponController.CurrentMagazine;
                     weaponController.Fire();
+                    if (weaponController.CurrentMagazine == beforeMag - 1)
+                        PlayRecoil();
+                }
             }
             else
             {
                 if (Input.GetMouseButtonDown(0))
+                {
+                    int beforeMag = weaponController.CurrentMagazine;
                     weaponController.Fire();
+                    if (weaponController.CurrentMagazine == beforeMag - 1)
+                        PlayRecoil();
+                }
             }
 
             if (Input.GetKeyDown(KeyCode.R))
@@ -144,6 +162,35 @@ public class Player : MonoBehaviour
         weaponRootPosition.localEulerAngles = e;
 
         weaponFlipped = !cursorRight;
+    }
+
+    private void PlayRecoil()
+    {
+        if (weaponRootPosition == null) return;
+
+        if (_recoilSequence != null && _recoilSequence.IsActive())
+            _recoilSequence.Kill();
+
+        float dir = weaponFlipped ? 1f : -1f;
+        Vector3 startPos = weaponRootPosition.localPosition;
+        float backTargetX = startPos.x + dir * recoilDistance;
+
+        _recoilSequence = DOTween.Sequence()
+            .Append(weaponRootPosition.DOLocalMoveX(backTargetX, recoilDuration * 0.5f).SetEase(recoilEase))
+            .Append(weaponRootPosition.DOLocalMoveX(startPos.x, recoilDuration * 0.5f).SetEase(Ease.OutQuad));
+
+        if (recoilVibrato > 0)
+        {
+            _recoilSequence.Join(
+                weaponRootPosition.DOShakePosition(recoilDuration, new Vector3(recoilDistance * 0.4f, 0f, 0f), recoilVibrato, 0f, false, true)
+            );
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (_recoilSequence != null && _recoilSequence.IsActive())
+            _recoilSequence.Kill();
     }
 
     void OnDrawGizmos()

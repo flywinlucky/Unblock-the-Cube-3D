@@ -19,7 +19,7 @@ MonoBehaviour:
   bulletSpeed: 30
   damage: 1
   range: 40
-  fireRate: 0.3
+  fireRate: 0.2
   automatic: 0
   magazineSize: 30
   maxReserveAmmo: 250
