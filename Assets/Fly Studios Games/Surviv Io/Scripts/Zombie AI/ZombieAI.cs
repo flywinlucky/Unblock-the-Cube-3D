@@ -6,9 +6,6 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class ZombieAI : MonoBehaviour
 {
-    public enum Aggression { Calm, Alert, Frenzy }
-    private Aggression _aggState = Aggression.Calm;
-
     [Header("Setări Urmărire")]
     public float stopDistance = 1.5f;    // Distanța la care se oprește lângă țintă
     public float attackInterval = 1.0f;  // Cât de des atacă (secunde)
@@ -27,13 +24,6 @@ public class ZombieAI : MonoBehaviour
     public float staggerSpeedMultiplier = 0.55f;
     public float lungeSpeedMultiplier = 1.75f;
 
-    [Header("Aggression Modifiers")]
-    public float alertSpeedMultiplier = 1.05f;
-    public float frenzySpeedMultiplier = 1.25f;
-    public float lostSightSearchTime = 3f;
-    public float visionAngle = 120f;
-    public float visionDistance = 15f;
-
     private NavMeshAgent _agent;
     private Transform _player;
     private float _nextAttackTime;
@@ -43,16 +33,6 @@ public class ZombieAI : MonoBehaviour
     private float _pathInterval;
     private float _baseSpeed;
     private Coroutine _varianceRoutine;
-
-    private List<Vector3> _lanePath;
-    private int _laneWaypointIndex;
-    public float lanePointReachThreshold = 0.6f; // Distance to advance to next lane node
-
-    private float _tempBoostEndTime;
-    private float _lostSightTimer;
-    private Vector3 _lastKnownPlayerPos;
-
-    public Vector3 CurrentVelocity => _agent != null ? _agent.velocity : Vector3.zero;
 
     void Start()
     {
@@ -129,20 +109,10 @@ public class ZombieAI : MonoBehaviour
             transform.rotation = Quaternion.Euler(0f, 0f, ang);
         }
 
-        bool canSee = HasVisionOnPlayer();
-        if (canSee) _lastKnownPlayerPos = _player.position;
-        else _lostSightTimer += Time.deltaTime;
-
-        // Adjust aggression baseline
-        if (canSee) _aggState = Aggression.Frenzy;
-        else if (_lostSightTimer < lostSightSearchTime) _aggState = Aggression.Alert;
-        else _aggState = Aggression.Calm;
-
-        ApplyAggressionSpeed();
-
         // 2. Verificare Distanță pentru Atac
         // Calculăm distanța reală până la jucător, nu până la punctul tactic
         float distToPlayer = Vector3.Distance(transform.position, _player.position);
+
         if (distToPlayer <= stopDistance)
         {
             // Dacă e foarte aproape de player, se oprește și atacă
@@ -151,94 +121,29 @@ public class ZombieAI : MonoBehaviour
         }
         else
         {
+            // Altfel, merge spre ținta tactică setată de Manager (încercuire)
             if (_agent.isStopped) _agent.isStopped = false;
-
-            // Lane traversal first (divergent approach) then tactical ring
-            if (_lanePath != null && _laneWaypointIndex < _lanePath.Count)
-            {
-                float dLane = Vector3.Distance(transform.position, _lanePath[_laneWaypointIndex]);
-                if (dLane <= lanePointReachThreshold)
-                {
-                    _laneWaypointIndex++;
-                    if (_laneWaypointIndex >= _lanePath.Count)
-                    {
-                        // Lane finished; will shift to tactical target updates
-                    }
-                }
-            }
-
-            Vector3 desiredTarget;
-            if (_lanePath != null && _laneWaypointIndex < _lanePath.Count)
-                desiredTarget = _lanePath[_laneWaypointIndex];
-            else
-                desiredTarget = _targetPosition; // tactical ring
 
             // Throttle path updates (reduces CPU + breaks robotic sync)
             if (Time.time >= _nextPathUpdateTime)
             {
-                _agent.SetDestination(desiredTarget);
+                _agent.SetDestination(_targetPosition);
                 // Slight randomization each cycle
                 _pathInterval = Random.Range(pathUpdateIntervalRange.x, pathUpdateIntervalRange.y);
                 _nextPathUpdateTime = Time.time + _pathInterval;
             }
         }
-
-        // If lost sight but not yet calm, bias destination toward last known position
-        if (!canSee && _aggState != Aggression.Calm && _lanePath == null)
-        {
-            _targetPosition = Vector3.Lerp(_targetPosition, _lastKnownPlayerPos, 0.25f);
-        }
-    }
-
-    bool HasVisionOnPlayer()
-    {
-        if (_player == null) return false;
-        Vector3 dir = _player.position - transform.position;
-        if (dir.magnitude > visionDistance) return false;
-        float ang = Vector3.Angle(transform.right, dir); // Assuming right is forward in 2D
-        if (ang > visionAngle * 0.5f) return false;
-        // (Optional) raycast 2D here if walls layer used
-        return true;
-    }
-
-    void ApplyAggressionSpeed()
-    {
-        float target = _baseSpeed;
-        if (_aggState == Aggression.Alert) target *= alertSpeedMultiplier;
-        else if (_aggState == Aggression.Frenzy) target *= frenzySpeedMultiplier;
-        if (Time.time < _tempBoostEndTime) target *= _activeBoostMultiplier;
-        _agent.speed = Mathf.Lerp(_agent.speed, target, 0.15f);
-    }
-
-    private float _activeBoostMultiplier = 1f;
-    public void ApplyTemporarySpeedBoost(float mult, float duration)
-    {
-        _activeBoostMultiplier = mult;
-        _tempBoostEndTime = Time.time + duration;
-    }
-
-    public void SetAggressionState(Aggression a)
-    {
-        _aggState = a;
-        if (a == Aggression.Calm) _lostSightTimer = 0f;
     }
 
     // Această funcție este apelată constant de ZombieManager pentru a actualiza poziția de încercuire
     public void SetTacticalTarget(Vector3 pos)
     {
         _targetPosition = pos;
-        // If lane still active we delay tactical override movement until lane complete
-        if (_lanePath != null && _laneWaypointIndex < _lanePath.Count) return;
         // Optional immediate refresh if far off (avoid big drift)
         if (!_agent.isStopped && (pos - _agent.destination).sqrMagnitude > 4f)
+        {
             _agent.SetDestination(_targetPosition);
-    }
-
-    public void SetLanePath(List<Vector3> nodes)
-    {
-        if (nodes == null || nodes.Count == 0) return;
-        _lanePath = new List<Vector3>(nodes);
-        _laneWaypointIndex = 0;
+        }
     }
 
     void FindPlayer()

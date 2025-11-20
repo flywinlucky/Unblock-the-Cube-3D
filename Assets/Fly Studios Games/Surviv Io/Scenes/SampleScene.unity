@@ -709,9 +709,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!50 &82213981
 Rigidbody2D:
   serializedVersion: 4
@@ -842,9 +841,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &92372073
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1146,9 +1144,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!1 &113960996
 GameObject:
   m_ObjectHideFlags: 0
@@ -1303,9 +1300,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &117170096
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1447,9 +1443,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &120236589
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1613,9 +1608,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!58 &134365902
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1747,9 +1741,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &138684410
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2102,7 +2095,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1039426371}
   zombiePrefab: {fileID: 1160807336314194704, guid: e340cc3c30030344d840b0409b0a6adc, type: 3}
-  initialCount: 20
+  initialCount: 15
   spawnDistance: 30
   timeBetweenWaves: 20
   surroundRadius: 8
@@ -3595,9 +3588,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!58 &303821347
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -3869,9 +3861,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &349381796
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4090,9 +4081,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &365414509
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4234,9 +4224,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &375210847
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4746,9 +4735,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &400002839
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5057,9 +5045,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!58 &476619339
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -5191,9 +5178,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &484469903
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5650,9 +5636,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!58 &527732538
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -6442,9 +6427,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &626342319
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7257,9 +7241,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!58 &670132459
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -7513,9 +7496,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &713258637
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7817,9 +7799,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &764258052
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -8276,9 +8257,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &861671727
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9017,9 +8997,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &873572726
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9397,9 +9376,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &934067075
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9797,9 +9775,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!58 &1016834287
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -11090,9 +11067,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &1154563037
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -11354,9 +11330,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!1 &1173708202
 GameObject:
   m_ObjectHideFlags: 0
@@ -11389,9 +11364,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &1173708204
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -12540,9 +12514,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &1236285380
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -12764,9 +12737,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &1239618780
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -13522,9 +13494,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &1293731903
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -13803,9 +13774,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &1376207606
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -14296,9 +14266,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &1395587466
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -14991,9 +14960,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &1433033605
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -15286,9 +15254,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!58 &1501318105
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -15835,9 +15802,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &1586399250
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -16123,9 +16089,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!58 &1599675486
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -16475,9 +16440,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &1612152042
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -16985,9 +16949,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!58 &1649048316
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -17548,9 +17511,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &1714957420
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -17836,9 +17798,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!58 &1727051276
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -18201,9 +18162,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &1786145138
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -18447,9 +18407,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!58 &1805774143
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -18818,9 +18777,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &1843458742
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -19576,9 +19534,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!58 &1910298544
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -19710,9 +19667,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &1918749404
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -20013,9 +19969,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!58 &1952292741
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -20285,9 +20240,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &2005378752
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -20945,9 +20899,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!58 &2026141796
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -21090,9 +21043,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &2040853424
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -21234,9 +21186,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &2041076028
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -21378,9 +21329,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &2054974170
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -21522,9 +21472,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &2073260082
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -21666,9 +21615,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &2083644084
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -21910,9 +21858,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!58 &2095000022
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -22211,9 +22158,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &2115609403
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -22377,9 +22323,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!58 &2118751453
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -22572,9 +22517,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f14af5f234b1544797f8b10b91ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: 0.1
-  shakeDuration: 0.15
-  returnEase: 0.3
+  scaleReduction: 0.2
+  minScale: 0.05
 --- !u!61 &2125445838
 BoxCollider2D:
   m_ObjectHideFlags: 0
