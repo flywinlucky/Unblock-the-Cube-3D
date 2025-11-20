@@ -1,55 +1,68 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class DestroyableEntity : MonoBehaviour
 {
-	[Header("Health")]
-	public float maxHealth = 3f;
-	private float _currentHealth;
+    [Header("Health")]
+    public float maxHealth = 3f;
+    private float _currentHealth;
 
-	[Header("Hit Visual")]
-	[Tooltip("Procentaj (0-1) cu cât se micșorează scale-ul curent la fiecare hit (ex: 0.2 = -20%).")]
-	[Range(0f, 0.9f)]
-	public float scaleReduction = 0.2f;
+    [Header("Hit Effect")]
+    public float shakeStrength = 0.1f;   // cât de tare se mișcă
+    public float shakeDuration = 0.15f;  // durata efectului
+    public float returnEase = 0.3f;      // cât de smooth revine
 
-	[Tooltip("Scale minim permis pentru a evita valori foarte mici sau negative.")]
-	public float minScale = 0.05f;
+    private Tween _currentShake;
+    private Vector3 _originalLocalPos;
 
-	void Start()
-	{
-		_currentHealth = maxHealth;
-	}
+    void Start()
+    {
+        _currentHealth = maxHealth;
+        _originalLocalPos = transform.localPosition;
+    }
 
-	// Called when a Bullet hits this entity
-	public virtual void OnHitByBullet(Bullet bullet)
-	{
-		if (bullet == null) return;
-		TakeDamage(bullet.GetDamage());
-	}
+    public virtual void OnHitByBullet(Bullet bullet)
+    {
+        if (bullet == null) return;
+        TakeDamage(bullet.GetDamage());
+    }
 
-	// Aplica damage și micșorează scale-ul curent multiplicativ; distruge când health <= 0
-	public void TakeDamage(float amount)
-	{
-		if (amount <= 0f) return;
+    public void TakeDamage(float amount)
+    {
+        if (amount <= 0f) return;
 
-		_currentHealth -= amount;
-		_currentHealth = Mathf.Max(0f, _currentHealth);
+        _currentHealth -= amount;
+        _currentHealth = Mathf.Max(0f, _currentHealth);
 
-		// Aplicăm reducerea scale-ului în funcție de scaleReduction pornind de la scale-ul curent
-		float factor = Mathf.Clamp01(1f - scaleReduction);
-		Vector3 newScale = transform.localScale * factor;
+        PlayHitShake();
 
-		// Clamp pe fiecare componentă la minScale
-		newScale.x = Mathf.Max(newScale.x, minScale);
-		newScale.y = Mathf.Max(newScale.y, minScale);
-		newScale.z = Mathf.Max(newScale.z, minScale);
+        if (_currentHealth <= 0f)
+        {
+            Destroy(gameObject);
+        }
+    }
 
-		transform.localScale = newScale;
+    private void PlayHitShake()
+    {
+        // anulăm shake-ul curent dacă există
+        if (_currentShake != null && _currentShake.IsActive())
+            _currentShake.Kill(true);
 
-		if (_currentHealth <= 0f)
-		{
-			Destroy(gameObject);
-		}
-	}
+        // resetăm poziția ca să nu acumuleze offset
+        transform.localPosition = _originalLocalPos;
+
+        // direcție random 2D
+        Vector2 offset = Random.insideUnitCircle * shakeStrength;
+
+        // animăm spre offset și înapoi
+        _currentShake = transform.DOLocalMove(
+            _originalLocalPos + (Vector3)offset,
+            shakeDuration * 0.5f
+        )
+        .SetLoops(2, LoopType.Yoyo)
+        .SetEase(Ease.OutQuad)
+        .OnComplete(() => transform.localPosition = _originalLocalPos);
+    }
 }
