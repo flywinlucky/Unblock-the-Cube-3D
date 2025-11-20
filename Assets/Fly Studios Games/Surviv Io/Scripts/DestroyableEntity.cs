@@ -6,7 +6,7 @@ using DG.Tweening;
 public class DestroyableEntity : MonoBehaviour
 {
     [Header("Health")]
-    public float maxHealth = 3f;
+    private float maxHealth = 100f;
     private float _currentHealth;
 
     [Header("Hit Effect")]
