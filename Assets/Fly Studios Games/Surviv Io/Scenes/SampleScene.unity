@@ -6472,6 +6472,7 @@ MonoBehaviour:
   - {fileID: 593804585}
   currentAmoInSelectedWeapon: {fileID: 6052612028092036296}
   currentTotalAmoInSelectedWeapon: {fileID: 6555813227617459894}
+  weaponCurrentAmoPanel: {fileID: 5581848562523615380}
 --- !u!1 &1041593849
 GameObject:
   m_ObjectHideFlags: 0
